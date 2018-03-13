@@ -1,6 +1,7 @@
 package com.wangzhen.simplechartlib.interfaces.dataSets;
 
 import com.wangzhen.simplechartlib.data.entry.Entry;
+import com.wangzhen.simplechartlib.formatter.IValueFormatter;
 
 import java.util.List;
 
@@ -65,7 +66,7 @@ public interface IDataSet<T extends Entry> {
 
     int getEntryCount();
 
-
+    int getIndexInEntries(int xIndex);
 
     /**
      * Returns the position of the provided entry in the DataSets Entry array.
@@ -127,5 +128,27 @@ public interface IDataSet<T extends Entry> {
     boolean contains(T entry);
 
     void clear();
+
+    List<Integer> getColors();
+    int getColor();
+    int getColor(int index);
+
+    boolean isHighlightEnabled();
+    void setHighlightEnabled(boolean enabled);
+
+    void setValueFormatter(IValueFormatter f);
+    IValueFormatter getValueFormatter();
+
+    void setValueTextColor(int color);
+    void setValueTextColors(List<Integer> colors);
+    void setValueTextSize(float size);
+
+
+
+    boolean needsFormatter();
+
+
+
+
 
 }

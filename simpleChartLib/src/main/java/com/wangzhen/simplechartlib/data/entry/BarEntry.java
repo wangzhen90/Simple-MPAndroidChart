@@ -9,7 +9,6 @@ import com.wangzhen.simplechartlib.highlight.Range;
 
 public class BarEntry extends Entry {
 
-
     /**
      * 只有堆叠图才有值
      */
@@ -131,9 +130,4 @@ public class BarEntry extends Entry {
             }
         }
     }
-
-
-
-
-
 }
