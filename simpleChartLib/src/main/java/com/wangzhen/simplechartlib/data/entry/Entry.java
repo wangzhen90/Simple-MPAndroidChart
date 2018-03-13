@@ -1,4 +1,4 @@
-package com.wangzhen.simplechartlib.data;
+package com.wangzhen.simplechartlib.data.entry;
 
 /**
  * Created by wangzhen on 2018/3/12.
