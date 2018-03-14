@@ -28,6 +28,15 @@ public class BarEntry extends Entry {
         this.mYVals = mYVals;
     }
 
+    public BarEntry(float x, float y) {
+        super(x, y);
+    }
+
+    public BarEntry(float x, float y, Object data) {
+        super(x, y, data);
+    }
+
+
 
     public BarEntry(float x, float[] vals) {
         super(x, calcSum(vals));
@@ -51,6 +60,22 @@ public class BarEntry extends Entry {
         return mYVals != null;
     }
 
+
+    public void setVals(float[] vals) {
+        setY(calcSum(vals));
+        mYVals = vals;
+        calcPosNegSum();
+        calcRanges();
+    }
+
+    /**
+     * 如果是stack类型的就返回所有的stack之和
+     * @return
+     */
+    @Override
+    public float getY() {
+        return super.getY();
+    }
 
 
     public float getNegativeSum() {
@@ -130,4 +155,37 @@ public class BarEntry extends Entry {
             }
         }
     }
+
+    /**
+     * 获取 stackIndex - maxStackIndex之间的值
+     * @param stackIndex
+     * @return
+     */
+    public float getSumBelow(int stackIndex) {
+
+        if (mYVals == null)
+            return 0;
+
+        float remainder = 0f;
+        int index = mYVals.length - 1;
+
+        while (index > stackIndex && index >= 0) {
+            remainder += mYVals[index];
+            index--;
+        }
+
+        return remainder;
+    }
+
+    public BarEntry copy() {
+
+        BarEntry copied = new BarEntry(getX(), getY(), getData());
+        copied.setVals(mYVals);
+        return copied;
+    }
+
+    public Object getData() {
+        return mData;
+    }
+
 }

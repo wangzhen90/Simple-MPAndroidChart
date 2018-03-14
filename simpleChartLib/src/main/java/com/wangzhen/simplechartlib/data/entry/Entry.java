@@ -9,7 +9,7 @@ public class Entry {
     private float y = 0f;
     private float x = 0f;
 
-    private Object mData = null;
+     Object mData = null;
 
 
     public Entry(){
@@ -51,6 +51,15 @@ public class Entry {
     public String toString() {
         return "Entry, x: " + x + " y: " + getY();
     }
+
+    public Object getData() {
+        return mData;
+    }
+
+    public void setData(Object data) {
+        this.mData = data;
+    }
+
 
 
 }
