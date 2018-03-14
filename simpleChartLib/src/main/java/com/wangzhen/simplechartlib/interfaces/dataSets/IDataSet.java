@@ -1,5 +1,6 @@
 package com.wangzhen.simplechartlib.interfaces.dataSets;
 
+import com.wangzhen.simplechartlib.data.dataSet.DataSet;
 import com.wangzhen.simplechartlib.data.entry.Entry;
 import com.wangzhen.simplechartlib.formatter.IValueFormatter;
 
@@ -50,6 +51,8 @@ public interface IDataSet<T extends Entry> {
      */
     T getEntryForXValue(float xValue, float closestToY);
 
+    T getEntryForXValue(float xValue, float closestToY, DataSet.Rounding rounding);
+
     /**
      * TODO 暂时没有想到使用的场景
      * Returns all Entry objects found at the given x-value with binary
@@ -78,6 +81,18 @@ public interface IDataSet<T extends Entry> {
     int getEntryIndex(T e);
 
     /**
+     * 根据传入的x的index使用二分法查找到第一个符合的entry的index
+     * 由于在计算的时候计算出来的x的index 并不是一个整数，所以可能会考虑四舍五入
+     *
+     * @param xValue
+     * @param closestToY  如果有多个entry，则找到最接近出入的yValue，这种情况往往出现在当视图完全展示的时候（比如柱状图，折线图等）
+     * @param rounding   四舍五入的规则
+     * @return
+     */
+    int getEntryIndex(float xValue, float closestToY, DataSet.Rounding rounding);
+
+
+    /**
      * Adds an Entry to the DataSet dynamically.
      * Entries are added to the end of the list.
      * This will also recalculate the current minimum and maximum
@@ -88,6 +103,7 @@ public interface IDataSet<T extends Entry> {
     boolean addEntry(T e);
 
     /**
+     * TODO 动态有序添加一个value，基本无应用场景，先注释
      * Adds an Entry to the DataSet dynamically.
      * Entries are added to their appropriate index in the values array respective to their x-position.
      * This will also recalculate the current minimum and maximum
@@ -95,7 +111,7 @@ public interface IDataSet<T extends Entry> {
      *
      * @param e
      */
-    void addEntryOrdered(T e);
+//    void addEntryOrdered(T e);
 
     /**
      * Removes the first Entry (at index 0) of this DataSet from the entries array.
