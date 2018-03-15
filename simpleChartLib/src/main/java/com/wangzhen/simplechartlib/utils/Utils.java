@@ -43,7 +43,9 @@ public abstract class Utils {
 
     @SuppressWarnings("unused")
     public final static double DOUBLE_EPSILON = Double.longBitsToDouble(1);
-
+    /**
+     * static float MIN_VALUE ： 返回最小浮点数，在不同硬件平台中由Float.intBitsToFloat(0x1)计算得出。
+     */
     @SuppressWarnings("unused")
     public final static float FLOAT_EPSILON = Float.intBitsToFloat(1);
 

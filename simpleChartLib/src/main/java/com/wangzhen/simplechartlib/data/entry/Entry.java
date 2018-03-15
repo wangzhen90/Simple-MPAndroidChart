@@ -1,5 +1,7 @@
 package com.wangzhen.simplechartlib.data.entry;
 
+import com.wangzhen.simplechartlib.utils.Utils;
+
 /**
  * Created by wangzhen on 2018/3/12.
  */
@@ -61,5 +63,20 @@ public class Entry {
     }
 
 
+    public boolean equalTo(Entry e) {
 
+        if (e == null)
+            return false;
+
+        if (e.getData() != this.getData())
+            return false;
+
+        if (Math.abs(e.x - this.x) > Utils.FLOAT_EPSILON)
+            return false;
+
+        if (Math.abs(e.getY() - this.getY()) > Utils.FLOAT_EPSILON)
+            return false;
+
+        return true;
+    }
 }

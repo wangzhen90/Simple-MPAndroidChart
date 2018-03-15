@@ -164,6 +164,7 @@ public interface IDataSet<T extends Entry> {
     boolean needsFormatter();
 
 
+    void setDrawValues(boolean enabled);
 
 
 

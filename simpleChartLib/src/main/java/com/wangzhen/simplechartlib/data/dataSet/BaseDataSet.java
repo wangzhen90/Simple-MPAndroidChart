@@ -32,6 +32,9 @@ public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
 
     protected boolean mVisible = true;
 
+    protected boolean mDrawValues = true;
+
+
 
     public BaseDataSet() {
         mColors = new ArrayList<Integer>();
@@ -178,6 +181,9 @@ public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
     }
 
 
-
+    @Override
+    public void setDrawValues(boolean enabled) {
+        this.mDrawValues = enabled;
+    }
 
 }
