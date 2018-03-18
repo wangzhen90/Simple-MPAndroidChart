@@ -1,4 +1,4 @@
-package com.wangzhen.simplechartlib.data;
+package com.wangzhen.simplechartlib.data.chartData;
 
 import android.util.Log;
 

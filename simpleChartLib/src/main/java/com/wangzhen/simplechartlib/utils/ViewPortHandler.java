@@ -102,7 +102,7 @@ public class ViewPortHandler {
 
         restrainViewPort(offsetLeft, offsetTop, offsetRight, offsetBottom);
     }
-
+    //chart会在onSizeChanged中给这两个参数赋值，所以可以用他们来判断chart是不是已经显示出来了
     public boolean hasChartDimens() {
         if (mChartHeight > 0 && mChartWidth > 0)
             return true;

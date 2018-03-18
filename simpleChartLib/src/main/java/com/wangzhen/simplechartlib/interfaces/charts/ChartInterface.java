@@ -1,8 +1,8 @@
-package com.wangzhen.simplechartlib.interfaces;
+package com.wangzhen.simplechartlib.interfaces.charts;
 
 import android.graphics.RectF;
 
-import com.wangzhen.simplechartlib.data.ChartData;
+import com.wangzhen.simplechartlib.data.chartData.ChartData;
 import com.wangzhen.simplechartlib.formatter.IValueFormatter;
 import com.wangzhen.simplechartlib.utils.MPPointF;
 
