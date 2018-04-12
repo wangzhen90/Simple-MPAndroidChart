@@ -208,22 +208,22 @@ public abstract class AxisBase extends ComponentBase {
 
 
     /**
-     * TODO 暂时先不用
+     * 设置y轴label的数量，最多25，最少2个
      * @param
      */
-//    public void setLabelCount(int count) {
-//
-//        if (count > 25)
-//            count = 25;
-//        if (count < 2)
-//            count = 2;
-//
-//        mLabelCount = count;
-//    }
-//
-//    public int getLabelCount() {
-//        return mLabelCount;
-//    }
+    public void setLabelCount(int count) {
+
+        if (count > 25)
+            count = 25;
+        if (count < 2)
+            count = 2;
+
+        mLabelCount = count;
+    }
+
+    public int getLabelCount() {
+        return mLabelCount;
+    }
 
     /**
      * 暂时不用

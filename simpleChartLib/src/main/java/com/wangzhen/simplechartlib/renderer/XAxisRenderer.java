@@ -70,9 +70,26 @@ public class XAxisRenderer extends Renderer {
 
             MPPointD p1 = mTrans.getValuesByTouchPoint(mViewPortHandler.contentLeft(), mViewPortHandler.contentTop());
             MPPointD p2 = mTrans.getValuesByTouchPoint(mViewPortHandler.contentLeft(), mViewPortHandler.contentBottom());
+
+            if(invert){
+                min = (float)p2.x;
+                max = (float)p1.x;
+            }else{
+                min = (float)p1.x;
+                max = (float)p2.x;
+            }
+
+            MPPointD.recycleInstance(p1);
+            MPPointD.recycleInstance(p2);
+
         }
-
-
     }
+
+
+
+
+
+
+
 
 }
