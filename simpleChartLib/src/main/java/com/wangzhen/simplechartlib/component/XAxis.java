@@ -18,7 +18,7 @@ public class XAxis extends AxisBase {
      * 旋转后的label的宽高
      */
     public int mLabelRotatedWidth =1;
-    public int mLabelRotatedHeigth =1;
+    public int mLabelRotatedHeight = 1;
 
     protected float mLabelRotationAngle = 0f;
 

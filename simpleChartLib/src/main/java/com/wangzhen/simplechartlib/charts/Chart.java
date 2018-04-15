@@ -245,9 +245,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
         super.onDraw(canvas);
 
         if(mData == null){
-
             boolean hasText = !TextUtils.isEmpty(mNoDataText);
-
             if (hasText) {
                 MPPointF c = getCenter();
                 canvas.drawText(mNoDataText, c.x, c.y, mInfoPaint);
@@ -257,11 +255,11 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
                 calculateOffsets();
                 mOffsetsCalculated = true;
             }
-
-
             return;
-
         }
+
+
+
     }
 
 

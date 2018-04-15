@@ -82,10 +82,7 @@ public class BarDataSet extends DataSet<BarEntry> implements IBarDataSet {
         return mVisible;
     }
 
-    @Override
-    public int getEntryIndex(BarEntry e) {
-        return 0;
-    }
+
 
 
     @Override
