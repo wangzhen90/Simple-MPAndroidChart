@@ -13,6 +13,9 @@ import java.util.List;
  * Transformer class that contains all matrices and is responsible for
  * transforming values into pixels on the screen and backwards.
  *
+ * 1.将原始value值转化为px值得装换类，
+ * 2.和mViewPortHandler配合计算出拖拽和缩放后的px值
+ *
  * @author Philipp Jahoda
  */
 public class Transformer {

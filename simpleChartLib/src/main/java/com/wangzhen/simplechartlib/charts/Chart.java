@@ -34,6 +34,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
 
     public static final String LOG_TAG = "SIMPLE-MPAndroidChart";
     protected boolean mLogEnabled = false;
+    public final String TAG = this.getClass().getSimpleName();
 
     protected T mData = null;
 //TODO
@@ -174,11 +175,9 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
                 set.setValueFormatter(mDefaultValueFormatter);
         }
 
+        Log.e(TAG,"1.调用+"+TAG+"+的setData方法，调用notifyDataSetChanged，开始计算各种offset，最大最小值");
+
         notifyDataSetChanged();
-
-
-
-
     }
 
 

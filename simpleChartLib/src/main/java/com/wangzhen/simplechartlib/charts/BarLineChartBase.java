@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.util.AttributeSet;
+import android.util.Log;
 
 import com.wangzhen.simplechartlib.component.YAxis;
 import com.wangzhen.simplechartlib.data.chartData.BarData;
@@ -115,11 +116,12 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        Log.e(TAG,"2.begin onDraw...");
+
 
         if (mData == null) return;
 
         long startTime = System.currentTimeMillis();
-
 
         if (mXAxis.isEnabled()) {
             mXAxisRenderer.computeAxis(mXAxis.mAxisMinimum, mXAxis.mAxisMaximum, false);
@@ -176,6 +178,10 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         prepareOffsetMatrix();
         prepareValuePxMatrix();
 
+        Log.e(TAG,"1.2:计算offsets，本质就是根据设置的offset重新设置mViewHandler的content区域");
+        Log.e(TAG,"1.3:初始化左右两个y轴的transformer的offsetMatrix和valueToPxMatrix");
+
+
     }
 
     protected void prepareOffsetMatrix() {
@@ -194,11 +200,15 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
     @Override
     protected void calcMinMax() {
-
         mXAxis.calculate(mData.getXMin(), mData.getXMax());
         // calculate axis range (min / max) according to provided data
         mAxisLeft.calculate(mData.getYMin(), mData.getYMax());
         //mAxisRight.calculate(mData.getYMin(), mData.getYMax());
+        Log.e(TAG,"1.1:计算x，y轴的最大最小值,X最大最小值分别为："+mXAxis.getAxisMaximum() + ","+mXAxis.getAxisMinimum()
+
+        +",Y最大最小值分别为："+mAxisLeft.getAxisMaximum() + ","+mAxisLeft.getAxisMinimum()
+        );
+
     }
 
 

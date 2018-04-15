@@ -14,6 +14,7 @@ import com.wangzhen.simplechartlib.interfaces.dataSets.IBarDataSet;
  */
 
 public class BarChart extends BarLineChartBase<BarData> implements BarDataProvider{
+
     public BarChart(Context context) {
         super(context);
     }

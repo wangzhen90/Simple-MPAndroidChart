@@ -3,6 +3,7 @@ package com.wangzhen.simplechartlib.renderer;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.util.Log;
 
 import com.wangzhen.simplechartlib.component.AxisBase;
 import com.wangzhen.simplechartlib.component.XAxis;
@@ -84,6 +85,7 @@ public class XAxisRenderer extends AxisRenderer {
 
         }
         computeAxisValues(min, max);
+        Log.e("BarChart","2.1.1 根据传入的最大最小值，计算X轴labels的position和size");
 
     }
 

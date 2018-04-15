@@ -41,6 +41,8 @@ public class ChartData <T extends IDataSet<? extends Entry>>{
     public ChartData(List<T> sets) {
         this.mDataSets = sets;
         notifyDataChanged();
+        Log.e("BarChart","0.创建ChartData，调用notifyDataChanged，计算最大值和最小值，maxXValue："+getXMax()+",minXValue:"+getXMin()
+        +",maxYValue:"+getYMax()+",minYValue:"+getYMin());
     }
 
     public ChartData(T... dataSets) {
