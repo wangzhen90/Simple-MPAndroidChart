@@ -70,7 +70,7 @@ public class XAxisRenderer extends AxisRenderer {
         if (mViewPortHandler != null && mViewPortHandler.contentWidth() > 10 && !mViewPortHandler.isFullyZoomedOutX()) {
 
             MPPointD p1 = mTrans.getValuesByTouchPoint(mViewPortHandler.contentLeft(), mViewPortHandler.contentTop());
-            MPPointD p2 = mTrans.getValuesByTouchPoint(mViewPortHandler.contentLeft(), mViewPortHandler.contentTop());
+            MPPointD p2 = mTrans.getValuesByTouchPoint(mViewPortHandler.contentRight(), mViewPortHandler.contentTop());
 
             if(invert){
                 min = (float)p2.x;
@@ -85,7 +85,7 @@ public class XAxisRenderer extends AxisRenderer {
 
         }
         computeAxisValues(min, max);
-        Log.e("BarChart","2.1.1 根据传入的最大最小值，计算X轴labels的position和size");
+        Log.e("BarChart","2.1.1 根据传入的最大最小值以及设置的labelCount，计算X轴labels的position和size");
 
     }
 

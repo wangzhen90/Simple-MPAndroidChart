@@ -1,54 +1,80 @@
 package com.wangzhen.simplechart;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-
-import com.wangzhen.simplechartlib.charts.BarChart;
-import com.wangzhen.simplechartlib.data.chartData.BarData;
-import com.wangzhen.simplechartlib.data.dataSet.BarDataSet;
-import com.wangzhen.simplechartlib.data.entry.BarEntry;
-import com.wangzhen.simplechartlib.interfaces.dataSets.IBarDataSet;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-    BarChart barChart;
 
+    ListView listView;
+    ArrayList<ChartItem> items = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        listView = findViewById(R.id.listview);
+        initData();
 
-        barChart = findViewById(R.id.barChart);
-        setData();
+        listView.setAdapter(new DataAdapter());
+    }
 
+    void initData(){
+
+        items.add(new ChartItem("普通柱状图",CommonBarChartActivity.class));
     }
 
 
-    void setData() {
+    class DataAdapter extends BaseAdapter{
 
-        ArrayList<BarEntry> yVals1 = new ArrayList<BarEntry>();
-        for (int i = 0; i < 20; i++) {
-            float mult = 20;
-
-            float val = (float) (Math.random() * mult);
-
-            yVals1.add(new BarEntry(i, val));
+        @Override
+        public int getCount() {
+            return items.size();
         }
 
-        BarDataSet set1;
-        set1 = new BarDataSet(yVals1);
-        ArrayList<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
-        dataSets.add(set1);
+        @Override
+        public ChartItem getItem(int i) {
+            return items.get(i);
+        }
 
-        BarData data = new BarData(dataSets);
-        data.setValueTextSize(10f);
-        data.setBarWidth(0.9f);
+        @Override
+        public long getItemId(int i) {
+            return i;
+        }
 
-        barChart.setData(data);
+        @Override
+        public View getView(int i, View contextView, ViewGroup viewGroup) {
 
+            if(contextView == null){
+                contextView = View.inflate(MainActivity.this,R.layout.layout_chart_item,null);
+            }
+            final ChartItem item = getItem(i);
+            ((TextView)contextView.findViewById(R.id.textView)).setText(item.name);
+            contextView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(MainActivity.this,item.clazz);
+                    startActivity(intent);
+                }
+            });
+
+            return contextView;
+        }
     }
+
+
+
+
+
+
+
 
 }
 

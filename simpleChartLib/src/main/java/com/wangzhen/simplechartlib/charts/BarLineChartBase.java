@@ -123,6 +123,9 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
         long startTime = System.currentTimeMillis();
 
+        Log.e("BarChart","2.1 开始绘制x轴...");
+
+
         if (mXAxis.isEnabled()) {
             mXAxisRenderer.computeAxis(mXAxis.mAxisMinimum, mXAxis.mAxisMaximum, false);
         }

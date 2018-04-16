@@ -4,12 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.wangzhen.simplechart.MainActivity">
+    tools:context="com.wangzhen.simplechart.CommonBarChartActivity">
 
-    <ListView
-        android:id="@+id/listview"
+    <com.wangzhen.simplechartlib.charts.BarChart
+        android:id="@+id/barChart"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-
+        android:layout_height="300dp"
+        ></com.wangzhen.simplechartlib.charts.BarChart>
 
 </android.support.constraint.ConstraintLayout>
