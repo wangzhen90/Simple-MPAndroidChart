@@ -554,6 +554,16 @@ public abstract class Utils {
     private static Rect mDrawTextRectBuffer = new Rect();
     private static Paint.FontMetrics mFontMetricsBuffer = new Paint.FontMetrics();
 
+    /**
+     *
+     * @param c
+     * @param text
+     * @param x
+     * @param y
+     * @param paint
+     * @param anchor   锚点（0.5，0）设置后使label居中
+     * @param angleDegrees
+     */
     public static void drawXAxisValue(Canvas c, String text, float x, float y,
                                       Paint paint,
                                       MPPointF anchor, float angleDegrees) {
@@ -567,7 +577,7 @@ public abstract class Utils {
         // Android sometimes has pre-padding
         drawOffsetX -= mDrawTextRectBuffer.left;
 
-        // Android does not snap the bounds to line boundaries,
+        // Android does not snap the bounds to line boundaries,(android 没有限制边界)
         //  and draws from bottom to top.
         // And we want to normalize it.
         drawOffsetY += -mFontMetricsBuffer.ascent;

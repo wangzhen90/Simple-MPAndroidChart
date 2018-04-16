@@ -182,7 +182,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         prepareValuePxMatrix();
 
         Log.e(TAG,"1.2:计算offsets，本质就是根据设置的offset重新设置mViewHandler的content区域");
-        Log.e(TAG,"1.3:初始化左右两个y轴的transformer的offsetMatrix和valueToPxMatrix");
+        Log.e(TAG,"1.3:，调用prepareOffsetMatrix 和 prepareValuePxMatrix 初始化左右两个y轴的transformer的offsetMatrix和valueToPxMatrix,这一步很重要");
 
 
     }

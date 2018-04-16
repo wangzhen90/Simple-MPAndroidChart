@@ -171,7 +171,7 @@ public class XAxisRenderer extends AxisRenderer {
                 positions[i] = mXAxis.mEntries[i / 2];
             }
         }
-
+        //value => px
         mTrans.pointValuesToPixel(positions);
 
         for(int i =0; i < positions.length; i+=2){

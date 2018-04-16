@@ -39,6 +39,11 @@ public class Transformer {
     /**
      * Prepares the matrix that transforms values to pixels. Calculates the
      * scale factors from the charts size and offsets.
+     * 初始化 将原始数据value 对应到 屏幕px的矩阵，原理很简单，
+     * 比如xValue=[10,90],yValue = [20,100],屏幕的大小为[0,0,100,200]
+     * 先将xValue 和 yValue的最小值作为起始点 matrix.postTranslate(-xChartMin, -yChartMin);
+     * 然后计算出需要缩放的比例 scaleX= 100/(90-10)  scaleY = 200/(100 - 20)
+     * postScale(scaleX, -scaleY)  注意-scaleY是为了将屏幕坐标系转为普通的坐标系
      *
      * @param xChartMin
      * @param deltaX
