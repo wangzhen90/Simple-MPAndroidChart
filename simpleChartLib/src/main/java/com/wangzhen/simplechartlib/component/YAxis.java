@@ -158,6 +158,5 @@ public class YAxis extends AxisBase {
         this.mAxisMaximum = (max + topSpace);
 
         this.mAxisRange = Math.abs(this.mAxisMaximum - this.mAxisMinimum);
-
     }
 }

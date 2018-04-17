@@ -3,6 +3,8 @@ package com.wangzhen.simplechartlib.renderer;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Path;
+import android.graphics.RectF;
 
 import com.wangzhen.simplechartlib.component.AxisBase;
 import com.wangzhen.simplechartlib.component.YAxis;
@@ -101,11 +103,44 @@ public class YAxisRenderer extends AxisRenderer {
 
         drawYLabels(c,xPos,positions,yoffset);
     }
-
+    protected Path mRenderGridLinesPath = new Path();
     @Override
     public void renderGridLines(Canvas c) {
+        if(!mYAxis.isEnabled()){
+            return;
+        }
 
+        if(mYAxis.isDrawGridLinesEnabled()){
+
+            int clipRestoreCount = c.save();
+            c.clipRect(getGridClippingReact());
+
+            float[] positions = getTransformedPositions();
+            mGridPaint.setColor(mYAxis.getGridColor());
+            mGridPaint.setStrokeWidth(mYAxis.getGridLineWidth());
+//            mGridPaint.setPathEffect(mYAxis.getGridDashPathEffect());
+
+            Path gridLinePath = mRenderGridLinesPath;
+            gridLinePath.reset();
+
+            for(int i = 0; i < positions.length; i+=2){
+                gridLinePath.moveTo(mViewPortHandler.offsetLeft(),positions[i+1]);
+                gridLinePath.lineTo(mViewPortHandler.contentRight(),positions[i+1]);
+                c.drawPath(gridLinePath,mGridPaint);
+                gridLinePath.reset();
+            }
+
+            c.restoreToCount(clipRestoreCount);
+        }
     }
+
+    protected RectF mGridClippingRect = new RectF();
+    public RectF getGridClippingReact(){
+        mGridClippingRect.set(mViewPortHandler.getContentRect());
+        mGridClippingRect.inset(0.f, -mAxis.getGridLineWidth());
+        return mGridClippingRect;
+    }
+
 
     @Override
     public void renderAxisLine(Canvas c) {

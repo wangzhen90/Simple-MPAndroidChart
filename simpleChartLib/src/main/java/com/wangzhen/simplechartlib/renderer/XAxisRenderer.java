@@ -3,6 +3,8 @@ package com.wangzhen.simplechartlib.renderer;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Path;
+import android.graphics.RectF;
 import android.util.Log;
 
 import com.wangzhen.simplechartlib.component.AxisBase;
@@ -206,11 +208,57 @@ public class XAxisRenderer extends AxisRenderer {
     protected void drawLabel(Canvas c, String formattedLabel, float x, float y, MPPointF anchor, float angleDegrees) {
         Utils.drawXAxisValue(c, formattedLabel, x, y, mAxisLabelPaint, anchor, angleDegrees);
     }
-
+    protected float[] mRenderGridLinesBuffer = new float[2];
+    protected Path mRenderGridLinesPath = new Path();
     @Override
     public void renderGridLines(Canvas c) {
         Log.e("BarChart","2.4 绘制x轴栅格线");
 
+        if(!mXAxis.isEnabled() || !mXAxis.isDrawGridLinesEnabled()){
+            return;
+        }
+
+        int clipRestoreCount = c.save();
+        c.clipRect(getGridClippingRect());
+
+        if(mRenderGridLinesBuffer.length != mAxis.mEntryCount * 2){
+            mRenderGridLinesBuffer = new float[mXAxis.mEntryCount * 2];
+        }
+        float[] positions = mRenderGridLinesBuffer;
+
+        for (int i = 0; i < positions.length; i += 2) {
+            positions[i] = mXAxis.mEntries[i / 2];
+            positions[i + 1] = mXAxis.mEntries[i / 2];
+        }
+
+        mTrans.pointValuesToPixel(positions);
+        mGridPaint.setColor(mXAxis.getGridColor());
+        mGridPaint.setStrokeWidth(mXAxis.getGridLineWidth());
+
+
+        Path gridLinePath = mRenderGridLinesPath;
+        gridLinePath.reset();
+
+        for (int i = 0; i < positions.length; i += 2) {
+
+            gridLinePath.moveTo(positions[i], mViewPortHandler.contentBottom());
+            gridLinePath.lineTo(positions[i], mViewPortHandler.contentTop());
+            c.drawPath(gridLinePath, mGridPaint);
+            gridLinePath.reset();
+        }
+
+
+        c.restoreToCount(clipRestoreCount);
+
+
+    }
+
+    protected RectF mGridClippingRect = new RectF();
+
+    public RectF getGridClippingRect() {
+        mGridClippingRect.set(mViewPortHandler.getContentRect());
+        mGridClippingRect.inset(-mAxis.getGridLineWidth(), 0.f);
+        return mGridClippingRect;
     }
 
 
