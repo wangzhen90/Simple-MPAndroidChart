@@ -181,8 +181,8 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         prepareOffsetMatrix();
         prepareValuePxMatrix();
 
-        Log.e(TAG,"1.2:计算offsets，本质就是根据设置的offset重新设置mViewHandler的content区域");
-        Log.e(TAG,"1.3:，调用prepareOffsetMatrix 和 prepareValuePxMatrix 初始化左右两个y轴的transformer的offsetMatrix和valueToPxMatrix,这一步很重要");
+        Log.e(TAG,"1.3: notifyDataChanged :计算offsets，本质就是根据设置的offset重新设置mViewHandler的content区域");
+        Log.e(TAG,"1.4:notifyDataChanged :调用prepareOffsetMatrix 和 prepareValuePxMatrix 初始化左右两个y轴的transformer的offsetMatrix和valueToPxMatrix,这一步很重要");
 
 
     }
@@ -207,7 +207,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         // calculate axis range (min / max) according to provided data
         mAxisLeft.calculate(mData.getYMin(), mData.getYMax());
         //mAxisRight.calculate(mData.getYMin(), mData.getYMax());
-        Log.e(TAG,"1.1:计算x，y轴的最大最小值,X最大最小值分别为："+mXAxis.getAxisMaximum() + ","+mXAxis.getAxisMinimum()
+        Log.e(TAG,"1.1:notifyDataSetChanged : 计算x，y轴的最大最小值,X最大最小值分别为："+mXAxis.getAxisMaximum() + ","+mXAxis.getAxisMinimum()
 
         +",Y最大最小值分别为："+mAxisLeft.getAxisMaximum() + ","+mAxisLeft.getAxisMinimum()
         );

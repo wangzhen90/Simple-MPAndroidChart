@@ -85,7 +85,7 @@ public class XAxisRenderer extends AxisRenderer {
 
         }
         computeAxisValues(min, max);
-        Log.e("BarChart","2.1.1 根据传入的最大最小值以及设置的labelCount，计算X轴labels的position和size");
+        Log.e("BarChart","1.2 notifyDataSetChanged/onDraw(数据未变，进行了手势操作) :根据传入的最大最小值以及设置的labelCount，计算X轴labels的position和size");
 
     }
 
@@ -134,6 +134,7 @@ public class XAxisRenderer extends AxisRenderer {
         c.drawLine(mViewPortHandler.contentLeft(),
                 mViewPortHandler.contentBottom(), mViewPortHandler.contentRight(),
                 mViewPortHandler.contentBottom(), mAxisLinePaint);
+        Log.e("BarChart","2.3 绘制x轴水平线");
 
     }
 
@@ -154,6 +155,8 @@ public class XAxisRenderer extends AxisRenderer {
 
         drawLabels(c, mViewPortHandler.contentBottom() + yoffset, pointF);
         MPPointF.recycleInstance(pointF);
+        Log.e("BarChart","2.5 绘制x轴labels");
+
     }
 
 
@@ -206,6 +209,7 @@ public class XAxisRenderer extends AxisRenderer {
 
     @Override
     public void renderGridLines(Canvas c) {
+        Log.e("BarChart","2.4 绘制x轴栅格线");
 
     }
 

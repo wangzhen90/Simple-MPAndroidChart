@@ -586,6 +586,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
             if (mLogEnabled)
                 Log.i(LOG_TAG, "Setting chart dimens, width: " + w + ", height: " + h);
             mViewPortHandler.setChartDimens(w, h);
+            Log.e(TAG,"在onSizeChanged初始化mViewPortHandler,并重新调用了notifyDataSetChanged");
         } else {
             if (mLogEnabled)
                 Log.w(LOG_TAG, "*Avoiding* setting chart dimens! width: " + w + ", height: " + h);
