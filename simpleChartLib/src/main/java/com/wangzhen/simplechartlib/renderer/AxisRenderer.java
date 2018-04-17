@@ -128,8 +128,8 @@ public abstract class AxisRenderer extends Renderer {
         }
 
         int n = mAxis.isCenterAxisLabelsEnabled() ? 1 : 0;
-//TODO 这个判断暂时没有写
-//        if (mAxis.isForceLabelsEnabled()) {}
+        //TODO 这个判断暂时没有写
+        //        if (mAxis.isForceLabelsEnabled()) {}
 
         double first = interval == 0.0 ? 0.0 : Math.ceil(yMin / interval) * interval;
         if(mAxis.isCenterAxisLabelsEnabled()) {
@@ -193,7 +193,4 @@ public abstract class AxisRenderer extends Renderer {
     public abstract void renderAxisLine(Canvas c);
     //绘制限制线
     public abstract void renderLimitLines(Canvas c);
-
-
-
 }

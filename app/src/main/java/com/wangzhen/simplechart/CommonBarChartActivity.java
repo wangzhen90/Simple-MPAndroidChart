@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import com.wangzhen.simplechartlib.charts.BarChart;
 import com.wangzhen.simplechartlib.component.XAxis;
+import com.wangzhen.simplechartlib.component.YAxis;
 import com.wangzhen.simplechartlib.data.chartData.BarData;
 import com.wangzhen.simplechartlib.data.dataSet.BarDataSet;
 import com.wangzhen.simplechartlib.data.entry.BarEntry;
@@ -27,6 +28,13 @@ public class CommonBarChartActivity extends AppCompatActivity {
     void setData() {
         XAxis xAxis = barChart.getXAxis();
         xAxis.setLabelCount(20);
+
+        YAxis leftAxis = barChart.getAxisLeft();
+        leftAxis.setLabelCount(5);
+        leftAxis.setSpaceTop(15f);
+        leftAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
+
+
 
         ArrayList<BarEntry> yVals1 = new ArrayList<BarEntry>();
         for (int i = 0; i < 20; i++) {

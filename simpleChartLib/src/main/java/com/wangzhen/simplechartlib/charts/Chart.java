@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 
 import com.wangzhen.simplechartlib.component.XAxis;
+import com.wangzhen.simplechartlib.component.YAxis;
 import com.wangzhen.simplechartlib.data.chartData.ChartData;
 import com.wangzhen.simplechartlib.data.entry.Entry;
 import com.wangzhen.simplechartlib.formatter.DefaultValueFormatter;

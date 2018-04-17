@@ -21,7 +21,10 @@ public abstract class AxisBase extends ComponentBase {
 
 
     private int mGridColor = Color.GRAY;
-
+    /**
+     * 是否自定义mAxisMin，比如通常自定义为0
+     */
+    protected boolean mCustomAxisMin = false;
 
     private float mGridLineWidth = 1f;
 
@@ -333,8 +336,8 @@ public abstract class AxisBase extends ComponentBase {
     }
 
     public void setAxisMinimum(float min){
+        mCustomAxisMin = true;
         mAxisMinimum = min;
-
         this.mAxisRange = Math.abs(mAxisMaximum - mAxisMinimum);
     }
 

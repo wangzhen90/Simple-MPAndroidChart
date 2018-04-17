@@ -107,7 +107,6 @@ public class YAxis extends AxisBase {
         width = Math.max(minWidth, Math.min(width, maxWidth > 0.0 ? maxWidth : width));
 
         return width;
-
     }
 
     /**
@@ -138,8 +137,10 @@ public class YAxis extends AxisBase {
     @Override
     public void calculate(float dataMin, float dataMax) {
 
-        float min =  dataMin;
-        float max =  dataMax;
+        float min = mCustomAxisMin ? mAxisMinimum : dataMin;
+        float max = dataMax;
+
+
         float range = Math.abs(max - min);
 
         if (range == 0f) {
@@ -147,8 +148,11 @@ public class YAxis extends AxisBase {
             min = min - 1f;
         }
 
-        float bottomSpace = range / 100f * getSpaceBottom();
-        this.mAxisMinimum = (min - bottomSpace);
+        // bottom-space only effects non-custom min
+        if (!mCustomAxisMin) {
+            float bottomSpace = range / 100f * getSpaceBottom();
+            this.mAxisMinimum = (min - bottomSpace);
+        }
 
         float topSpace = range / 100f * getSpaceTop();
         this.mAxisMaximum = (max + topSpace);

@@ -15,6 +15,7 @@ import com.wangzhen.simplechartlib.data.entry.Entry;
 import com.wangzhen.simplechartlib.interfaces.charts.BarLineScatterCandleBubbleDataProvider;
 import com.wangzhen.simplechartlib.interfaces.dataSets.IBarLineScatterCandleBubbleDataSet;
 import com.wangzhen.simplechartlib.renderer.XAxisRenderer;
+import com.wangzhen.simplechartlib.renderer.YAxisRenderer;
 import com.wangzhen.simplechartlib.utils.MPPointD;
 import com.wangzhen.simplechartlib.utils.Transformer;
 import com.wangzhen.simplechartlib.utils.Utils;
@@ -62,7 +63,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 //    protected OnDrawListener mDrawListener;
 
     protected YAxis mAxisLeft;
-    //    protected YAxisRenderer mAxisRendererLeft;
+    protected YAxisRenderer mAxisRendererLeft;
     protected YAxis mAxisRight;
 //    protected YAxisRenderer mAxisRendererRight;
 
@@ -92,7 +93,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
         mLeftAxisTransformer = new Transformer(mViewPortHandler);
 
-//        mAxisRendererLeft = new YAxisRenderer(mViewPortHandler, mAxisLeft, mLeftAxisTransformer);
+        mAxisRendererLeft = new YAxisRenderer(mViewPortHandler, mAxisLeft, mLeftAxisTransformer);
         mXAxisRenderer = new XAxisRenderer(mViewPortHandler, mXAxis, mLeftAxisTransformer);
 
 //        mGridBackgroundPaint = new Paint();
@@ -123,17 +124,21 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
         long startTime = System.currentTimeMillis();
 
-        Log.e("BarChart","2.1 开始绘制x轴...");
-
-
+        Log.e("BarChart","2.1 开始绘制X轴...");
         if (mXAxis.isEnabled()) {
             mXAxisRenderer.computeAxis(mXAxis.mAxisMinimum, mXAxis.mAxisMaximum, false);
         }
 
         mXAxisRenderer.renderAxisLine(canvas);
         mXAxisRenderer.renderGridLines(canvas);
-//        if (mXAxis.isEnabled() && mXAxis.isDrawLimitLinesBehindDataEnabled())
-//            mXAxisRenderer.renderLimitLines(canvas);
+
+        if(mAxisLeft.isEnabled()){
+            mAxisRendererLeft.computeAxis(mAxisLeft.mAxisMinimum,mAxisLeft.mAxisMaximum,false);
+        }
+
+        mAxisRendererLeft.renderAxisLine(canvas);
+        mAxisRendererLeft.renderGridLines(canvas);
+
 
         //裁剪一下，防止data绘制在了区域外边
         int clipRestoreCount = canvas.save();
@@ -142,6 +147,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         canvas.restoreToCount(clipRestoreCount);
 
         mXAxisRenderer.renderAxisLabels(canvas);
+        mAxisRendererLeft.renderAxisLabels(canvas);
     }
 
     public void resetTracking() {
@@ -157,12 +163,13 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
 
         if (mXAxis.isEnabled() && mXAxis.isDrawLabelsEnabled()) {
-
             float xLabelHeight = mXAxis.mLabelRotatedHeight + mXAxis.getYOffset();
-
             offsetBottom += xLabelHeight;
+        }
 
-
+        if(mAxisLeft.isEnabled() && mAxisLeft.isDrawLabelsEnabled()){
+            float longestYLabelWidth = mAxisLeft.getRequiredWidthSpace(mAxisRendererLeft.getPaintAxisLabels());
+            offsetLeft += longestYLabelWidth;
         }
 
         offsetTop += getExtraTopOffset();
@@ -276,7 +283,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 //            mRenderer.initBuffers();
         calcMinMax();
 
-//        mAxisRendererLeft.computeAxis(mAxisLeft.mAxisMinimum, mAxisLeft.mAxisMaximum, false);
+        mAxisRendererLeft.computeAxis(mAxisLeft.mAxisMinimum, mAxisLeft.mAxisMaximum, false);
 //        mAxisRendererRight.computeAxis(mAxisRight.mAxisMinimum, mAxisRight.mAxisMaximum, false);
         mXAxisRenderer.computeAxis(mXAxis.mAxisMinimum, mXAxis.mAxisMaximum, false);
 
@@ -327,6 +334,8 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         return mMaxVisibleCount;
     }
 
-
+    public YAxis getAxisLeft(){
+        return mAxisLeft;
+    }
 
 }
