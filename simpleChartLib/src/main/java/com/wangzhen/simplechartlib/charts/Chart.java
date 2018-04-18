@@ -21,6 +21,7 @@ import com.wangzhen.simplechartlib.formatter.DefaultValueFormatter;
 import com.wangzhen.simplechartlib.formatter.IValueFormatter;
 import com.wangzhen.simplechartlib.interfaces.charts.ChartInterface;
 import com.wangzhen.simplechartlib.interfaces.dataSets.IDataSet;
+import com.wangzhen.simplechartlib.listener.OnChartGestureListener;
 import com.wangzhen.simplechartlib.utils.MPPointF;
 import com.wangzhen.simplechartlib.utils.Utils;
 import com.wangzhen.simplechartlib.utils.ViewPortHandler;
@@ -73,7 +74,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
      *
      */
 
-//    private OnChartGestureListener mGestureListener;
+    private OnChartGestureListener mGestureListener;
 //
 //    protected LegendRenderer mLegendRenderer;
 
@@ -300,14 +301,14 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
 //    public void setOnChartValueSelectedListener(OnChartValueSelectedListener l) {
 //        this.mSelectionListener = l;
 //    }
+
+    public void setOnChartGestureListener(OnChartGestureListener l) {
+        this.mGestureListener = l;
+    }
 //
-//    public void setOnChartGestureListener(OnChartGestureListener l) {
-//        this.mGestureListener = l;
-//    }
-//
-//    public OnChartGestureListener getOnChartGestureListener() {
-//        return mGestureListener;
-//    }
+    public OnChartGestureListener getOnChartGestureListener() {
+        return mGestureListener;
+    }
 
 
     public XAxis getXAxis() {

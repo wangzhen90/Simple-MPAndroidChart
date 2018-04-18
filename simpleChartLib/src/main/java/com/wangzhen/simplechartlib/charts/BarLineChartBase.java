@@ -71,6 +71,8 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     //    protected Transformer mRightAxisTransformer;
     protected XAxisRenderer mXAxisRenderer;
 
+    protected boolean mPinchZoomEnabled = false;
+
 
     public BarLineChartBase(Context context) {
         super(context);
@@ -337,5 +339,76 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     public YAxis getAxisLeft(){
         return mAxisLeft;
     }
+
+
+    /**
+     * *****************************手势相关******************************
+     */
+    public void setDragEnabled(boolean enabled) {
+        this.mDragXEnabled = enabled;
+        this.mDragYEnabled = enabled;
+    }
+
+
+    public boolean isDragEnabled() {
+        return mDragXEnabled || mDragYEnabled;
+    }
+
+    public boolean isDragXEnabled() {
+        return mDragXEnabled;
+    }
+    public void setDragXEnabled(boolean enabled) {
+        this.mDragXEnabled = enabled;
+    }
+
+    public boolean isDragYEnabled() {
+        return mDragYEnabled;
+    }
+    public void setDragYEnabled(boolean enabled) {
+        this.mDragYEnabled = enabled;
+    }
+
+    public void setScaleEnabled(boolean enabled) {
+        this.mScaleXEnabled = enabled;
+        this.mScaleYEnabled = enabled;
+    }
+
+    public void setScaleXEnabled(boolean enabled) {
+        mScaleXEnabled = enabled;
+    }
+
+    public void setScaleYEnabled(boolean enabled) {
+        mScaleYEnabled = enabled;
+    }
+
+    public boolean isScaleXEnabled() {
+        return mScaleXEnabled;
+    }
+
+    public boolean isScaleYEnabled() {
+        return mScaleYEnabled;
+    }
+
+    public void setDoubleTapToZoomEnabled(boolean enabled) {
+        mDoubleTapToZoomEnabled = enabled;
+    }
+
+    public boolean isDoubleTapToZoomEnabled() {
+        return mDoubleTapToZoomEnabled;
+    }
+
+    public void setPinchZoom(boolean enabled) {
+        mPinchZoomEnabled = enabled;
+    }
+
+    /**
+     * 捏合手势
+     * @return
+     */
+    public boolean isPinchZoomEnabled() {
+        return mPinchZoomEnabled;
+    }
+
+
 
 }
