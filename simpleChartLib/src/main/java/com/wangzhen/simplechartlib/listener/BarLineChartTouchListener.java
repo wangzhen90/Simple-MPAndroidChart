@@ -157,22 +157,49 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
                 } else if (mTouchMode == X_ZOOM || mTouchMode == Y_ZOOM || mTouchMode == PINCH_ZOOM) {
                     mChart.disableScroll();
                     if (mChart.isScaleXEnabled() || mChart.isScaleYEnabled()) {
-
+                        performZoom(event);
                     }
 
 
                 } else if (mTouchMode == NONE && Math.abs(distance(event.getX(), mTouchStartPoint.x, event.getY(),
                         mTouchStartPoint.y)) > mDragTriggerDist) {
 
+                    if(mChart.isDragEnabled()){
+
+                        //如果已经缩放到最小或者没有拖拽位移就弹出higelight 否则就什么都不做（因为就是你想拖动也滑不动了啊）
+                        boolean shouldPan = !mChart.isFullyZoomedOut() ||
+                                !mChart.hasNoDragOffset();
+
+                        if (shouldPan) {
+
+                            float distanceX = Math.abs(event.getX() - mTouchStartPoint.x);
+                            float distanceY = Math.abs(event.getY() - mTouchStartPoint.y);
+
+                            // Disable dragging in a direction that's disallowed
+                            if ((mChart.isDragXEnabled() || distanceY >= distanceX) &&
+                                    (mChart.isDragYEnabled() || distanceY <= distanceX)) {
+
+                                mLastGesture = ChartGesture.DRAG;
+                                mTouchMode = DRAG;
+                            }
+
+                        } else {
+                            //TODO 弹框先不处理
+//                            if (mChart.isHighlightPerDragEnabled()) {
+//                                mLastGesture = ChartGesture.DRAG;
+//
+//                                if (mChart.isHighlightPerDragEnabled())
+//                                    performHighlightDrag(event);
+//                            }
+                        }
+
+
+                    }
+
+
                 }
-
-
                 break;
-
-
         }
-
-
         return false;
     }
 
@@ -202,13 +229,66 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
             ViewPortHandler h = mChart.getViewPortHandler();
 
             if (mTouchMode == PINCH_ZOOM) {
+                mLastGesture = ChartGesture.PINCH_ZOOM;
+                float scale = totalDist / mSavedDist;
+                boolean isZoomingOut = (scale < 1);
 
-            }else if(mTouchMode == X_ZOOM && mChart.isScaleXEnabled()){
+                boolean canZoomMoreX = isZoomingOut ? h.canZoomOutMoreX() : h.canZoomInMoreX();
+                boolean canZoomMoreY = isZoomingOut ? h.canZoomOutMoreY() : h.canZoomInMoreY();
 
-            }else if(mTouchMode == Y_ZOOM && mChart.isScaleYEnabled()){
+                float scaleX = (mChart.isScaleXEnabled()) ? scale : 1f;
+                float scaleY = (mChart.isScaleYEnabled()) ? scale : 1f;
+
+                mMatrix.set(mSavedMatrix);
+                //已中心点缩放
+                mMatrix.postScale(scaleX, scaleY, t.x, t.y);
+
+                if (l != null)
+                    l.onChartScale(event, scaleX, scaleY);
+
+            } else if (mTouchMode == X_ZOOM && mChart.isScaleXEnabled()) {
+                mLastGesture = ChartGesture.X_ZOOM;
+
+                float xDist = getXDist(event);
+                float scaleX = xDist / mSavedXDist; // x-axis scale
+
+                boolean isZoomingOut = (scaleX < 1);
+                boolean canZoomMoreX = isZoomingOut ?
+                        h.canZoomOutMoreX() :
+                        h.canZoomInMoreX();
+
+                if (canZoomMoreX) {
+
+                    mMatrix.set(mSavedMatrix);
+                    mMatrix.postScale(scaleX, 1f, t.x, t.y);
+
+                    if (l != null)
+                        l.onChartScale(event, scaleX, 1f);
+                }
+
+
+            } else if (mTouchMode == Y_ZOOM && mChart.isScaleYEnabled()) {
+
+
+                float yDist = getYDist(event);
+
+                float scaleY = yDist / mSavedYDist;
+
+                boolean isZoomingOut = scaleY < 1;
+
+                boolean canZoomMoreY = isZoomingOut ? h.canZoomOutMoreY() : h.canZoomInMoreY();
+
+                if (canZoomMoreY) {
+                    mMatrix.set(mSavedMatrix);
+                    mMatrix.postScale(1f, scaleY, t.x, t.y);
+                }
+
+                if (l != null)
+                    l.onChartScale(event, scaleY, 1f);
+
 
             }
-
+            MPPointF.recycleInstance(t);
         }
 
 
