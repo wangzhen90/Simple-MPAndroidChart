@@ -12,6 +12,7 @@ import com.wangzhen.simplechartlib.interfaces.dataSets.IBarLineScatterCandleBubb
 import com.wangzhen.simplechartlib.interfaces.dataSets.IDataSet;
 import com.wangzhen.simplechartlib.utils.MPPointF;
 import com.wangzhen.simplechartlib.utils.Utils;
+import com.wangzhen.simplechartlib.utils.ViewPortHandler;
 
 /**
  * Created by wangzhen on 2018/4/18.
@@ -144,11 +145,24 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
 
             case MotionEvent.ACTION_MOVE:
 
-                if(mTouchMode == DRAG){
+                if (mTouchMode == DRAG) {
+                    mChart.disableScroll();
 
-                }else if(mTouchMode == X_ZOOM || mTouchMode == Y_ZOOM || mTouchMode == PINCH_ZOOM ){
+                    float x = mChart.isDragXEnabled() ? event.getX() - mTouchStartPoint.x : 0.f;
+                    float y = mChart.isDragYEnabled() ? event.getY() - mTouchStartPoint.y : 0.f;
 
-                }else if(mTouchMode == NONE){
+                    performDrag(event, x, y);
+
+
+                } else if (mTouchMode == X_ZOOM || mTouchMode == Y_ZOOM || mTouchMode == PINCH_ZOOM) {
+                    mChart.disableScroll();
+                    if (mChart.isScaleXEnabled() || mChart.isScaleYEnabled()) {
+
+                    }
+
+
+                } else if (mTouchMode == NONE && Math.abs(distance(event.getX(), mTouchStartPoint.x, event.getY(),
+                        mTouchStartPoint.y)) > mDragTriggerDist) {
 
                 }
 
@@ -161,6 +175,55 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
 
         return false;
     }
+
+    private void performDrag(MotionEvent event, float distanceX, float distanceY) {
+
+        mLastGesture = ChartGesture.DRAG;
+
+        mMatrix.set(mSavedMatrix);
+
+        OnChartGestureListener l = mChart.getOnChartGestureListener();
+
+        mMatrix.postTranslate(distanceX, distanceY);
+
+        if (l != null)
+            l.onChartTranslate(event, distanceX, distanceY);
+
+    }
+
+    private void performZoom(MotionEvent event) {
+        if (event.getPointerCount() >= 2) {
+
+            OnChartGestureListener l = mChart.getOnChartGestureListener();
+            float totalDist = spacing(event);
+            //获得总共的移动
+            MPPointF t = getTrans(mTouchPointCenter.x, mTouchPointCenter.y);
+
+            ViewPortHandler h = mChart.getViewPortHandler();
+
+            if (mTouchMode == PINCH_ZOOM) {
+
+            }else if(mTouchMode == X_ZOOM && mChart.isScaleXEnabled()){
+
+            }else if(mTouchMode == Y_ZOOM && mChart.isScaleYEnabled()){
+
+            }
+
+        }
+
+
+    }
+
+    public MPPointF getTrans(float x, float y) {
+
+        ViewPortHandler vph = mChart.getViewPortHandler();
+
+        float xTrans = x - vph.offsetLeft();
+        float yTrans = -(mChart.getMeasuredHeight() - y - vph.offsetBottom());
+
+        return MPPointF.getInstance(xTrans, yTrans);
+    }
+
 
     public void stopDeceleration() {
         mDecelerationVelocity.x = 0;
