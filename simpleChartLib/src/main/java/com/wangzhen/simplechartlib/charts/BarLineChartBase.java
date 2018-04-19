@@ -3,6 +3,7 @@ package com.wangzhen.simplechartlib.charts;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.util.AttributeSet;
@@ -119,14 +120,14 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        Log.e(TAG,"2.begin onDraw...");
+        Log.e(TAG, "2.begin onDraw...");
 
 
         if (mData == null) return;
 
         long startTime = System.currentTimeMillis();
 
-        Log.e("BarChart","2.1 开始绘制X轴...");
+        Log.e("BarChart", "2.1 开始绘制X轴...");
         if (mXAxis.isEnabled()) {
             mXAxisRenderer.computeAxis(mXAxis.mAxisMinimum, mXAxis.mAxisMaximum, false);
         }
@@ -134,8 +135,8 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         mXAxisRenderer.renderAxisLine(canvas);
         mXAxisRenderer.renderGridLines(canvas);
 
-        if(mAxisLeft.isEnabled()){
-            mAxisRendererLeft.computeAxis(mAxisLeft.mAxisMinimum,mAxisLeft.mAxisMaximum,false);
+        if (mAxisLeft.isEnabled()) {
+            mAxisRendererLeft.computeAxis(mAxisLeft.mAxisMinimum, mAxisLeft.mAxisMaximum, false);
         }
 
         mAxisRendererLeft.renderAxisLine(canvas);
@@ -160,7 +161,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     private RectF mOffsetsBuffer = new RectF();
 
     @Override
-    protected void calculateOffsets() {
+    public void calculateOffsets() {
         float offsetLeft = 0f, offsetRight = 0f, offsetTop = 0f, offsetBottom = 0f;
 
 
@@ -169,7 +170,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
             offsetBottom += xLabelHeight;
         }
 
-        if(mAxisLeft.isEnabled() && mAxisLeft.isDrawLabelsEnabled()){
+        if (mAxisLeft.isEnabled() && mAxisLeft.isDrawLabelsEnabled()) {
             float longestYLabelWidth = mAxisLeft.getRequiredWidthSpace(mAxisRendererLeft.getPaintAxisLabels());
             offsetLeft += longestYLabelWidth;
         }
@@ -190,8 +191,8 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         prepareOffsetMatrix();
         prepareValuePxMatrix();
 
-        Log.e(TAG,"1.3: notifyDataChanged :计算offsets，本质就是根据设置的offset重新设置mViewHandler的content区域");
-        Log.e(TAG,"1.4:notifyDataChanged :调用prepareOffsetMatrix 和 prepareValuePxMatrix 初始化左右两个y轴的transformer的offsetMatrix和valueToPxMatrix,这一步很重要");
+        Log.e(TAG, "1.3: notifyDataChanged :计算offsets，本质就是根据设置的offset重新设置mViewHandler的content区域");
+        Log.e(TAG, "1.4:notifyDataChanged :调用prepareOffsetMatrix 和 prepareValuePxMatrix 初始化左右两个y轴的transformer的offsetMatrix和valueToPxMatrix,这一步很重要");
 
 
     }
@@ -216,16 +217,16 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         // calculate axis range (min / max) according to provided data
         mAxisLeft.calculate(mData.getYMin(), mData.getYMax());
         //mAxisRight.calculate(mData.getYMin(), mData.getYMax());
-        Log.e(TAG,"1.1:notifyDataSetChanged : 计算x，y轴的最大最小值,X最大最小值分别为："+mXAxis.getAxisMaximum() + ","+mXAxis.getAxisMinimum()
+        Log.e(TAG, "1.1:notifyDataSetChanged : 计算x，y轴的最大最小值,X最大最小值分别为：" + mXAxis.getAxisMaximum() + "," + mXAxis.getAxisMinimum()
 
-        +",Y最大最小值分别为："+mAxisLeft.getAxisMaximum() + ","+mAxisLeft.getAxisMinimum()
+                + ",Y最大最小值分别为：" + mAxisLeft.getAxisMaximum() + "," + mAxisLeft.getAxisMinimum()
         );
 
     }
 
 
     public Transformer getTransformer() {
-            return mLeftAxisTransformer;
+        return mLeftAxisTransformer;
     }
 
     public void setViewPortOffsets(final float left, final float top,
@@ -278,7 +279,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
     @Override
     public void notifyDataSetChanged() {
-        if(mData == null){
+        if (mData == null) {
             return;
         }
 //        if (mRenderer != null)
@@ -299,6 +300,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
     //x可以显示出来的最小的值
     protected MPPointD posForGetLowestVisibleX = MPPointD.getInstance(0, 0);
+
     @Override
     public float getLowestVisibleX() {
         getTransformer().getValuesByTouchPoint(mViewPortHandler.contentLeft(),
@@ -327,6 +329,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     public float getYChartMin() {
         return Math.min(mAxisLeft.mAxisMinimum, mAxisRight.mAxisMinimum);
     }
+
     @Override
     public float getYChartMax() {
         return Math.max(mAxisLeft.mAxisMaximum, mAxisRight.mAxisMaximum);
@@ -336,7 +339,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         return mMaxVisibleCount;
     }
 
-    public YAxis getAxisLeft(){
+    public YAxis getAxisLeft() {
         return mAxisLeft;
     }
 
@@ -357,6 +360,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     public boolean isDragXEnabled() {
         return mDragXEnabled;
     }
+
     public void setDragXEnabled(boolean enabled) {
         this.mDragXEnabled = enabled;
     }
@@ -364,6 +368,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     public boolean isDragYEnabled() {
         return mDragYEnabled;
     }
+
     public void setDragYEnabled(boolean enabled) {
         this.mDragYEnabled = enabled;
     }
@@ -403,12 +408,31 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
     /**
      * 捏合手势
+     *
      * @return
      */
     public boolean isPinchZoomEnabled() {
         return mPinchZoomEnabled;
     }
 
+
+    protected Matrix mZoomMatrixBuffer = new Matrix();
+
+    /**
+     * 缩放
+     */
+    public void zoom(float scaleX, float scaleY, float x, float y) {
+        //TODO 为什么y要取相反数
+        mViewPortHandler.zoom(scaleX, scaleY, x, -y, mZoomMatrixBuffer);
+        mViewPortHandler.refresh(mZoomMatrixBuffer, this, false);
+
+
+        // Range might have changed, which means that Y-axis labels
+        // could have changed in size, affecting Y-axis size.
+        // So we need to recalculate offsets.
+        calculateOffsets();
+        postInvalidate();
+    }
 
 
 }

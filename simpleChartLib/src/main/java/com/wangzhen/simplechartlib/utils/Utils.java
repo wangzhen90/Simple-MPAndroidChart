@@ -473,6 +473,10 @@ public abstract class Utils {
 
         // Check the dot product of current velocities.
         // If the pointer that left was opposing another velocity vector, clear.
+
+        /**
+         * 多点触摸下，如果剩下的pointer的速度和其他的pointer的速度相反，重置tracker
+         */
         tracker.computeCurrentVelocity(1000, mMaximumFlingVelocity);
         final int upIndex = ev.getActionIndex();
         final int id1 = ev.getPointerId(upIndex);

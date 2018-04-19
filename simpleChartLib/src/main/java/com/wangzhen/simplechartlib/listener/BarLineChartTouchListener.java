@@ -1,9 +1,11 @@
 package com.wangzhen.simplechartlib.listener;
 
 import android.graphics.Matrix;
+import android.support.v4.view.MotionEventCompat;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
+import android.view.animation.AnimationUtils;
 
 import com.wangzhen.simplechartlib.charts.BarLineChartBase;
 import com.wangzhen.simplechartlib.data.chartData.BarLineScatterCandleBubbleData;
@@ -170,10 +172,82 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
                 break;
 
 
+            case MotionEvent.ACTION_UP:
+
+                final VelocityTracker  velocityTracker = mVelocityTracker;
+                final int pointerId = event.getPointerId(0);
+                //获取瞬时速度
+                velocityTracker.computeCurrentVelocity(1000, Utils.getMaximumFlingVelocity());
+
+                final float velocityX = velocityTracker.getXVelocity(pointerId);
+                final float velocityY = velocityTracker.getYVelocity(pointerId);
+
+                //TODO 惯性滑动，涉及到动画，先不处理
+//                if (Math.abs(velocityX) > Utils.getMinimumFlingVelocity() ||
+//                        Math.abs(velocityY) > Utils.getMinimumFlingVelocity()) {
+//
+//                    if (mTouchMode == DRAG && mChart.isDragDecelerationEnabled()) {
+//
+//                        stopDeceleration();
+//
+//                        mDecelerationLastTime = AnimationUtils.currentAnimationTimeMillis();
+//
+//                        mDecelerationCurrentPoint.x = event.getX();
+//                        mDecelerationCurrentPoint.y = event.getY();
+//
+//                        mDecelerationVelocity.x = velocityX;
+//                        mDecelerationVelocity.y = velocityY;
+//
+//                        Utils.postInvalidateOnAnimation(mChart); // This causes computeScroll to fire, recommended for this by
+//                        // Google
+//                    }
+//                }
+
+                if (mTouchMode == X_ZOOM ||
+                        mTouchMode == Y_ZOOM ||
+                        mTouchMode == PINCH_ZOOM ||
+                        mTouchMode == POST_ZOOM) {
+
+                    // Range might have changed, which means that Y-axis labels
+                    // could have changed in size, affecting Y-axis size.
+                    // So we need to recalculate offsets.
+                    mChart.calculateOffsets();
+                    mChart.postInvalidate();
+                }
+
+
+                mTouchMode = NONE;
+                mChart.enableScroll();
+
+                if(mVelocityTracker != null){
+                    mVelocityTracker.recycle();
+                    mVelocityTracker = null;
+                }
+
+                endAction(event);
+                break;
+            case MotionEvent.ACTION_POINTER_UP:
+                Utils.velocityTrackerPointerUpCleanUpIfNecessary(event, mVelocityTracker);
+                //TODO 未看懂
+                mTouchMode = POST_ZOOM;
+
+                break;
+
+            case MotionEvent.ACTION_CANCEL:
+
+                mTouchMode = NONE;
+                endAction(event);
+
+                break;
+
+
         }
+        /**
+         * 刷新界面
+         */
+        mMatrix = mChart.getViewPortHandler().refresh(mMatrix,mChart,false);
 
-
-        return false;
+        return true;
     }
 
     private void performDrag(MotionEvent event, float distanceX, float distanceY) {
@@ -276,4 +350,42 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
     }
 
 
+    @Override
+    public boolean onSingleTapUp(MotionEvent e) {
+        //TODO highlight暂不处理
+        return super.onSingleTapUp(e);
+    }
+
+    @Override
+    public boolean onDoubleTap(MotionEvent e) {
+
+        mLastGesture = ChartGesture.DOUBLE_TAP;
+        OnChartGestureListener l = mChart.getOnChartGestureListener();
+
+        if(l != null){
+            l.onChartDoubleTapped(e);
+        }
+
+        //双击缩放
+        if(mChart.isDoubleTapToZoomEnabled() && mChart.getData().getEntryCount() > 0){
+            /**
+             * TODO 不知道是否理解的正确 应该是错了。。。。后面再看
+             * 计算缩放的中心点，比如一个以（0，-n） n > 0 点作为缩放中心点，x，y缩放就只向一个方向缩放了
+             * 现在的需求是沿着x轴正方向和y轴负方向进行缩放
+             */
+            MPPointF trans = getTrans(e.getX(),e.getY());
+            mChart.zoom(mChart.isScaleXEnabled() ? 1.1f : 1f, mChart.isScaleYEnabled() ? 1.1f : 1f, trans.x, trans.y);
+
+            MPPointF.recycleInstance(trans);
+        }
+
+
+
+        return super.onDoubleTap(e);
+    }
+
+    @Override
+    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+        return super.onFling(e1, e2, velocityX, velocityY);
+    }
 }
