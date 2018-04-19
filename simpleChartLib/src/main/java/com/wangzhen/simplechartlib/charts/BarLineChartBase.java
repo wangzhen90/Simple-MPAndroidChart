@@ -434,5 +434,18 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         postInvalidate();
     }
 
+    public boolean isFullyZoomedOut() {
+        return mViewPortHandler.isFullyZoomedOut();
+    }
+
+    /**
+     * 是否没有拖拽的位移
+     * @return
+     */
+    public boolean hasNoDragOffset() {
+        return mViewPortHandler.hasNoDragOffset();
+    }
+
+
 
 }
