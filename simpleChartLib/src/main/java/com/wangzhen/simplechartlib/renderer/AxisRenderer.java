@@ -74,16 +74,16 @@ public abstract class AxisRenderer extends Renderer {
          * TODO 后面的两个条件不知为何，为啥只判断y的缩放
          */
         if (mViewPortHandler != null && mViewPortHandler.contentWidth() > 10 && !mViewPortHandler.isFullyZoomedOutY()) {
-
+            //TODO 好好看一下根据point 寻找value，y是否翻转了？
             MPPointD p1 = mTrans.getValuesByTouchPoint(mViewPortHandler.contentLeft(), mViewPortHandler.contentTop());
             MPPointD p2 = mTrans.getValuesByTouchPoint(mViewPortHandler.contentLeft(), mViewPortHandler.contentBottom());
 
-            if(invert){
-                min = (float)p2.x;
-                max = (float)p1.x;
+            if(!invert){
+                min = (float)p2.y;
+                max = (float)p1.y;
             }else{
-                min = (float)p1.x;
-                max = (float)p2.x;
+                min = (float)p1.y;
+                max = (float)p2.y;
             }
 
             MPPointD.recycleInstance(p1);

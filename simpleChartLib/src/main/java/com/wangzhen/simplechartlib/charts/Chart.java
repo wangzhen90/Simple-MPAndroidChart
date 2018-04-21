@@ -21,6 +21,7 @@ import com.wangzhen.simplechartlib.formatter.DefaultValueFormatter;
 import com.wangzhen.simplechartlib.formatter.IValueFormatter;
 import com.wangzhen.simplechartlib.interfaces.charts.ChartInterface;
 import com.wangzhen.simplechartlib.interfaces.dataSets.IDataSet;
+import com.wangzhen.simplechartlib.listener.ChartTouchListener;
 import com.wangzhen.simplechartlib.listener.OnChartGestureListener;
 import com.wangzhen.simplechartlib.utils.MPPointF;
 import com.wangzhen.simplechartlib.utils.Utils;
@@ -108,6 +109,9 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
     private boolean mOffsetsCalculated = false;
 
     protected Paint mInfoPaint;
+
+    protected ChartTouchListener mChartTouchListener;
+
 
 
 
@@ -661,6 +665,10 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
         this.mUnbind = enabled;
     }
 
+
+    public boolean isDragDecelerationEnabled() {
+        return mDragDecelerationEnabled;
+    }
 
 }
 

@@ -8,6 +8,7 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.MotionEvent;
 
 import com.wangzhen.simplechartlib.component.YAxis;
 import com.wangzhen.simplechartlib.data.chartData.BarData;
@@ -15,6 +16,7 @@ import com.wangzhen.simplechartlib.data.chartData.BarLineScatterCandleBubbleData
 import com.wangzhen.simplechartlib.data.entry.Entry;
 import com.wangzhen.simplechartlib.interfaces.charts.BarLineScatterCandleBubbleDataProvider;
 import com.wangzhen.simplechartlib.interfaces.dataSets.IBarLineScatterCandleBubbleDataSet;
+import com.wangzhen.simplechartlib.listener.BarLineChartTouchListener;
 import com.wangzhen.simplechartlib.renderer.XAxisRenderer;
 import com.wangzhen.simplechartlib.renderer.YAxisRenderer;
 import com.wangzhen.simplechartlib.utils.MPPointD;
@@ -98,6 +100,8 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
         mAxisRendererLeft = new YAxisRenderer(mViewPortHandler, mAxisLeft, mLeftAxisTransformer);
         mXAxisRenderer = new XAxisRenderer(mViewPortHandler, mXAxis, mLeftAxisTransformer);
+
+        mChartTouchListener = new BarLineChartTouchListener(this,mViewPortHandler.getMatrixTouch(),3f);
 
 //        mGridBackgroundPaint = new Paint();
 //        mGridBackgroundPaint.setStyle(Paint.Style.FILL);
@@ -344,9 +348,25 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     }
 
 
+
+
     /**
      * *****************************手势相关******************************
      */
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+         super.onTouchEvent(event);
+
+        if(!mTouchEnable || mChartTouchListener == null || mData == null){
+            return false;
+        }
+
+        return mChartTouchListener.onTouch(this,event);
+
+    }
+
+
     public void setDragEnabled(boolean enabled) {
         this.mDragXEnabled = enabled;
         this.mDragYEnabled = enabled;

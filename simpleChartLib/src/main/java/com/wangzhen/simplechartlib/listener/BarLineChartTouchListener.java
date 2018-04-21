@@ -66,9 +66,15 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
      */
     private IDataSet mClosestDataSetToTouch;
 
-    private MPPointF mDecelerationVelocity = MPPointF.getInstance(0, 0);
 
+    /**
+     * used for tracking velocity of dragging
+     */
     private VelocityTracker mVelocityTracker;
+
+    private long mDecelerationLastTime = 0;
+    private MPPointF mDecelerationCurrentPoint = MPPointF.getInstance(0,0);
+    private MPPointF mDecelerationVelocity = MPPointF.getInstance(0,0);
 
 
     public BarLineChartTouchListener(BarLineChartBase<? extends BarLineScatterCandleBubbleData<? extends IBarLineScatterCandleBubbleDataSet<? extends Entry>>> chart
@@ -166,7 +172,7 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
                 } else if (mTouchMode == NONE && Math.abs(distance(event.getX(), mTouchStartPoint.x, event.getY(),
                         mTouchStartPoint.y)) > mDragTriggerDist) {
 
-                    if(mChart.isDragEnabled()){
+                    if (mChart.isDragEnabled()) {
 
                         //如果已经缩放到最小或者没有拖拽位移就弹出higelight 否则就什么都不做（因为就是你想拖动也滑不动了啊）
                         boolean shouldPan = !mChart.isFullyZoomedOut() ||
@@ -192,11 +198,14 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
 //                                if (mChart.isHighlightPerDragEnabled())
 //                                    performHighlightDrag(event);
 //                            }
-                        }}}
+                        }
+                    }
+                }
+                break;
 
             case MotionEvent.ACTION_UP:
 
-                final VelocityTracker  velocityTracker = mVelocityTracker;
+                final VelocityTracker velocityTracker = mVelocityTracker;
                 final int pointerId = event.getPointerId(0);
                 //获取瞬时速度
                 velocityTracker.computeCurrentVelocity(1000, Utils.getMaximumFlingVelocity());
@@ -205,25 +214,25 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
                 final float velocityY = velocityTracker.getYVelocity(pointerId);
 
                 //TODO 惯性滑动，涉及到动画，先不处理
-//                if (Math.abs(velocityX) > Utils.getMinimumFlingVelocity() ||
-//                        Math.abs(velocityY) > Utils.getMinimumFlingVelocity()) {
-//
-//                    if (mTouchMode == DRAG && mChart.isDragDecelerationEnabled()) {
-//
-//                        stopDeceleration();
-//
-//                        mDecelerationLastTime = AnimationUtils.currentAnimationTimeMillis();
-//
-//                        mDecelerationCurrentPoint.x = event.getX();
-//                        mDecelerationCurrentPoint.y = event.getY();
-//
-//                        mDecelerationVelocity.x = velocityX;
-//                        mDecelerationVelocity.y = velocityY;
-//
-//                        Utils.postInvalidateOnAnimation(mChart); // This causes computeScroll to fire, recommended for this by
-//                        // Google
-//                    }
-//                }
+                if (Math.abs(velocityX) > Utils.getMinimumFlingVelocity() ||
+                        Math.abs(velocityY) > Utils.getMinimumFlingVelocity()) {
+
+                    if (mTouchMode == DRAG && mChart.isDragDecelerationEnabled()) {
+
+                        stopDeceleration();
+
+                        mDecelerationLastTime = AnimationUtils.currentAnimationTimeMillis();
+
+                        mDecelerationCurrentPoint.x = event.getX();
+                        mDecelerationCurrentPoint.y = event.getY();
+
+                        mDecelerationVelocity.x = velocityX;
+                        mDecelerationVelocity.y = velocityY;
+
+                        Utils.postInvalidateOnAnimation(mChart); // This causes computeScroll to fire, recommended for this by
+                        // Google
+                    }
+                }
 
                 if (mTouchMode == X_ZOOM ||
                         mTouchMode == Y_ZOOM ||
@@ -241,7 +250,7 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
                 mTouchMode = NONE;
                 mChart.enableScroll();
 
-                if(mVelocityTracker != null){
+                if (mVelocityTracker != null) {
                     mVelocityTracker.recycle();
                     mVelocityTracker = null;
                 }
@@ -267,7 +276,7 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
         /**
          * 刷新界面
          */
-        mMatrix = mChart.getViewPortHandler().refresh(mMatrix,mChart,false);
+        mMatrix = mChart.getViewPortHandler().refresh(mMatrix, mChart, true);
 
         return true;
     }
@@ -307,13 +316,14 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
 
                 float scaleX = (mChart.isScaleXEnabled()) ? scale : 1f;
                 float scaleY = (mChart.isScaleYEnabled()) ? scale : 1f;
+                if (canZoomMoreY || canZoomMoreX) {
+                    mMatrix.set(mSavedMatrix);
+                    //已中心点缩放
+                    mMatrix.postScale(scaleX, scaleY, t.x, t.y);
 
-                mMatrix.set(mSavedMatrix);
-                //已中心点缩放
-                mMatrix.postScale(scaleX, scaleY, t.x, t.y);
-
-                if (l != null)
-                    l.onChartScale(event, scaleX, scaleY);
+                    if (l != null)
+                        l.onChartScale(event, scaleX, scaleY);
+                }
 
             } else if (mTouchMode == X_ZOOM && mChart.isScaleXEnabled()) {
                 mLastGesture = ChartGesture.X_ZOOM;
@@ -437,23 +447,22 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
         mLastGesture = ChartGesture.DOUBLE_TAP;
         OnChartGestureListener l = mChart.getOnChartGestureListener();
 
-        if(l != null){
+        if (l != null) {
             l.onChartDoubleTapped(e);
         }
 
         //双击缩放
-        if(mChart.isDoubleTapToZoomEnabled() && mChart.getData().getEntryCount() > 0){
+        if (mChart.isDoubleTapToZoomEnabled() && mChart.getData().getEntryCount() > 0) {
             /**
              * TODO 不知道是否理解的正确 应该是错了。。。。后面再看
              * 计算缩放的中心点，比如一个以（0，-n） n > 0 点作为缩放中心点，x，y缩放就只向一个方向缩放了
              * 现在的需求是沿着x轴正方向和y轴负方向进行缩放
              */
-            MPPointF trans = getTrans(e.getX(),e.getY());
+            MPPointF trans = getTrans(e.getX(), e.getY());
             mChart.zoom(mChart.isScaleXEnabled() ? 1.1f : 1f, mChart.isScaleYEnabled() ? 1.1f : 1f, trans.x, trans.y);
 
             MPPointF.recycleInstance(trans);
         }
-
 
 
         return super.onDoubleTap(e);
