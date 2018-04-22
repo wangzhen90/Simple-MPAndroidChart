@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+import android.widget.Scroller;
 
 import com.wangzhen.simplechartlib.component.XAxis;
 import com.wangzhen.simplechartlib.component.YAxis;
@@ -43,15 +44,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
 //TODO
 //    protected boolean mHighLightPerTapEnabled = true;
 
-    /**
-     * 停止滑动后是否惯性滑动
-     */
-    private boolean mDragDecelerationEnabled = true;
 
-    /**
-     * 惯性滑动摩擦系数，取值范围[0,1],如果为0就没有惯性滑动
-     */
-    private float mDragDecelerationFrictionCoef = 0.9f;
 
     protected DefaultValueFormatter mDefaultValueFormatter = new DefaultValueFormatter(0);
 
@@ -111,7 +104,6 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
     protected Paint mInfoPaint;
 
     protected ChartTouchListener mChartTouchListener;
-
 
 
 
@@ -665,10 +657,36 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
         this.mUnbind = enabled;
     }
 
+    /**
+     * ************************惯性减速***********************
+     */
+    /**
+     * 停止滑动后是否惯性滑动
+     */
+    private boolean mDragDecelerationEnabled = true;
+
+    /**
+     * 惯性滑动摩擦系数，取值范围[0,1],如果为0就没有惯性滑动
+     */
+    private float mDragDecelerationFrictionCoef = 0.9f;
 
     public boolean isDragDecelerationEnabled() {
         return mDragDecelerationEnabled;
     }
 
+    public float getDragDecelerationFrictionCoef() {
+        return mDragDecelerationFrictionCoef;
+    }
+
+    public void setDragDecelerationFrictionCoef(float newValue) {
+
+        if (newValue < 0.f)
+            newValue = 0.f;
+
+        if (newValue >= 1f)
+            newValue = 0.999f;
+
+        mDragDecelerationFrictionCoef = newValue;
+    }
 }
 

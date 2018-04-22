@@ -114,8 +114,8 @@ public abstract class AxisRenderer extends Renderer {
          double rawInterval = range/labelCount;
          double interval = Utils.roundToNextSignificant(rawInterval);
 
-//        if (mAxis.isGranularityEnabled())
-//            interval = interval < mAxis.getGranularity() ? mAxis.getGranularity() : interval;
+        if (mAxis.isGranularityEnabled())
+            interval = interval < mAxis.getGranularity() ? mAxis.getGranularity() : interval;
 
         double intervalMagnitude = Utils.roundToNextSignificant(Math.pow(10,(int)Math.log10(interval)));
 
@@ -129,8 +129,8 @@ public abstract class AxisRenderer extends Renderer {
 
         int n = mAxis.isCenterAxisLabelsEnabled() ? 1 : 0;
         //TODO 这个判断暂时没有写
-        //        if (mAxis.isForceLabelsEnabled()) {}
-
+//                if (mAxis.isForceLabelsEnabled()) {}
+//
         double first = interval == 0.0 ? 0.0 : Math.ceil(yMin / interval) * interval;
         if(mAxis.isCenterAxisLabelsEnabled()) {
             first -= interval;

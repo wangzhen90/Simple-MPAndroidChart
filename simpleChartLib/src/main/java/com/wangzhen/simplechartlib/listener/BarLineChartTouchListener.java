@@ -472,4 +472,57 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
         return super.onFling(e1, e2, velocityX, velocityY);
     }
+
+    public void computeScroll(){
+        //滑动的终止条件
+        if(mDecelerationVelocity.x == 0.f && mDecelerationVelocity.y == 0.f){
+            return;
+        }
+        final long currentTime = AnimationUtils.currentAnimationTimeMillis();
+
+        mDecelerationVelocity.x *= mChart.getDragDecelerationFrictionCoef();
+        mDecelerationVelocity.y *= mChart.getDragDecelerationFrictionCoef();
+
+        //1.计算当前时间与point up的时间差，除以1000ms，整个惯性时间是1s,注释要用float类型，不然int直接是0，滑不动了就
+        final float timeInterval = (float) (currentTime - mDecelerationLastTime) / 1000.f;
+
+        //2.计算本次移动的距离，每次加上mDecelerationCurrentPoint记录的坐标，就是移动后的坐标，然后手动创建一个MotionEvent
+        float distanceX = mDecelerationVelocity.x * timeInterval;
+        float distanceY = mDecelerationVelocity.y * timeInterval;
+
+        mDecelerationCurrentPoint.x += distanceX;
+        mDecelerationCurrentPoint.y += distanceY;
+
+        MotionEvent event = MotionEvent.obtain(currentTime,currentTime,MotionEvent.ACTION_MOVE,
+                mDecelerationCurrentPoint.x+distanceX,mDecelerationCurrentPoint.y + distanceY,0);
+
+        //计算总共的偏移量，而不是每次的偏移量，因为在performDrag中会每次重置mMatrix到mSavedMatrix
+        float dragDistanceX = mChart.isDragXEnabled() ? mDecelerationCurrentPoint.x - mTouchStartPoint.x : 0.f;
+        float dragDistanceY = mChart.isDragYEnabled() ? mDecelerationCurrentPoint.y - mTouchStartPoint.y : 0.f;
+        performDrag(event, dragDistanceX, dragDistanceY);
+
+        event.recycle();
+
+        // 注意此处不要刷新，因为要用postnvalidate
+        mMatrix = mChart.getViewPortHandler().refresh(mMatrix,mChart,false);
+
+        mDecelerationLastTime = currentTime;
+
+
+        if (Math.abs(mDecelerationVelocity.x) >= 0.01 || Math.abs(mDecelerationVelocity.y) >= 0.01)
+            Utils.postInvalidateOnAnimation(mChart); // This causes computeScroll to fire, recommended for this by Google
+        else {
+           //滑动之后，y轴可显示的rang的范围可能改变了，这时候需要重新计算
+            // Range might have changed, which means that Y-axis labels
+            // could have changed in size, affecting Y-axis size.
+            // So we need to recalculate offsets.
+            mChart.calculateOffsets();
+            mChart.postInvalidate();
+
+            stopDeceleration();
+        }
+    }
+
+
+
 }

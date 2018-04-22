@@ -53,7 +53,7 @@ public abstract class AxisBase extends ComponentBase {
      */
     private int mLabelCount = 6;
     /**
-     * 轴值之间的最小间隔
+     * 轴值之间的最小间隔，比如x轴只希望是大于1的间隔
      */
     protected float mGranularity = 1.0f;
 
@@ -128,6 +128,7 @@ public abstract class AxisBase extends ComponentBase {
 
 
     public float mAxisRange = 0f;
+
 
 
     public AxisBase() {
@@ -229,25 +230,25 @@ public abstract class AxisBase extends ComponentBase {
     }
 
     /**
-     * 暂时不用
+     * 设置可以显示的最小间隔粒度
      */
-//    public boolean isGranularityEnabled() {
-//        return mGranularityEnabled;
-//    }
-//
-//    public void setGranularityEnabled(boolean enabled) {
-//        mGranularityEnabled = enabled;
-//    }
+    public boolean isGranularityEnabled() {
+        return mGranularityEnabled;
+    }
 
-//    public float getGranularity() {
-//        return mGranularity;
-//    }
+    public void setGranularityEnabled(boolean enabled) {
+        mGranularityEnabled = enabled;
+    }
 
-//    public void setGranularity(float granularity) {
-//        mGranularity = granularity;
-//        // set this to true if it was disabled, as it makes no sense to call this method with granularity disabled
-//        mGranularityEnabled = true;
-//    }
+    public float getGranularity() {
+        return mGranularity;
+    }
+
+    public void setGranularity(float granularity) {
+        mGranularity = granularity;
+        // set this to true if it was disabled, as it makes no sense to call this method with granularity disabled
+        mGranularityEnabled = true;
+    }
 
     /**
      * 获取所有label中最长的，使用场景在于，当label设置了旋转角度，绘制chart的区域就要根据角度和这个长度来计算，

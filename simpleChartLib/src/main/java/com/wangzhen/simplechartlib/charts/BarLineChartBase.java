@@ -136,6 +136,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
             mXAxisRenderer.computeAxis(mXAxis.mAxisMinimum, mXAxis.mAxisMaximum, false);
         }
 
+
         mXAxisRenderer.renderAxisLine(canvas);
         mXAxisRenderer.renderGridLines(canvas);
 
@@ -466,6 +467,11 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         return mViewPortHandler.hasNoDragOffset();
     }
 
+    @Override
+    public void computeScroll() {
 
+        if (mChartTouchListener instanceof BarLineChartTouchListener)
+            ((BarLineChartTouchListener) mChartTouchListener).computeScroll();
+    }
 
 }

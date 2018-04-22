@@ -28,6 +28,7 @@ public class CommonBarChartActivity extends AppCompatActivity {
     void setData() {
         XAxis xAxis = barChart.getXAxis();
         xAxis.setLabelCount(20);
+        xAxis.setGranularity(1f); // only intervals of 1 day
 
         YAxis leftAxis = barChart.getAxisLeft();
         leftAxis.setLabelCount(5);
