@@ -2,10 +2,10 @@ package com.wangzhen.simplechartlib.interfaces.charts;
 
 
 import com.wangzhen.simplechartlib.data.chartData.BarLineScatterCandleBubbleData;
+import com.wangzhen.simplechartlib.utils.Transformer;
 
 public interface BarLineScatterCandleBubbleDataProvider extends ChartInterface {
-    //TODO transformer 暂时不用
-//    Transformer getTransformer(AxisDependency axis);
+    Transformer getTransformer();
 //    boolean isInverted(AxisDependency axis);
     
     float getLowestVisibleX();

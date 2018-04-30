@@ -151,11 +151,14 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         //裁剪一下，防止data绘制在了区域外边
         int clipRestoreCount = canvas.save();
         canvas.clipRect(mViewPortHandler.getContentRect());
-        //TODO 绘制data
+        //绘制data
+        mRenderer.drawData(canvas);
+
         canvas.restoreToCount(clipRestoreCount);
 
         mXAxisRenderer.renderAxisLabels(canvas);
         mAxisRendererLeft.renderAxisLabels(canvas);
+        mRenderer.drawValues(canvas);
     }
 
     public void resetTracking() {
@@ -229,7 +232,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
     }
 
-
+    @Override
     public Transformer getTransformer() {
         return mLeftAxisTransformer;
     }
@@ -287,8 +290,8 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         if (mData == null) {
             return;
         }
-//        if (mRenderer != null)
-//            mRenderer.initBuffers();
+        if (mRenderer != null)
+            mRenderer.initBuffers();
         calcMinMax();
 
         mAxisRendererLeft.computeAxis(mAxisLeft.mAxisMinimum, mAxisLeft.mAxisMaximum, false);

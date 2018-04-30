@@ -186,4 +186,26 @@ public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
         this.mDrawValues = enabled;
     }
 
+    @Override
+    public boolean isDrawValuesEnabled() {
+        return mDrawValues;
+    }
+
+    @Override
+    public int getValueTextColor(int index) {
+        return mValueColors.get(index % mValueColors.size());
+    }
+
+
+    @Override
+    public int getValueTextColor() {
+        return mValueColors.get(0);
+    }
+
+
+
+    @Override
+    public void setValueTextColors(List<Integer> colors) {
+        mValueColors = colors;
+    }
 }

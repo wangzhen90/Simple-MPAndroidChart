@@ -166,6 +166,15 @@ public interface IDataSet<T extends Entry> {
 
     void setDrawValues(boolean enabled);
 
+    /**
+     * Returns true if y-value drawing is enabled, false if not
+     *
+     * @return
+     */
+    boolean isDrawValuesEnabled();
 
+    int getValueTextColor(int index);
+
+    int getValueTextColor();
 
 }

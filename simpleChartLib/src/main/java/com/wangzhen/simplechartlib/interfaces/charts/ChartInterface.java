@@ -28,7 +28,7 @@ public interface ChartInterface {
     MPPointF getCenterOffsets();
     RectF getContentRect();
 
-    //TODO 这个干啥的？
+    //获取view的中心点
     MPPointF getCenterOfView();
 
 

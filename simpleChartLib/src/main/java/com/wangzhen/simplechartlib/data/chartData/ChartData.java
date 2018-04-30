@@ -334,4 +334,12 @@ public class ChartData <T extends IDataSet<? extends Entry>>{
         return max;
     }
 
+    public T getDataSetByIndex(int index) {
+
+        if (mDataSets == null || index < 0 || index >= mDataSets.size())
+            return null;
+
+        return mDataSets.get(index);
+    }
+
 }

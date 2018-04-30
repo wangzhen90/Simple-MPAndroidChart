@@ -24,6 +24,7 @@ import com.wangzhen.simplechartlib.interfaces.charts.ChartInterface;
 import com.wangzhen.simplechartlib.interfaces.dataSets.IDataSet;
 import com.wangzhen.simplechartlib.listener.ChartTouchListener;
 import com.wangzhen.simplechartlib.listener.OnChartGestureListener;
+import com.wangzhen.simplechartlib.renderer.DataRenderer;
 import com.wangzhen.simplechartlib.utils.MPPointF;
 import com.wangzhen.simplechartlib.utils.Utils;
 import com.wangzhen.simplechartlib.utils.ViewPortHandler;
@@ -74,11 +75,8 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
 
 //    protected ChartAnimator mAnimator;
 
-    /**
-     * 绘制Data 暂不处理
-     */
 
-//    protected DataRenderer mRenderer;
+    protected DataRenderer mRenderer;
 
 //    protected IHighlighter mHighlighter;
 
@@ -470,10 +468,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
     }
 
 
-    /**
-     * TODO 绘制data相关
-     *
-     *
+
      public DataRenderer getRenderer() {
      return mRenderer;
      }
@@ -484,9 +479,6 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
      mRenderer = renderer;
      }
 
-     *
-     *
-     */
 
     @Override
     public MPPointF getCenterOfView() {

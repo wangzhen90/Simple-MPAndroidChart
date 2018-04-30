@@ -84,7 +84,6 @@ public class BarDataSet extends DataSet<BarEntry> implements IBarDataSet {
 
 
 
-
     @Override
     public void setValueTextColors(List colors) {
 

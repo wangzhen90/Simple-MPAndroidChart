@@ -8,6 +8,7 @@ import com.wangzhen.simplechartlib.data.chartData.BarData;
 import com.wangzhen.simplechartlib.data.entry.BarEntry;
 import com.wangzhen.simplechartlib.interfaces.charts.BarDataProvider;
 import com.wangzhen.simplechartlib.interfaces.dataSets.IBarDataSet;
+import com.wangzhen.simplechartlib.renderer.BarChartRenderer;
 
 /**
  * Created by wangzhen on 2018/4/15.
@@ -31,7 +32,7 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
     protected void init() {
         super.init();
 
-//        mRenderer = new BarChartRenderer(this, mAnimator, mViewPortHandler);
+        mRenderer = new BarChartRenderer(mViewPortHandler,this);
 //
 //        setHighlighter(new BarHighlighter(this));
 
