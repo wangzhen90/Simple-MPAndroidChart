@@ -16,13 +16,14 @@ import java.util.List;
 
 public abstract class AxisBase extends ComponentBase {
 
-
+    /**
+     * label显示值的格式化类
+     */
     protected IAxisValueFormatter mAxisValueFormatter;
-
 
     private int mGridColor = Color.GRAY;
     /**
-     * 是否自定义mAxisMin，比如通常自定义为0
+     * 是否自定义mAxisMin，比如y轴的最小值大于0，我们可以将y轴的最小值设置为0
      */
     protected boolean mCustomAxisMin = false;
 
@@ -31,15 +32,15 @@ public abstract class AxisBase extends ComponentBase {
     private int mAxisLineColor = Color.GRAY;
 
     private float mAxisLineWidth = 1f;
-
-
+    /**
+     * 所要绘制的元素集合
+     */
     public float[] mEntries = new float[]{};
 
-    /**
-     * TODO 暂时不知道作用
-     */
     public float[] mCenteredEntries = new float[]{};
-
+    /**
+     * 坐标轴绘制的元素数量
+     */
     public int mEntryCount;
 
     /**
@@ -48,12 +49,12 @@ public abstract class AxisBase extends ComponentBase {
     public int mDecimals;
 
     /**
-     * //TODO 暂时不知道作用
-     * 这条轴上label的数量
+     * 这条轴上绘制label的数量，比如y轴显示了20条数据，如果每一条都显示label的话可能会造成重叠，
+     * 所以这个参数可以设置可显示的最大的label绘制个数
      */
     private int mLabelCount = 6;
     /**
-     * 轴值之间的最小间隔，比如x轴只希望是大于1的间隔
+     * 轴值之间的最小间隔，
      */
     protected float mGranularity = 1.0f;
 
@@ -71,7 +72,7 @@ public abstract class AxisBase extends ComponentBase {
 //    protected boolean mForceLabels = false;
 
     /**
-     * 是否绘制每个组之间的分割线
+     * 绘制的线是以每个item的中心点为起点的
      */
     protected boolean mDrawGridLines = true;
 
@@ -79,7 +80,9 @@ public abstract class AxisBase extends ComponentBase {
      * 是否绘制坐标轴线
      */
     protected boolean mDrawAxisLine = true;
-
+    /**
+     * 是否要绘制label
+     */
     protected boolean mDrawLabels = true;
 
 
@@ -95,7 +98,7 @@ public abstract class AxisBase extends ComponentBase {
 //    private DashPathEffect mAxisLineDashPathEffect = null;
 
     /**
-     * 这个分割线的虚线可以有
+     * 分割线的虚线效果
      */
     private DashPathEffect mGridDashPathEffect = null;
 

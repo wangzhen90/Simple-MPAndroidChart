@@ -68,10 +68,6 @@ public class BarData extends BarLineScatterCandleBubbleData<IBarDataSet> {
         float barWidthHalf = mBarWidth / 2f;
 
         float interval = getGroupWidth(groupSpace, barSpace);
-
-
-
-
     }
 
     public float getGroupWidth(float groupSpace, float barSpace) {

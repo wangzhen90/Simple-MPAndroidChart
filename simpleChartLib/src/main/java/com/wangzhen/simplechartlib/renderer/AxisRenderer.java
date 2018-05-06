@@ -70,11 +70,10 @@ public abstract class AxisRenderer extends Renderer {
      * @param invert
      */
     public void computeAxis(float min, float max, boolean invert) {
-        /**
-         * TODO 后面的两个条件不知为何，为啥只判断y的缩放
-         */
+        //这里只判断y的缩放是因为XAxisRenderer会对这个方法进行覆写
+        //如果y轴的缩放比例不是最小，就重新计算最大最小值
         if (mViewPortHandler != null && mViewPortHandler.contentWidth() > 10 && !mViewPortHandler.isFullyZoomedOutY()) {
-            //TODO 好好看一下根据point 寻找value，y是否翻转了？
+            //y轴上获得当前显示top点和bottom点，然后获取这两个坐标点（px值）所代表的实际的value值
             MPPointD p1 = mTrans.getValuesByTouchPoint(mViewPortHandler.contentLeft(), mViewPortHandler.contentTop());
             MPPointD p2 = mTrans.getValuesByTouchPoint(mViewPortHandler.contentLeft(), mViewPortHandler.contentBottom());
 
@@ -89,6 +88,7 @@ public abstract class AxisRenderer extends Renderer {
             MPPointD.recycleInstance(p1);
             MPPointD.recycleInstance(p2);
         }
+        //计算索要绘制的标签
         computeAxisValues(min, max);
     }
 
@@ -101,7 +101,7 @@ public abstract class AxisRenderer extends Renderer {
          float yMax = max;
 
          int labelCount = mAxis.getLabelCount();
-
+        //1.计算所要绘制的数据区间
          double range = Math.abs(yMax - yMin);
 
          if(labelCount == 0 || range <= 0 || Double.isInfinite(range)){
@@ -110,27 +110,29 @@ public abstract class AxisRenderer extends Renderer {
              mAxis.mEntryCount = 0;
              return;
          }
-
+        //2.根据设置的显示label的个数和数值区间初步获得 间隔值
          double rawInterval = range/labelCount;
+         //向下取整，间隔当然得是整数
          double interval = Utils.roundToNextSignificant(rawInterval);
 
         if (mAxis.isGranularityEnabled())
             interval = interval < mAxis.getGranularity() ? mAxis.getGranularity() : interval;
-
+        //一个间隔值中内部的间隔值，比如groupbar这种情况
         double intervalMagnitude = Utils.roundToNextSignificant(Math.pow(10,(int)Math.log10(interval)));
 
         int intervalSigDigit = (int)(interval / intervalMagnitude);
-        //TODO 未看懂这个判断
+        //TODO 暂时未看懂，不影响整体逻辑
         if (intervalSigDigit > 5) {
             // Use one order of magnitude higher, to avoid intervals like 0.9 or
             // 90
             interval = Math.floor(10 * intervalMagnitude);
         }
 
+        //3.根据间隔值，起始值和终点值计算出具体需要好绘制的value，比如x轴的mEntries 包含的是 2，3，4 表示要绘制的是2，3，4的值
         int n = mAxis.isCenterAxisLabelsEnabled() ? 1 : 0;
-        //TODO 这个判断暂时没有写
-//                if (mAxis.isForceLabelsEnabled()) {}
-//
+        //TODO
+//      if (mAxis.isForceLabelsEnabled()) {}
+
         double first = interval == 0.0 ? 0.0 : Math.ceil(yMin / interval) * interval;
         if(mAxis.isCenterAxisLabelsEnabled()) {
             first -= interval;
