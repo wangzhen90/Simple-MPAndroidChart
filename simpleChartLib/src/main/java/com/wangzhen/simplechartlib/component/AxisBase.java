@@ -54,7 +54,7 @@ public abstract class AxisBase extends ComponentBase {
      */
     private int mLabelCount = 6;
     /**
-     * 轴值之间的最小间隔，
+     * 轴值之间的最小间隔，比如X轴我们只希望是整数，两个之间的index的差最小是1
      */
     protected float mGranularity = 1.0f;
 
@@ -354,8 +354,9 @@ public abstract class AxisBase extends ComponentBase {
 
     public void calculate(float dataMin,float dataMax){
 
-        float min = dataMin - mSpaceMin;
-        float max = dataMax - mSpaceMax;
+        //特别注意这个地方，开始忘了写，然后虽然设置了x最小值是0f，但是算出来的是-0.5，在prepareValuePxMatrix（）的时候，最小值错误，然后x就有个偏移量了
+        float min = mCustomAxisMin ? mAxisMinimum : (dataMin - mSpaceMin);
+        float max = (dataMax + mSpaceMax);
 
 
         float range = Math.abs(max - min);

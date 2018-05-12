@@ -23,7 +23,7 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
 
     protected float mXMin = Float.MAX_VALUE;
 
-
+    public String dataSetName = "";
 
     public DataSet(List<T> values){
         super();

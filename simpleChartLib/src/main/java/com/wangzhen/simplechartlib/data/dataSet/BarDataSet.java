@@ -42,6 +42,15 @@ public class BarDataSet extends DataSet<BarEntry> implements IBarDataSet {
 
     }
 
+    public BarDataSet(List yValues,String dataSetName) {
+        super(yValues);
+
+        this.dataSetName = dataSetName;
+        calcStackSize(yValues);
+        calcEntryCountIncludingStacks(yValues);
+
+    }
+
 
 
     private void calcStackSize(List<BarEntry> yVals){

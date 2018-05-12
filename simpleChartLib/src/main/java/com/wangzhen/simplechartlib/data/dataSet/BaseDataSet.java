@@ -208,4 +208,17 @@ public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
     public void setValueTextColors(List<Integer> colors) {
         mValueColors = colors;
     }
+
+    public void setColor(int color) {
+        resetColors();
+        mColors.add(color);
+    }
+
+    public void resetColors() {
+        if(mColors == null) {
+            mColors = new ArrayList<Integer>();
+        }
+        mColors.clear();
+    }
+
 }
