@@ -233,7 +233,7 @@ public abstract class AxisBase extends ComponentBase {
     }
 
     /**
-     * 设置可以显示的最小间隔粒度
+     * 设置可以显示的最小间隔粒度,比如x轴上的数据肯定要显示成1，2，3...这时的最小间隔就是1
      */
     public boolean isGranularityEnabled() {
         return mGranularityEnabled;

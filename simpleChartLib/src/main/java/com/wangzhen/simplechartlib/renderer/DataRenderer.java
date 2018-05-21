@@ -87,8 +87,4 @@ public abstract class DataRenderer extends Renderer {
         c.drawText(formatter.getFormattedValue(value, entry, dataSetIndex, mViewPortHandler), x, y, mValuePaint);
     }
 
-
-
-
-
 }

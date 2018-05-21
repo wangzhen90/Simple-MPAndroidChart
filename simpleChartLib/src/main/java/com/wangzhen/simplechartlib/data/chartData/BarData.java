@@ -82,9 +82,7 @@ public class BarData extends BarLineScatterCandleBubbleData<IBarDataSet> {
                 fromX += barWidthHalf;
 
                 if (i < set.getEntryCount()) {
-
                     BarEntry entry = set.getEntryForIndex(i);
-
                     if (entry != null) {
                         entry.setX(fromX);
                     }

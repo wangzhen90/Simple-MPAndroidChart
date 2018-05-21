@@ -110,7 +110,7 @@ public abstract class AxisRenderer extends Renderer {
              mAxis.mEntryCount = 0;
              return;
          }
-        //2.根据设置的显示label的个数和数值区间初步获得 间隔值
+        //2.根据设置的显示label的个数和数值区间,初步获得间隔值
          double rawInterval = range/labelCount;
          //向下取整，间隔当然得是整数
          double interval = Utils.roundToNextSignificant(rawInterval);

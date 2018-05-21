@@ -68,6 +68,7 @@ public class XAxisRenderer extends AxisRenderer {
     public void computeAxis(float min, float max, boolean invert) {
         /**
          * 如果chart没有被缩小到最小，获取chart缩放后最大最小值得对应的实际的值
+         * 使用的场景是：chart进行了放大之后，可见的最大最小值改变了，这里就需要给最大最小值重新赋值，然后x轴，data等会重新进行计算和绘制，这种情况还包括放大之后的拖拽场景
          */
         if (mViewPortHandler != null && mViewPortHandler.contentWidth() > 10 && !mViewPortHandler.isFullyZoomedOutX()) {
 
@@ -87,6 +88,9 @@ public class XAxisRenderer extends AxisRenderer {
 
         }
         computeAxisValues(min, max);
+
+        Log.e("compute:","min:"+min+",max"+max);
+
         Log.e("BarChart","1.2 notifyDataSetChanged/onDraw(数据未变，进行了手势操作) :根据传入的最大最小值以及设置的labelCount，计算X轴labels的position和size");
 
     }
@@ -252,7 +256,6 @@ public class XAxisRenderer extends AxisRenderer {
 
 
         c.restoreToCount(clipRestoreCount);
-
 
     }
 
