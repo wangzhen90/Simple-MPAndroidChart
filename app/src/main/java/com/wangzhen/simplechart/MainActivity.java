@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
         items.add(new ChartItem("普通柱状图",CommonBarChartActivity.class));
         items.add(new ChartItem("簇型图",GroupBarChartActivity.class));
+        items.add(new ChartItem("表格",TableChartActivity.class));
 
     }
 
