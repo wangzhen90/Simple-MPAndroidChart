@@ -16,7 +16,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".CommonBarChartActivity"></activity>
+        <activity android:name=".CommonBarChartActivity" />
+        <activity android:name=".GroupBarChartActivity"></activity>
     </application>
 
 </manifest>

@@ -29,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
     void initData(){
 
         items.add(new ChartItem("普通柱状图",CommonBarChartActivity.class));
+        items.add(new ChartItem("簇型图",GroupBarChartActivity.class));
+
     }
 
 
