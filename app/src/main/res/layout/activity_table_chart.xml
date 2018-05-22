@@ -6,4 +6,11 @@
     android:layout_height="match_parent"
     tools:context="com.wangzhen.simplechart.TableChartActivity">
 
+    <include
+        android:id="@+id/tableView"
+        android:layout_width="wrap_content"
+        android:layout_height="300dp"
+
+        layout="@layout/layout_tableview"/>
+
 </android.support.constraint.ConstraintLayout>

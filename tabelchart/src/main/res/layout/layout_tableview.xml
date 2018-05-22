@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.wangzhen.tabelchart.tableView.CustomHorizontalScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/content_scrollView"
+    android:layout_width="300dp"
+    android:layout_height="wrap_content"
+    android:background="@color/light_gray">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/title_linearLayout"
+            android:layout_width="wrap_content"
+            android:orientation="horizontal"
+            android:paddingLeft="1dp"
+            android:layout_height="30dp"/>
+        <View
+            android:layout_height="1dp"
+            android:layout_width="match_parent"
+            android:background="#e6e6e6"/>
+        <com.wangzhen.tabelchart.tableView.CustomRecycleView
+            android:id="@+id/content_list"
+            android:layout_width="800dp"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+        </com.wangzhen.tabelchart.tableView.CustomRecycleView>
+        <!--<View-->
+            <!--android:layout_height="1dp"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:background="#e6e6e6"/>-->
+    </LinearLayout>
+</com.wangzhen.tabelchart.tableView.CustomHorizontalScrollView>

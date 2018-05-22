@@ -3,5 +3,7 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="light_gray">#FFb2bdc5</color>
+    <color name="table_view_divider_color">#e1e8ed</color>
 
 </resources>
