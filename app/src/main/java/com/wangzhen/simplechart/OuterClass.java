@@ -1,5 +1,9 @@
 package com.wangzhen.simplechart;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+
 import java.util.Random;
 
 public class OuterClass {
@@ -55,5 +59,25 @@ public class OuterClass {
             int a = new Random(100).nextInt(), b = new Random(100).nextInt();
             a = a + b;
         }
+
+        Context context = null;
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+
+        builder.setIcon(R.drawable.ic_launcher_background)
+                .setTitle(R.string.app_name)
+                .setMessage("message")
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                })
+                .setNegativeButton("取消",null);
+
+        builder.create().show();
+
+
+
     }
 }
