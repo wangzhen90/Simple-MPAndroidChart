@@ -188,4 +188,8 @@ public class BarEntry extends Entry {
         return mData;
     }
 
+    public Range[] getRanges() {
+        return mRanges;
+    }
+
 }

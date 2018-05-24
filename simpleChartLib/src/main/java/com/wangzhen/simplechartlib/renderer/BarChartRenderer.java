@@ -7,6 +7,7 @@ import android.graphics.RectF;
 import com.wangzhen.simplechartlib.buffer.BarBuffer;
 import com.wangzhen.simplechartlib.data.chartData.BarData;
 import com.wangzhen.simplechartlib.data.entry.BarEntry;
+import com.wangzhen.simplechartlib.highlight.Highlight;
 import com.wangzhen.simplechartlib.interfaces.charts.BarDataProvider;
 import com.wangzhen.simplechartlib.interfaces.dataSets.IBarDataSet;
 import com.wangzhen.simplechartlib.utils.Transformer;
@@ -200,6 +201,16 @@ public class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
 
     @Override
     public void drawExtras(Canvas c) {
+
+    }
+
+
+    @Override
+    public void drawHighlighted(Canvas c, Highlight[] indices) {
+
+        BarData barData = mChart.getBarData();
+
+
 
     }
 }

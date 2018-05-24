@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.wangzhen.simplechartlib.data.entry.Entry;
 import com.wangzhen.simplechartlib.formatter.IValueFormatter;
+import com.wangzhen.simplechartlib.highlight.Highlight;
 import com.wangzhen.simplechartlib.interfaces.dataSets.IDataSet;
 
 import java.util.ArrayList;
@@ -340,6 +341,15 @@ public class ChartData <T extends IDataSet<? extends Entry>>{
             return null;
 
         return mDataSets.get(index);
+    }
+
+
+    public Entry getEntryForHighlight(Highlight highlight) {
+        if (highlight.getDataSetIndex() >= mDataSets.size())
+            return null;
+        else {
+            return mDataSets.get(highlight.getDataSetIndex()).getEntryForXValue(highlight.getX(), highlight.getY());
+        }
     }
 
 }

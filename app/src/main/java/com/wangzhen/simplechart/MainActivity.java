@@ -1,8 +1,10 @@
 package com.wangzhen.simplechart;
 
 import android.content.Intent;
+import android.graphics.Matrix;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -24,6 +26,8 @@ public class MainActivity extends AppCompatActivity {
         initData();
 
         listView.setAdapter(new DataAdapter());
+
+        testMatrix();
     }
 
     void initData(){
@@ -74,7 +78,15 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+    void testMatrix(){
 
+        Matrix matrix = new Matrix();
+
+        matrix.postScale(1.1f,1.1f,50,200);
+
+        Log.e("testMatrix:",matrix.toShortString());
+
+    }
 
 
 

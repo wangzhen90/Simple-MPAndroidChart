@@ -6,6 +6,7 @@ import android.graphics.Paint;
 
 import com.wangzhen.simplechartlib.data.entry.Entry;
 import com.wangzhen.simplechartlib.formatter.IValueFormatter;
+import com.wangzhen.simplechartlib.highlight.Highlight;
 import com.wangzhen.simplechartlib.interfaces.charts.ChartInterface;
 import com.wangzhen.simplechartlib.interfaces.dataSets.IDataSet;
 import com.wangzhen.simplechartlib.utils.Utils;
@@ -86,5 +87,7 @@ public abstract class DataRenderer extends Renderer {
         mValuePaint.setColor(color);
         c.drawText(formatter.getFormattedValue(value, entry, dataSetIndex, mViewPortHandler), x, y, mValuePaint);
     }
+
+    public abstract void drawHighlighted(Canvas c, Highlight[] indices);
 
 }

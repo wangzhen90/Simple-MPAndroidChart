@@ -10,6 +10,7 @@ import android.view.animation.AnimationUtils;
 import com.wangzhen.simplechartlib.charts.BarLineChartBase;
 import com.wangzhen.simplechartlib.data.chartData.BarLineScatterCandleBubbleData;
 import com.wangzhen.simplechartlib.data.entry.Entry;
+import com.wangzhen.simplechartlib.highlight.Highlight;
 import com.wangzhen.simplechartlib.interfaces.dataSets.IBarLineScatterCandleBubbleDataSet;
 import com.wangzhen.simplechartlib.interfaces.dataSets.IDataSet;
 import com.wangzhen.simplechartlib.utils.MPPointF;
@@ -378,7 +379,7 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
         ViewPortHandler vph = mChart.getViewPortHandler();
 
         float xTrans = x - vph.offsetLeft();
-        float yTrans = -(mChart.getMeasuredHeight() - y - vph.offsetBottom());
+        float yTrans = (mChart.getMeasuredHeight() - y - vph.offsetBottom());
 
         return MPPointF.getInstance(xTrans, yTrans);
     }
@@ -437,7 +438,21 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
 
     @Override
     public boolean onSingleTapUp(MotionEvent e) {
-        //TODO highlight暂不处理
+        mLastGesture = ChartGesture.SINGLE_TAP;
+
+        OnChartGestureListener l = mChart.getOnChartGestureListener();
+
+        if (l != null) {
+            l.onChartSingleTapped(e);
+        }
+
+        if (!mChart.isHighlightPerTapEnabled()) {
+            return false;
+        }
+
+        Highlight h = mChart.getHighlightByTouchPoint(e.getX(), e.getY());
+        performHighlight(h, e);
+
         return super.onSingleTapUp(e);
     }
 

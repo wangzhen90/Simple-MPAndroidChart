@@ -5,6 +5,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.wangzhen.simplechartlib.charts.Chart;
+import com.wangzhen.simplechartlib.highlight.Highlight;
 
 /**
  * Created by wangzhen on 2018/4/17.
@@ -40,12 +41,20 @@ public abstract class ChartTouchListener<T extends Chart<?>> extends GestureDete
 
     protected T mChart;
 
+    protected Highlight mLastHighlighted;
+
+
     public ChartTouchListener(T chart) {
         this.mChart = chart;
 
         mGestureDetector = new GestureDetector(chart.getContext(), this);
 
 
+    }
+
+
+    public void setLastHighlighted(Highlight high) {
+        mLastHighlighted = high;
     }
 
     public void startAction(MotionEvent me) {
@@ -69,6 +78,19 @@ public abstract class ChartTouchListener<T extends Chart<?>> extends GestureDete
         float dx = eventX - startX;
         float dy = eventY - startY;
         return (float) Math.sqrt(dx * dx + dy * dy);
+    }
+
+    protected void performHighlight(Highlight h,MotionEvent e){
+
+        if (h == null || h.equalTo(mLastHighlighted)) {
+            mChart.highlightValue(null, true);
+            mLastHighlighted = null;
+
+        } else {
+            mChart.highlightValue(h, true);
+            mLastHighlighted = h;
+        }
+
     }
 
 }

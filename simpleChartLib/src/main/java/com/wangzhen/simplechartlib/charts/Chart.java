@@ -20,6 +20,9 @@ import com.wangzhen.simplechartlib.data.chartData.ChartData;
 import com.wangzhen.simplechartlib.data.entry.Entry;
 import com.wangzhen.simplechartlib.formatter.DefaultValueFormatter;
 import com.wangzhen.simplechartlib.formatter.IValueFormatter;
+import com.wangzhen.simplechartlib.highlight.ChartHighlighter;
+import com.wangzhen.simplechartlib.highlight.Highlight;
+import com.wangzhen.simplechartlib.highlight.IHighlighter;
 import com.wangzhen.simplechartlib.interfaces.charts.ChartInterface;
 import com.wangzhen.simplechartlib.interfaces.dataSets.IDataSet;
 import com.wangzhen.simplechartlib.listener.ChartTouchListener;
@@ -42,8 +45,8 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
     public final String TAG = this.getClass().getSimpleName();
 
     protected T mData = null;
-//TODO
-//    protected boolean mHighLightPerTapEnabled = true;
+
+    protected boolean mHighLightPerTapEnabled = true;
 
 
 
@@ -266,6 +269,148 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
     /**
      * ==========================highligtht begin===================================
      */
+
+    protected IHighlighter mHighlighter;
+
+
+    public IHighlighter getHighlighter() {
+        return mHighlighter;
+    }
+
+    /**
+     * Sets a custom highligher object for the chart that handles / processes
+     * all highlight touch events performed on the chart-view.
+     *
+     * @param highlighter
+     */
+    public void setHighlighter(ChartHighlighter highlighter) {
+        mHighlighter = highlighter;
+    }
+
+
+    //
+    protected Highlight[] mIndicesToHighlight;
+
+    public Highlight[] getHighlighted() {
+        return mIndicesToHighlight;
+    }
+
+    //出发highlight的最小距离
+    protected float mMaxHighlightDistance = 0f;
+    public void setMaxHighlightDistance(float distDp) {
+        mMaxHighlightDistance = Utils.convertDpToPixel(distDp);
+    }
+
+    public boolean isHighlightPerTapEnabled() {
+        return mHighLightPerTapEnabled;
+    }
+
+    public void setHighlightPerTapEnabled(boolean enabled) {
+        mHighLightPerTapEnabled = enabled;
+    }
+    //是否有highlight
+    public boolean valuesToHighlight() {
+        return mIndicesToHighlight == null || mIndicesToHighlight.length <= 0
+                || mIndicesToHighlight[0] == null ? false
+                : true;
+    }
+
+    protected void setLastHighlighted(Highlight[] highs) {
+
+        if (highs == null || highs.length <= 0 || highs[0] == null) {
+            mChartTouchListener.setLastHighlighted(null);
+        } else {
+            mChartTouchListener.setLastHighlighted(highs[0]);
+        }
+    }
+    //显示一组highlighter
+    public void highlightValues(Highlight[] highs) {
+
+        // set the indices to highlight
+        mIndicesToHighlight = highs;
+
+        setLastHighlighted(highs);
+
+        // redraw the chart
+        invalidate();
+    }
+
+    //显示某个xValue上的所有的highlighter
+    public void highlightValue(float x, int dataSetIndex) {
+        highlightValue(x, dataSetIndex, true);
+    }
+    //显示给定xValue 和 yValue上的highlighter
+    public void highlightValue(float x, float y, int dataSetIndex) {
+        highlightValue(x, y, dataSetIndex, true);
+    }
+
+    public void highlightValue(float x, int dataSetIndex, boolean callListener) {
+        highlightValue(x, Float.NaN, dataSetIndex, callListener);
+    }
+
+    public void highlightValue(float x, float y, int dataSetIndex, boolean callListener) {
+
+        if (dataSetIndex < 0 || dataSetIndex >= mData.getDataSetCount()) {
+            highlightValue(null, callListener);
+        } else {
+            highlightValue(new Highlight(x, y, dataSetIndex), callListener);
+        }
+    }
+
+    public void highlightValue(Highlight highlight) {
+        highlightValue(highlight, false);
+    }
+
+
+    public void highlightValue(Highlight high, boolean callListener) {
+
+        Entry e = null;
+
+        if (high == null)
+            mIndicesToHighlight = null;
+        else {
+
+            if (mLogEnabled)
+                Log.i(LOG_TAG, "Highlighted: " + high.toString());
+
+            e = mData.getEntryForHighlight(high);
+            if (e == null) {
+                mIndicesToHighlight = null;
+                high = null;
+            } else {
+
+                // set the indices to highlight
+                mIndicesToHighlight = new Highlight[]{
+                        high
+                };
+            }
+        }
+
+        setLastHighlighted(mIndicesToHighlight);
+
+//        if (callListener && mSelectionListener != null) {
+//
+//            if (!valuesToHighlight())
+//                mSelectionListener.onNothingSelected();
+//            else {
+//                // notify the listener
+//                mSelectionListener.onValueSelected(e, high);
+//            }
+//        }
+
+        // redraw the chart
+        invalidate();
+    }
+
+
+    public Highlight getHighlightByTouchPoint(float x, float y) {
+
+        if (mData == null) {
+            Log.e(LOG_TAG, "Can't select by touch. No data set.");
+            return null;
+        } else
+            return getHighlighter().getHighlight(x, y);
+    }
 
 
     /**
@@ -680,5 +825,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
 
         mDragDecelerationFrictionCoef = newValue;
     }
+
+
 }
 
