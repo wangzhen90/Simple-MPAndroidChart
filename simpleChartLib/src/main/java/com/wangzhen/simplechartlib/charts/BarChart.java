@@ -6,6 +6,7 @@ import android.util.AttributeSet;
 
 import com.wangzhen.simplechartlib.data.chartData.BarData;
 import com.wangzhen.simplechartlib.data.entry.BarEntry;
+import com.wangzhen.simplechartlib.highlight.BarHighlighter;
 import com.wangzhen.simplechartlib.interfaces.charts.BarDataProvider;
 import com.wangzhen.simplechartlib.interfaces.dataSets.IBarDataSet;
 import com.wangzhen.simplechartlib.renderer.BarChartRenderer;
@@ -34,7 +35,7 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
 
         mRenderer = new BarChartRenderer(mViewPortHandler,this);
 //
-//        setHighlighter(new BarHighlighter(this));
+        setHighlighter(new BarHighlighter(this));
 
         getXAxis().setSpaceMin(0.5f);
         getXAxis().setSpaceMax(0.5f);

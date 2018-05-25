@@ -117,52 +117,55 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
         if (mValues == null || mValues.isEmpty())
             return -1;
 
-
         int low = 0;
-        int high= mValues.size() - 1;
-
+        int high = mValues.size() - 1;
         int closest = high;
 
-        while(low < high){
-
-            int m = (low + high)/2;
+        while (low < high) {
+            int m = (low + high) / 2;
 
             final float d1 = mValues.get(m).getX() - xValue,
-                    d2 = mValues.get(m+1).getX() - xValue,
-                    ad1 = Math.abs(d1),ad2 = Math.abs(d2);
+                    d2 = mValues.get(m + 1).getX() - xValue,
+                    ad1 = Math.abs(d1), ad2 = Math.abs(d2);
 
-            if(ad2 < ad1){
-                low = m;
-
-            }else if(ad2 > ad1){
+            if (ad2 < ad1) {
+                // [m + 1] is closer to xValue
+                // Search in an higher place
+                low = m + 1;
+            } else if (ad1 < ad2) {
+                // [m] is closer to xValue
+                // Search in a lower place
                 high = m;
-            }else{
-                if(d1 >= 0){
+            } else {
+                // We have multiple sequential x-value with same distance
+
+                if (d1 >= 0.0) {
+                    // Search in a lower place
                     high = m;
-                }else if(d1 < 0.0){
-                    low = m+1;
+                } else if (d1 < 0.0) {
+                    // Search in an higher place
+                    low = m + 1;
                 }
             }
+
             closest = high;
         }
 
-        if(closest != -1){
-            /**
-             * entry 的x坐标值
-             */
+        if (closest != -1) {
             float closestXValue = mValues.get(closest).getX();
-
-            if(rounding == Rounding.UP){
-                if(closestXValue < xValue && closest < mValues.size() -1){
-                    closest++;
+            if (rounding == Rounding.UP) {
+                // If rounding up, and found x-value is lower than specified x, and we can go upper...
+                if (closestXValue < xValue && closest < mValues.size() - 1) {
+                    ++closest;
                 }
-
-            }else if(rounding == Rounding.DOWN){
+            } else if (rounding == Rounding.DOWN) {
+                // If rounding down, and found x-value is upper than specified x, and we can go lower...
                 if (closestXValue > xValue && closest > 0) {
                     --closest;
                 }
             }
-            //TODO 这段逻辑暂时没看
+
+            // Search by closest to y-value
             if (!Float.isNaN(closestToY)) {
                 while (closest > 0 && mValues.get(closest - 1).getX() == closestXValue)
                     closest -= 1;

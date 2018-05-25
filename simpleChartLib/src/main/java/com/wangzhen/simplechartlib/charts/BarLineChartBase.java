@@ -14,6 +14,7 @@ import com.wangzhen.simplechartlib.component.YAxis;
 import com.wangzhen.simplechartlib.data.chartData.BarData;
 import com.wangzhen.simplechartlib.data.chartData.BarLineScatterCandleBubbleData;
 import com.wangzhen.simplechartlib.data.entry.Entry;
+import com.wangzhen.simplechartlib.highlight.ChartHighlighter;
 import com.wangzhen.simplechartlib.interfaces.charts.BarLineScatterCandleBubbleDataProvider;
 import com.wangzhen.simplechartlib.interfaces.dataSets.IBarLineScatterCandleBubbleDataSet;
 import com.wangzhen.simplechartlib.listener.BarLineChartTouchListener;
@@ -114,6 +115,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 //        mBorderPaint.setColor(Color.BLACK);
 //        mBorderPaint.setStrokeWidth(Utils.convertDpToPixel(1f));
 
+        setHighlighter(new ChartHighlighter(this));
 
     }
 

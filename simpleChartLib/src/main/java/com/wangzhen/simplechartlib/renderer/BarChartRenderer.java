@@ -162,7 +162,7 @@ public class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
                 if (!dataSet.isStacked()) {
                     // TODO 动画相关，暂不考虑
 //                    for (int j = 0; j < buffer.buffer.length * mAnimator.getPhaseX(); j += 4) {
-                    for (int j = 0; j < buffer.buffer.length; j+= 4) {
+                    for (int j = 0; j < buffer.buffer.length; j += 4) {
                         //x的位置在bar的中心
                         float x = (buffer.buffer[j] + buffer.buffer[j + 2]) / 2f;
                         //从左向右绘制，如果某个value的x超过了content的right，直接跳出循环
@@ -210,7 +210,63 @@ public class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
 
         BarData barData = mChart.getBarData();
 
+        for (Highlight high : indices) {
 
+            IBarDataSet set = barData.getDataSetByIndex(high.getDataSetIndex());
+            if (set == null || !set.isHighlightEnabled()) {
+                continue;
+            }
+
+            BarEntry e = set.getEntryForXValue(high.getX(), high.getY());
+
+            if (!isInBoundsX(e, set)) {
+                continue;
+            }
+
+            Transformer trans = mChart.getTransformer();
+            mHighlightPaint.setColor(set.getHighLightColor());
+            mHighlightPaint.setAlpha(set.getHighLightAlpha());
+
+            boolean isStack = (high.getStackIndex() >= 0 && e.isStacked()) ? true : false;
+
+            final float y1, y2;
+
+            if (isStack) {
+                //TODO 堆叠图highlight
+                y1 = e.getY();
+                y2 = 0;
+            } else {
+                y1 = e.getY();
+                y2 = 0;
+            }
+
+            prepareBarHighlight(e.getX(),y1,y2,barData.getBarWidth()/2f,trans);
+            setHighlightDrawPos(high,mBarRect);
+
+            c.drawRect(mBarRect,mHighlightPaint);
+
+        }
 
     }
+
+    protected void prepareBarHighlight(float x, float y1, float y2, float barWidthHalf, Transformer trans) {
+
+        float left = x - barWidthHalf;
+        float right = x + barWidthHalf;
+        float top = y1;
+        float bottom = y2;
+
+        mBarRect.set(left,top,right,bottom);
+
+        //TODO 动画
+        trans.rectToPixelPhase(mBarRect,1);
+
+    }
+
+    protected void setHighlightDrawPos(Highlight high,RectF bar){
+
+        high.setDraw(bar.centerX(),bar.top);
+    }
+
+
 }

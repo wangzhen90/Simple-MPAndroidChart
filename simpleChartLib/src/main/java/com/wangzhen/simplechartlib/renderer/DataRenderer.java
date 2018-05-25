@@ -23,6 +23,9 @@ public abstract class DataRenderer extends Renderer {
 
     protected Paint mValuePaint;
 
+    protected Paint mHighlightPaint;
+
+
     public DataRenderer(ViewPortHandler viewPortHandler) {
         super(viewPortHandler);
 
@@ -33,6 +36,11 @@ public abstract class DataRenderer extends Renderer {
         mValuePaint.setColor(Color.rgb(63,63,63));
         mValuePaint.setTextAlign(Paint.Align.CENTER);
         mValuePaint.setTextSize(Utils.convertDpToPixel(9f));
+
+        mHighlightPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mHighlightPaint.setStyle(Paint.Style.STROKE);
+        mHighlightPaint.setStrokeWidth(2f);
+        mHighlightPaint.setColor(Color.rgb(255, 187, 115));
 
     }
 
