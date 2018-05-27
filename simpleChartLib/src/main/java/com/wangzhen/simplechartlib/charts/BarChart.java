@@ -46,7 +46,7 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
 
     @Override
     public float getMaxHighlightDistance() {
-        return 0;
+        return mMaxHighlightDistance;
     }
 
 
