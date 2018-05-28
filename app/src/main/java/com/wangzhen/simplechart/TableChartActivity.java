@@ -27,14 +27,29 @@ public class TableChartActivity extends AppCompatActivity {
         ArrayList<String> titleDatas = new ArrayList<>();
         ArrayList<String> tableDatas = new ArrayList<>();
 
-        int itemWidth = DensityUtils.dip2px(this,75);
+        int itemWidth = DensityUtils.dip2px(this,90);
 
 
         for (int i = 0; i < 10; i++) {
             titleDatas.add("标题" + i);
         }
+
+
+
         for (int j = 0; j < 500; j++) {
-            tableDatas.add("内容" + j);
+            if(j%10 == 2){
+                tableDatas.add("8888888888888888888");
+
+            }else if(j == 1){
+                tableDatas.add("客户："+j);
+            }
+            else if(j%10 == 1){
+                tableDatas.add("测试很长很长很长的汉字，测试很长很长很长很长的汉字");
+
+            }else{
+                tableDatas.add("客户："+j);
+
+            }
         }
 
 
@@ -44,7 +59,7 @@ public class TableChartActivity extends AppCompatActivity {
                 .setTitleSize(15)
                 .setTextSize(13)
                 .setTitleBackGroundColor(this.getResources().getColor(R.color.table_view_divider_color))
-                .setTextHeight(DensityUtils.dip2px(this, 26))
+                .setTextHeight(DensityUtils.dip2px(this, 30))
                 .setTextWidth(itemWidth)
                 .setTitleWidth(itemWidth)
                 .setTitleHeight(DensityUtils.dip2px(this, 36))

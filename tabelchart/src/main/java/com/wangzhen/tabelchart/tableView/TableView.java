@@ -1,6 +1,7 @@
 package com.wangzhen.tabelchart.tableView;
 
 import android.content.Context;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -101,12 +102,12 @@ public class TableView {
         contentListAdapter.setDatas(contentDatas);
         contentListAdapter.setColumnCounts(titleDatas.size());
         contentListAdapter.setRowCounts(contentDatas.size()/titleDatas.size());
-//        GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, titleDatas.size(), GridLayoutManager.VERTICAL, false);
-        StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(contentDatas.size()/titleDatas.size(), StaggeredGridLayoutManager.HORIZONTAL);
-        staggeredGridLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, titleDatas.size(), GridLayoutManager.VERTICAL, false);
+//        StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(contentDatas.size()/titleDatas.size(), StaggeredGridLayoutManager.HORIZONTAL);
+//        staggeredGridLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
 //        contentList.addItemDecoration(new DividerGridItemDecoration(mContext,titleDatas.size()));
 //        contentList.addItemDecoration(new DividerNew(mContext));
-        contentList.setLayoutManager(staggeredGridLayoutManager);
+        contentList.setLayoutManager(gridLayoutManager);
         contentList.setAdapter(contentListAdapter);
     }
 
