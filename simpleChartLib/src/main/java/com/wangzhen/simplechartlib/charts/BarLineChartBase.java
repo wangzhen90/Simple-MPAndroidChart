@@ -77,6 +77,9 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
     protected boolean mPinchZoomEnabled = false;
 
+    protected boolean mHighlightPerDragEnabled = true;
+
+
 
     public BarLineChartBase(Context context) {
         super(context);
@@ -481,6 +484,14 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
         if (mChartTouchListener instanceof BarLineChartTouchListener)
             ((BarLineChartTouchListener) mChartTouchListener).computeScroll();
+    }
+
+    public void setHighlightPerDragEnabled(boolean enabled) {
+        mHighlightPerDragEnabled = enabled;
+    }
+
+    public boolean isHighlightPerDragEnabled() {
+        return mHighlightPerDragEnabled;
     }
 
 }
