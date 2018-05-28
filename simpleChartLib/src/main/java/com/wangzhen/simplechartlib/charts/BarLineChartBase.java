@@ -155,6 +155,10 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         canvas.clipRect(mViewPortHandler.getContentRect());
         //绘制data
         mRenderer.drawData(canvas);
+        if(valuesToHighlight()){
+            mRenderer.drawHighlighted(canvas,mIndicesToHighlight);
+        }
+
 
         canvas.restoreToCount(clipRestoreCount);
 

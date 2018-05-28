@@ -485,6 +485,7 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
 
     @Override
     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+
         return super.onFling(e1, e2, velocityX, velocityY);
     }
 
@@ -518,7 +519,7 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
 
         event.recycle();
 
-        // 注意此处不要刷新，因为要用postnvalidate
+        // 注意此处不要刷新，因为要用postinvalidate
         mMatrix = mChart.getViewPortHandler().refresh(mMatrix,mChart,false);
 
         mDecelerationLastTime = currentTime;

@@ -148,8 +148,8 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
 
         Utils.init(getContext());
 
-        //TODO 初始化点击空白区域的时候，触发点击区域的最大值
-//        mMaxHighlightDistance = Utils.convertDpToPixel(500f);
+        //初始化点击空白区域的时候，触发点击区域的最大值
+        mMaxHighlightDistance = Utils.convertDpToPixel(500f);
 
         mXAxis = new XAxis();
 

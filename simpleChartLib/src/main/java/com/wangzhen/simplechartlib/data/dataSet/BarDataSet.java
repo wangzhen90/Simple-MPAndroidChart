@@ -12,7 +12,7 @@ import java.util.List;
  * Created by wangzhen on 2018/3/14.
  */
 
-public class BarDataSet extends DataSet<BarEntry> implements IBarDataSet {
+public class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry> implements IBarDataSet {
 
     /**
      * 一个x对应最大的stack的数量
@@ -167,10 +167,7 @@ public class BarDataSet extends DataSet<BarEntry> implements IBarDataSet {
     }
 
 
-    @Override
-    public int getHighLightColor() {
-        return 0;
-    }
+
 
     @Override
     public boolean isStacked() {
