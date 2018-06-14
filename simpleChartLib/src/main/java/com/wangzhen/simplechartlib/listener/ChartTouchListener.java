@@ -23,11 +23,11 @@ public abstract class ChartTouchListener<T extends Chart<?>> extends GestureDete
     protected ChartGesture mLastGesture = ChartGesture.NONE;
 
     //touch states
-    protected static final int NONE = 0;
-    protected static final int DRAG = 1;
-    protected static final int X_ZOOM = 2;
-    protected static final int Y_ZOOM = 3;
-    protected static final int PINCH_ZOOM = 4;
+    protected static final int NONE = 0; //这个主要是单击，双击事件
+    protected static final int DRAG = 1;//拖拽事件，包含在move事件中
+    protected static final int X_ZOOM = 2;//x轴方向的缩放，包含在move事件中
+    protected static final int Y_ZOOM = 3;//y轴方向的缩放，包含在move事件中
+    protected static final int PINCH_ZOOM = 4;//包含x，y轴之间的缩放
     protected static final int POST_ZOOM = 5;
     protected static final int ROTATE = 6;
 

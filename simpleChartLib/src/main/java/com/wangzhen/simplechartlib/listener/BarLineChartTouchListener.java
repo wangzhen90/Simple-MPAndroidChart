@@ -81,19 +81,22 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
     public BarLineChartTouchListener(BarLineChartBase<? extends BarLineScatterCandleBubbleData<? extends IBarLineScatterCandleBubbleDataSet<? extends Entry>>> chart
             , Matrix touchMatrix, float dragTriggerDistance) {
         super(chart);
+        //持有了ViewportHandler的touchatrix，通过这个来操作数据的坐标变化
         this.mMatrix = touchMatrix;
+        //最小拖拽触发距离
         this.mDragTriggerDist = dragTriggerDistance;
+        //最小缩放触发距离
         this.mMinScalePointerDistance = Utils.convertDpToPixel(3.5f);
 
     }
 
     @Override
     public boolean onTouch(View view, MotionEvent event) {
-
+        //初始化一个速度跟踪器，用于拖拽的惯性处理
         if (mVelocityTracker == null) {
             mVelocityTracker = VelocityTracker.obtain();
         }
-
+        //将事件交给速度跟踪器
         mVelocityTracker.addMovement(event);
 
         if (event.getActionMasked() == MotionEvent.ACTION_CANCEL) {
@@ -102,11 +105,12 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
                 mVelocityTracker = null;
             }
         }
+        //如果当前的touchState是NONE的话才将事件交给手势识别器mGestureDetector
 
         if (mTouchMode == NONE) {
             mGestureDetector.onTouchEvent(event);
         }
-
+        //如果既不能缩放也不能拖拽就直接return
         if (!mChart.isDragEnabled() && (!mChart.isScaleXEnabled() && !mChart.isScaleYEnabled()))
             return true;
 

@@ -67,10 +67,7 @@ public class ContentListAdapter extends RecyclerView.Adapter<ContentListAdapter.
 
     @Override
     public void onBindViewHolder(ContentViewHolder holder, int position) {
-        layoutParams = new RecyclerView.LayoutParams(textWidth, textHeight);
-        layoutParams.setMargins(1, 1, 1, 1);
 
-        holder.textView.setLayoutParams(layoutParams);
         String dataStr = mDatas.get(position);
         if (TextUtils.isEmpty(dataStr) || dataStr.equals("null") || dataStr.equals(("undefined"))) {
             dataStr = "--";
@@ -82,23 +79,23 @@ public class ContentListAdapter extends RecyclerView.Adapter<ContentListAdapter.
             float thisSize = holder.textView.getPaint().measureText(dataStr);
 
             if (thisSize > textWidth) {
-                textSizes[position] = textSize - 2;
+                textSizes[position] = textSize - 1;
             } else {
                 textSizes[position] = textSize;
             }
         }
 
 
-        if(position < textSizes.length){
+        if (position < textSizes.length) {
             holder.textView.setTextSize(textSizes[position] > 0f ? textSizes[position] : textSize);
-        }else{
+        } else {
             holder.textView.setTextSize(textSize);
         }
 
-        if((position/columnCounts)%2 == 1){
+        if ((position / columnCounts) % 2 == 1) {
             holder.textView.setBackgroundColor(Color.parseColor("#DCDCDC"));
 
-        }else{
+        } else {
             holder.textView.setBackgroundColor(Color.parseColor("#ffffff"));
 
         }
@@ -131,9 +128,15 @@ public class ContentListAdapter extends RecyclerView.Adapter<ContentListAdapter.
             super(view);
             textView = (TextView) view;
 
+            layoutParams = new RecyclerView.LayoutParams(textWidth, textHeight);
+            layoutParams.setMargins(0, 1, 1, 1);
+
+            textView.setLayoutParams(layoutParams);
+
             textView.setGravity(Gravity.CENTER);
 //            textView.setSingleLine(true);
             textView.setLines(2);
+            textView.setPadding(2, 0, 2, 0);
             textView.setBackgroundColor(Color.parseColor("#ffffff"));
 //            textView.setBackgroundResource(R.drawable.drawable_table_item);
             textView.setEllipsize(TextUtils.TruncateAt.END);
