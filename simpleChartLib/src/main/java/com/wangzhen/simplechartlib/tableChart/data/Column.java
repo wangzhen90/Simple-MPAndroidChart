@@ -13,7 +13,7 @@ public abstract class Column<T extends Cell> {
 
     public int columnIndex;
 
-
+    //通过计算获得
     public int width;
 
     public int maxWidth;
@@ -30,6 +30,11 @@ public abstract class Column<T extends Cell> {
     private int level;
 
     private boolean isParent;
+
+
+    public String longestString;
+
+
 
 
     //TODO 列计算宽度：除掉单元格外，计算最长的文字作为其宽度

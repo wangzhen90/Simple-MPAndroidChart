@@ -53,17 +53,17 @@ public class TableChartActivity extends AppCompatActivity {
         }
 
 
-        tableView
-                .setTitleDatas(titleDatas)
-                .setContentDatas(tableDatas)
-                .setTitleSize(15)
-                .setTextSize(13)
-                .setTitleBackGroundColor(this.getResources().getColor(R.color.table_view_divider_color))
-                .setTextHeight(DensityUtils.dip2px(this, 30))
-                .setTextWidth(itemWidth)
-                .setTitleWidth(itemWidth)
-                .setTitleHeight(DensityUtils.dip2px(this, 36))
-                .show();
+//        tableView
+//                .setTitleDatas(titleDatas)
+//                .setContentDatas(tableDatas)
+//                .setTitleSize(15)
+//                .setTextSize(13)
+//                .setTitleBackGroundColor(this.getResources().getColor(R.color.table_view_divider_color))
+//                .setTextHeight(DensityUtils.dip2px(this, 30))
+//                .setTextWidth(itemWidth)
+//                .setTitleWidth(itemWidth)
+//                .setTitleHeight(DensityUtils.dip2px(this, 36))
+//                .show();
     }
 
 }
