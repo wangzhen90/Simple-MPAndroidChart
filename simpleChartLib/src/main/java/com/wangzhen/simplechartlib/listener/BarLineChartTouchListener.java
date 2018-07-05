@@ -379,7 +379,7 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
         ViewPortHandler vph = mChart.getViewPortHandler();
 
         float xTrans = x - vph.offsetLeft();
-        float yTrans = (mChart.getMeasuredHeight() - y - vph.offsetBottom());
+        float yTrans = -(mChart.getMeasuredHeight() - y - vph.offsetBottom());
 
         return MPPointF.getInstance(xTrans, yTrans);
     }
@@ -468,11 +468,7 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
 
         //双击缩放
         if (mChart.isDoubleTapToZoomEnabled() && mChart.getData().getEntryCount() > 0) {
-            /**
-             * TODO 不知道是否理解的正确 应该是错了。。。。后面再看
-             * 计算缩放的中心点，比如一个以（0，-n） n > 0 点作为缩放中心点，x，y缩放就只向一个方向缩放了
-             * 现在的需求是沿着x轴正方向和y轴负方向进行缩放
-             */
+
             MPPointF trans = getTrans(e.getX(), e.getY());
             mChart.zoom(mChart.isScaleXEnabled() ? 1.1f : 1f, mChart.isScaleYEnabled() ? 1.1f : 1f, trans.x, trans.y);
 

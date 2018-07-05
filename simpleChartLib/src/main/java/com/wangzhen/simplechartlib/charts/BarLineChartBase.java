@@ -452,10 +452,8 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
      * 缩放
      */
     public void zoom(float scaleX, float scaleY, float x, float y) {
-        //TODO 为什么y要取相反数
-        mViewPortHandler.zoom(scaleX, scaleY, x, y, mZoomMatrixBuffer);
+        mViewPortHandler.zoom(scaleX, scaleY, x, -y, mZoomMatrixBuffer);
         mViewPortHandler.refresh(mZoomMatrixBuffer, this, false);
-
 
         // Range might have changed, which means that Y-axis labels
         // could have changed in size, affecting Y-axis size.
