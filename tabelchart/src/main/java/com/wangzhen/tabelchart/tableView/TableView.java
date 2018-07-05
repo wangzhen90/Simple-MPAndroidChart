@@ -1,6 +1,8 @@
 package com.wangzhen.tabelchart.tableView;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -44,12 +46,11 @@ public class TableView {
     private void init() {
         contentListAdapter = new ContentListAdapter(mContext);
         titleWidth = DensityUtils.dip2px(mContext, 79);
-        titleHeight= DensityUtils.dip2px(mContext, 40);
+        titleHeight = DensityUtils.dip2px(mContext, 40);
 
         titleLinearLayout = (LinearLayout) mTableView.findViewById(R.id.title_linearLayout);
         contentList = (CustomRecycleView) mTableView.findViewById(R.id.content_list);
         titleBackgroudColor = mContext.getResources().getColor(R.color.light_gray);
-
 
 
         titleSize = 15;
@@ -67,24 +68,25 @@ public class TableView {
 
     private void renderTitle() {
         layoutParams = new LinearLayout.LayoutParams(titleWidth, titleHeight);
-        linerLayoutParams = new LinearLayout.LayoutParams(DensityUtils.dip2px(mContext, 1), titleHeight);
-        layoutParams.width = layoutParams.width - linerLayoutParams.width;
-        titleLinearLayout.setBackgroundColor(titleBackgroudColor);
+        linerLayoutParams = new LinearLayout.LayoutParams(1, titleHeight);
+//        titleLinearLayout.setBackgroundColor(Color.parseColor("#e6e6e6"));
+//        layoutParams.setMargins(0, 0, 1, 0);
         titleLinearLayout.removeAllViews();
         for (int i = 0; i < titleDatas.size(); i++) {
             TextView textView = new TextView(mContext);
             textView.setLayoutParams(layoutParams);
             textView.setTextSize((float) titleSize);
             textView.setGravity(Gravity.CENTER);
+//            textView.setBackgroundColor(Color.parseColor("#e6e6e6"));
             titleLinearLayout.addView(textView);
 
-            String ellipsizeStr = (String) TextUtils.ellipsize(titleDatas.get(i),  textView.getPaint(), titleWidth - 10, TextUtils.TruncateAt.END);
+            String ellipsizeStr = (String) TextUtils.ellipsize(titleDatas.get(i), textView.getPaint(), titleWidth - 10, TextUtils.TruncateAt.END);
             textView.setText(ellipsizeStr);
 
-            if (i < titleDatas.size() -1) {
+            if (i < titleDatas.size() - 1) {
                 View liner = new View(mContext);
                 liner.setLayoutParams(linerLayoutParams);
-                liner.setBackgroundColor(mContext.getResources().getColor(R.color.table_view_divider_color));
+                liner.setBackgroundColor(Color.parseColor("#000000"));
                 titleLinearLayout.addView(liner);
             }
         }
@@ -92,21 +94,17 @@ public class TableView {
 
 
     private void renderContent() {
-        int contentWidth = titleDatas.size() * titleWidth + 100;
+        int contentWidth = titleDatas.size() * (titleWidth + 1);
         ViewGroup.LayoutParams layoutParams = contentList.getLayoutParams();
-        layoutParams.width=contentWidth;
+        layoutParams.width = contentWidth;
 
         contentList.setLayoutParams(layoutParams);
 
         contentListAdapter.setDatas(contentDatas);
         contentListAdapter.setColumnCounts(titleDatas.size());
-        contentListAdapter.setRowCounts(contentDatas.size()/titleDatas.size());
-//        GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, titleDatas.size(), GridLayoutManager.VERTICAL, false);
-        StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(contentDatas.size()/titleDatas.size(), StaggeredGridLayoutManager.HORIZONTAL);
-        staggeredGridLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
-//        contentList.addItemDecoration(new DividerGridItemDecoration(mContext,titleDatas.size()));
-//        contentList.addItemDecoration(new DividerNew(mContext));
-        contentList.setLayoutManager(staggeredGridLayoutManager);
+        contentListAdapter.setRowCounts(contentDatas.size() / titleDatas.size());
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, titleDatas.size(), GridLayoutManager.VERTICAL, false);
+        contentList.setLayoutManager(gridLayoutManager);
         contentList.setAdapter(contentListAdapter);
     }
 
@@ -158,9 +156,9 @@ public class TableView {
         return this;
     }
 
-    public TableView setTitleBackGroundColor(int color){
+    public TableView setTitleBackGroundColor(int color) {
         this.titleBackgroudColor = color;
-        return  this;
+        return this;
     }
 
 }

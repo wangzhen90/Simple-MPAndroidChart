@@ -15,12 +15,9 @@
             android:id="@+id/title_linearLayout"
             android:layout_width="wrap_content"
             android:orientation="horizontal"
-            android:paddingLeft="1dp"
+            android:background="#e6e6e6"
             android:layout_height="30dp"/>
-        <View
-            android:layout_height="1dp"
-            android:layout_width="match_parent"
-            android:background="#e6e6e6"/>
+
         <com.wangzhen.tabelchart.tableView.CustomRecycleView
             android:id="@+id/content_list"
             android:layout_width="800dp"

@@ -26,7 +26,9 @@ public class ContentListAdapter extends RecyclerView.Adapter<ContentListAdapter.
     private int textSize;
     RecyclerView.LayoutParams layoutParams;
     private int columnCounts;
-    private  int rowCounts;
+    private int rowCounts;
+
+    private float[] textSizes;
 
     public void setDatas(ArrayList<String> datas) {
         this.mDatas = datas;
@@ -36,6 +38,7 @@ public class ContentListAdapter extends RecyclerView.Adapter<ContentListAdapter.
         textHeight = DensityUtils.dip2px(context, 50);
         textWidth = DensityUtils.dip2px(context, 79);
         textSize = 13;
+
     }
 
     public void setTextHeight(int textHeight) {
@@ -50,7 +53,7 @@ public class ContentListAdapter extends RecyclerView.Adapter<ContentListAdapter.
         this.textSize = textSize;
     }
 
-    public void setRowCounts(int rowCounts){
+    public void setRowCounts(int rowCounts) {
         this.rowCounts = rowCounts;
     }
 
@@ -64,21 +67,43 @@ public class ContentListAdapter extends RecyclerView.Adapter<ContentListAdapter.
 
     @Override
     public void onBindViewHolder(ContentViewHolder holder, int position) {
-        layoutParams = new RecyclerView.LayoutParams( textWidth, textHeight);
-        layoutParams.setMargins(1,1,1,1);
 
-        if(position/rowCounts == 1){
-            layoutParams.width = textWidth+100;
-        }
-
-        holder.textView.setLayoutParams(layoutParams);
         String dataStr = mDatas.get(position);
         if (TextUtils.isEmpty(dataStr) || dataStr.equals("null") || dataStr.equals(("undefined"))) {
             dataStr = "--";
         }
-        String ellipsizeStr = (String) TextUtils.ellipsize(dataStr, holder.textView.getPaint(), textWidth - 10, TextUtils.TruncateAt.END);
 
-        holder.textView.setText(ellipsizeStr);
+
+        if (textSizes != null && textSizes.length > 0 && textSizes[position] == 0) {
+
+            float thisSize = holder.textView.getPaint().measureText(dataStr);
+
+            if (thisSize > textWidth) {
+                textSizes[position] = textSize - 1;
+            } else {
+                textSizes[position] = textSize;
+            }
+        }
+
+
+        if (position < textSizes.length) {
+            holder.textView.setTextSize(textSizes[position] > 0f ? textSizes[position] : textSize);
+        } else {
+            holder.textView.setTextSize(textSize);
+        }
+
+        if ((position / columnCounts) % 2 == 1) {
+            holder.textView.setBackgroundColor(Color.parseColor("#DCDCDC"));
+
+        } else {
+            holder.textView.setBackgroundColor(Color.parseColor("#ffffff"));
+
+        }
+
+
+//        String ellipsizeStr = (String) TextUtils.ellipsize(dataStr, holder.textView.getPaint(), textWidth - 10, TextUtils.TruncateAt.END);
+
+        holder.textView.setText(dataStr);
 //        int count = position / columnCounts;
 //        if(count%2!=0){
 //            holder.textView.setBackgroundColor(holder.textView.getContext().getResources().getColor(R.color.table_view_header_bg));
@@ -93,6 +118,7 @@ public class ContentListAdapter extends RecyclerView.Adapter<ContentListAdapter.
 
     public void setColumnCounts(int columnCounts) {
         this.columnCounts = columnCounts;
+        textSizes = new float[mDatas != null ? mDatas.size() : 0];
     }
 
     class ContentViewHolder extends RecyclerView.ViewHolder {
@@ -102,12 +128,18 @@ public class ContentListAdapter extends RecyclerView.Adapter<ContentListAdapter.
             super(view);
             textView = (TextView) view;
 
+            layoutParams = new RecyclerView.LayoutParams(textWidth, textHeight);
+            layoutParams.setMargins(0, 1, 1, 1);
+
+            textView.setLayoutParams(layoutParams);
+
             textView.setGravity(Gravity.CENTER);
 //            textView.setSingleLine(true);
-            textView.setTextSize(textSize);
+            textView.setLines(2);
+            textView.setPadding(2, 0, 2, 0);
             textView.setBackgroundColor(Color.parseColor("#ffffff"));
 //            textView.setBackgroundResource(R.drawable.drawable_table_item);
-//            textView.setEllipsize(TextUtils.TruncateAt.END);
+            textView.setEllipsize(TextUtils.TruncateAt.END);
         }
     }
 }

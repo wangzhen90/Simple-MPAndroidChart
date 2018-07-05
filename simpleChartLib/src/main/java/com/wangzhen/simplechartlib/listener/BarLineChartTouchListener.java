@@ -74,26 +74,29 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
     private VelocityTracker mVelocityTracker;
 
     private long mDecelerationLastTime = 0;
-    private MPPointF mDecelerationCurrentPoint = MPPointF.getInstance(0,0);
-    private MPPointF mDecelerationVelocity = MPPointF.getInstance(0,0);
+    private MPPointF mDecelerationCurrentPoint = MPPointF.getInstance(0, 0);
+    private MPPointF mDecelerationVelocity = MPPointF.getInstance(0, 0);
 
 
     public BarLineChartTouchListener(BarLineChartBase<? extends BarLineScatterCandleBubbleData<? extends IBarLineScatterCandleBubbleDataSet<? extends Entry>>> chart
             , Matrix touchMatrix, float dragTriggerDistance) {
         super(chart);
+        //持有了ViewportHandler的touchatrix，通过这个来操作数据的坐标变化
         this.mMatrix = touchMatrix;
+        //最小拖拽触发距离
         this.mDragTriggerDist = dragTriggerDistance;
+        //最小缩放触发距离
         this.mMinScalePointerDistance = Utils.convertDpToPixel(3.5f);
 
     }
 
     @Override
     public boolean onTouch(View view, MotionEvent event) {
-
+        //初始化一个速度跟踪器，用于拖拽的惯性处理
         if (mVelocityTracker == null) {
             mVelocityTracker = VelocityTracker.obtain();
         }
-
+        //将事件交给速度跟踪器
         mVelocityTracker.addMovement(event);
 
         if (event.getActionMasked() == MotionEvent.ACTION_CANCEL) {
@@ -102,11 +105,12 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
                 mVelocityTracker = null;
             }
         }
+        //如果当前的touchState是NONE的话才将事件交给手势识别器mGestureDetector
 
         if (mTouchMode == NONE) {
             mGestureDetector.onTouchEvent(event);
         }
-
+        //如果既不能缩放也不能拖拽就直接return
         if (!mChart.isDragEnabled() && (!mChart.isScaleXEnabled() && !mChart.isScaleYEnabled()))
             return true;
 
@@ -192,13 +196,12 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
                             }
 
                         } else {
-                            //TODO 弹框先不处理
-//                            if (mChart.isHighlightPerDragEnabled()) {
-//                                mLastGesture = ChartGesture.DRAG;
-//
-//                                if (mChart.isHighlightPerDragEnabled())
-//                                    performHighlightDrag(event);
-//                            }
+                            if (mChart.isHighlightPerDragEnabled()) {
+                                mLastGesture = ChartGesture.DRAG;
+
+                                if (mChart.isHighlightPerDragEnabled())
+                                    performHighlightDrag(event);
+                            }
                         }
                     }
                 }
@@ -485,9 +488,9 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
         return super.onFling(e1, e2, velocityX, velocityY);
     }
 
-    public void computeScroll(){
+    public void computeScroll() {
         //滑动的终止条件
-        if(mDecelerationVelocity.x == 0.f && mDecelerationVelocity.y == 0.f){
+        if (mDecelerationVelocity.x == 0.f && mDecelerationVelocity.y == 0.f) {
             return;
         }
         final long currentTime = AnimationUtils.currentAnimationTimeMillis();
@@ -505,8 +508,8 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
         mDecelerationCurrentPoint.x += distanceX;
         mDecelerationCurrentPoint.y += distanceY;
 
-        MotionEvent event = MotionEvent.obtain(currentTime,currentTime,MotionEvent.ACTION_MOVE,
-                mDecelerationCurrentPoint.x+distanceX,mDecelerationCurrentPoint.y + distanceY,0);
+        MotionEvent event = MotionEvent.obtain(currentTime, currentTime, MotionEvent.ACTION_MOVE,
+                mDecelerationCurrentPoint.x + distanceX, mDecelerationCurrentPoint.y + distanceY, 0);
 
         //计算总共的偏移量，而不是每次的偏移量，因为在performDrag中会每次重置mMatrix到mSavedMatrix
         float dragDistanceX = mChart.isDragXEnabled() ? mDecelerationCurrentPoint.x - mTouchStartPoint.x : 0.f;
@@ -516,7 +519,7 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
         event.recycle();
 
         // 注意此处不要刷新，因为要用postinvalidate
-        mMatrix = mChart.getViewPortHandler().refresh(mMatrix,mChart,false);
+        mMatrix = mChart.getViewPortHandler().refresh(mMatrix, mChart, false);
 
         mDecelerationLastTime = currentTime;
 
@@ -524,7 +527,7 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
         if (Math.abs(mDecelerationVelocity.x) >= 0.01 || Math.abs(mDecelerationVelocity.y) >= 0.01)
             Utils.postInvalidateOnAnimation(mChart); // This causes computeScroll to fire, recommended for this by Google
         else {
-           //滑动之后，y轴可显示的rang的范围可能改变了，这时候需要重新计算
+            //滑动之后，y轴可显示的rang的范围可能改变了，这时候需要重新计算
             // Range might have changed, which means that Y-axis labels
             // could have changed in size, affecting Y-axis size.
             // So we need to recalculate offsets.
@@ -535,6 +538,15 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
         }
     }
 
+    private void performHighlightDrag(MotionEvent e) {
+        Highlight h = mChart.getHighlightByTouchPoint(e.getX(), e.getY());
+
+        if (h != null && !h.equalTo(mLastHighlighted)) {
+            mLastHighlighted = h;
+            mChart.highlightValue(h, true);
+        }
+
+    }
 
 
 }

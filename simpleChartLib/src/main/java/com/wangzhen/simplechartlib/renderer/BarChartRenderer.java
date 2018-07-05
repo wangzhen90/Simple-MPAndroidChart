@@ -82,6 +82,7 @@ public class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
         float phaseX = 1f;
         float phaseY = 1f;
 
+        //1.初始化buffer
         BarBuffer buffer = mBarBuffers[index];
         buffer.setPhases(phaseX, phaseY);
         buffer.setDataSet(index);
@@ -98,6 +99,7 @@ public class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
             mRenderPaint.setColor(dataSet.getColor());
         }
 
+        //2.遍历buffer绘制矩形
         for (int j = 0; j < buffer.size(); j += 4) {
             //如果这个bar的right 小于 content的left就不绘制
             if (!mViewPortHandler.isInBoundsLeft(buffer.buffer[j + 2]))
@@ -123,28 +125,24 @@ public class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
 
         if (isDrawingValuesAllowed(mChart)) {
             List<IBarDataSet> datasets = mChart.getBarData().getDataSets();
-
             final float valueOffsetPlus = Utils.convertDpToPixel(4.5f);
             float posOffset = 0f;
             float negOffset = 0f;
-            //TODO
 //            boolean drawValueAboveBar = mChart.isDrawValueAboveBarEnabled();
             boolean drawValueAboveBar = true;
 
             for (int i = 0; i < mChart.getBarData().getDataSetCount(); i++) {
-
+                //0.获取要绘制的dataSet
                 IBarDataSet dataSet = datasets.get(i);
-
+                //1.是否要绘制文字
                 if (!shouldDrawValues(dataSet)) {
                     continue;
                 }
-
 //                mValuePaint.setTextSize(dataSet.getValueTextSize());
-
 //                boolean isInverted = mChart.isInverted(dataSet.getAxisDependency());
                 boolean isInverted = false;
+                //2.计算文字的高度
                 float valueTextHeight = Utils.calcTextHeight(mValuePaint, "8");
-                //TODO 怎么感觉写反了？
                 posOffset = (drawValueAboveBar ? -valueOffsetPlus : valueTextHeight + valueOffsetPlus);
                 negOffset = (drawValueAboveBar ? valueTextHeight + valueOffsetPlus : -valueOffsetPlus);
 
@@ -152,51 +150,48 @@ public class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
                     posOffset = -posOffset - valueTextHeight;
                     negOffset = -negOffset - valueTextHeight;
                 }
-                //获取buffer
+                //3.获取buffer
                 BarBuffer buffer = mBarBuffers[i];
                 //TODO 动画相关，暂不考虑
 //                final float phaseY = mAnimator.getPhaseY();
                 final float phaseY = 1;
 
-
+                //4.遍历属于该dataSet下的buffer绘制文字
                 if (!dataSet.isStacked()) {
                     // TODO 动画相关，暂不考虑
 //                    for (int j = 0; j < buffer.buffer.length * mAnimator.getPhaseX(); j += 4) {
+                    //
                     for (int j = 0; j < buffer.buffer.length; j += 4) {
-                        //x的位置在bar的中心
+                        //5.文字的中心位置在bar的中心
                         float x = (buffer.buffer[j] + buffer.buffer[j + 2]) / 2f;
-                        //从左向右绘制，如果某个value的x超过了content的right，直接跳出循环
+                        //6.从左向右绘制，如果某个value的x超过了content的right则不绘制
                         if (!mViewPortHandler.isInBoundsRight(x))
                             break;
-
+                        //7.不在可见区域中的数据不会只文字
                         if (!mViewPortHandler.isInBoundsY(buffer.buffer[j + 1])
                                 || !mViewPortHandler.isInBoundsLeft(x))
                             continue;
 
                         BarEntry entry = dataSet.getEntryForIndex(j / 4);
 
+                        //8.获取绘制的文字原始值，如果设置了valueFormatter，就会格式化一下这个原始值
                         float val = entry.getY();
 
                         if (dataSet.isDrawValuesEnabled()) {
+                            //9.开始绘制文字
 
-                            drawValue(c, dataSet.getValueFormatter(), val, entry, i, x,
-                                    val >= 0 ? (buffer.buffer[j + 1] + posOffset) : (buffer.buffer[j + 3] + negOffset),
+                            drawValue(c, dataSet.getValueFormatter(), val, entry, i,
+                                    x,//绘制文字的x中心点
+                                    val >= 0 ? (buffer.buffer[j + 1] + posOffset) : (buffer.buffer[j + 3] + negOffset),//文字的top点，就是bar的top加上文字的高度
                                     dataSet.getValueTextColor()
                             );
                         }
-
-
                     }
                 } else {
                     //TODO 堆叠图暂不考虑
                 }
-
-
             }
-
         }
-
-
     }
 
     @Override
