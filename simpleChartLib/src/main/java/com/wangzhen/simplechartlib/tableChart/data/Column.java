@@ -1,5 +1,7 @@
 package com.wangzhen.simplechartlib.tableChart.data;
 
+import com.wangzhen.simplechartlib.tableChart.interfaces.cell.Cell;
+
 import java.util.List;
 
 /**

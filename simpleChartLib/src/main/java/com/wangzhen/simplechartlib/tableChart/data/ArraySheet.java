@@ -1,5 +1,9 @@
 package com.wangzhen.simplechartlib.tableChart.data;
 
+import com.wangzhen.simplechartlib.tableChart.interfaces.CellRange;
+import com.wangzhen.simplechartlib.tableChart.interfaces.Sheet;
+import com.wangzhen.simplechartlib.tableChart.interfaces.cell.Cell;
+
 import java.lang.reflect.Array;
 import java.util.List;
 
@@ -7,7 +11,7 @@ import java.util.List;
  * Created by wangzhen on 2018/7/2.
  */
 
-public class TableData<T> {
+public class ArraySheet<T> implements Sheet{
 
     private  T[][] data;
     public String tableName;
@@ -67,7 +71,49 @@ public class TableData<T> {
     }
 
 
+    @Override
+    public int getRows() {
+        return 0;
+    }
 
+    @Override
+    public int getColumns() {
+        return 0;
+    }
 
+    @Override
+    public Cell[] getRow(int rowIndex) {
+        return new Cell[0];
+    }
 
+    @Override
+    public Cell[] getColumn(int columnIndex) {
+        return new Cell[0];
+    }
+
+    @Override
+    public String getName() {
+        return null;
+    }
+
+    @Override
+    public boolean isHidden() {
+        return false;
+    }
+
+    @Override
+    public CellRange[] getMergedCells() {
+
+        return new CellRange[0];
+    }
+
+    @Override
+    public int getColumnWidth(int var1) {
+        return 0;
+    }
+
+    @Override
+    public int getRowHeight(int var1) {
+        return 0;
+    }
 }
