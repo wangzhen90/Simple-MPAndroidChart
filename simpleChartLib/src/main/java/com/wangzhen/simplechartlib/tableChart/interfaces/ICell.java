@@ -1,10 +1,12 @@
-package com.wangzhen.simplechartlib.tableChart.interfaces.cell;
+package com.wangzhen.simplechartlib.tableChart.interfaces;
+
+import com.wangzhen.simplechartlib.tableChart.data.CellType;
 
 /**
  * Created by wangzhen on 2018/6/11.
  */
 
-public interface Cell {
+public interface ICell {
     int getRow();
 
     int getColumn();
@@ -13,7 +15,7 @@ public interface Cell {
 
     String getContents();
 
-//    CellType getType();
+    CellType getType();
 //
 //    CellFormat getCellFormat();
 //

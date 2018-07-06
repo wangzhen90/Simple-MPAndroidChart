@@ -1,25 +1,29 @@
 package com.wangzhen.simplechartlib.tableChart.data;
 
-import com.wangzhen.simplechartlib.tableChart.interfaces.CellRange;
-import com.wangzhen.simplechartlib.tableChart.interfaces.Sheet;
-import com.wangzhen.simplechartlib.tableChart.interfaces.cell.Cell;
+import com.wangzhen.simplechartlib.tableChart.interfaces.ICell;
 
 import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
- * Created by wangzhen on 2018/7/2.
+ * Created by wangzhen on 2018/7/6.
  */
 
-public class ArraySheet<T> implements Sheet{
-
-    private  T[][] data;
-    public String tableName;
-    private List<Column> columns;
-    private List<Column> childColumns;
+public class ArraySheet<T> extends Sheet<T> {
 
 
-    //TODO 2.解析转化后的数据，填充childColumns (参考 TableParser)
+    public ArraySheet(String tableName, List<T> dataList, List columns) {
+
+
+    }
+
+
+    public ArraySheet(String tableName, List columns) {
+        this.tableName = tableName;
+        this.setColumns(columns);
+    }
 
     /**
      * [column][row] => [row][column]
@@ -61,59 +65,42 @@ public class ArraySheet<T> implements Sheet{
         return columnArray;
     }
 
+    public void setData(T[][] data, boolean needTransform) {
 
-    public void setData(T[][] data) {
-        this.data = data;
+        if (needTransform) {
+            setData(transformColumnArray(data));
+        } else {
+            setData(data);
+        }
     }
 
-    public T[][] getData() {
-        return data;
+    //创建有title的data
+    public static <T> ArraySheet<T> createData(String tableName, String[] titleNames, T[][] data) {
+        ArrayList<Column<T>> columns = new ArrayList<>();
+
+        for (int i = 0; i < data.length; i++) {
+            T[] dataArray = data[i];
+            Column<T> column = new Column<>(titleNames[i]);
+            column.setData(Arrays.asList(dataArray));
+            columns.add(column);
+        }
+        ArrayList<T> arrayList = new ArrayList<>(Arrays.asList(data[0]));
+        ArraySheet<T> sheet = new ArraySheet<>(tableName, arrayList);
+        sheet.setData(data);
+
+        return sheet;
     }
 
+    //创建无title的data
+    public static <T> ArraySheet<T> createData(String tableName, T[][] data) {
 
-    @Override
-    public int getRows() {
-        return 0;
+        return createData(tableName, null, data);
     }
 
-    @Override
-    public int getColumns() {
-        return 0;
-    }
+    //TODO 2.解析转化后的数据，填充childColumns (参考 TableParser)
 
-    @Override
-    public Cell[] getRow(int rowIndex) {
-        return new Cell[0];
-    }
 
-    @Override
-    public Cell[] getColumn(int columnIndex) {
-        return new Cell[0];
-    }
 
-    @Override
-    public String getName() {
-        return null;
-    }
 
-    @Override
-    public boolean isHidden() {
-        return false;
-    }
 
-    @Override
-    public CellRange[] getMergedCells() {
-
-        return new CellRange[0];
-    }
-
-    @Override
-    public int getColumnWidth(int var1) {
-        return 0;
-    }
-
-    @Override
-    public int getRowHeight(int var1) {
-        return 0;
-    }
 }

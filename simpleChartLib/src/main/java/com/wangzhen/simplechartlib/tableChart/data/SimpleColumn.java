@@ -6,9 +6,6 @@ package com.wangzhen.simplechartlib.tableChart.data;
 
 public class SimpleColumn extends Column {
 
-
-
-
     @Override
     public int computeWidth() {
         return 0;
