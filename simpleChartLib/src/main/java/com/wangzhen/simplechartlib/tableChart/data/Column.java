@@ -17,6 +17,7 @@ public class Column<T> {
 
     //通过计算获得
     public int width;
+    public int titleHeight;
 
     public int maxWidth;
 
@@ -47,7 +48,7 @@ public class Column<T> {
     }
 
     public Column(String columnName){
-
+        this.columnName = columnName;
     }
 
 
@@ -61,5 +62,14 @@ public class Column<T> {
         return 0;
     }
 
+
+    public int getWidth(){
+
+        return 100;
+    }
+
+    public int getTitleHeight(){
+        return 60;
+    }
 
 }

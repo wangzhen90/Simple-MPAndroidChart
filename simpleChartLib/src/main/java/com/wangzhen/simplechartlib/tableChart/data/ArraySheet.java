@@ -15,15 +15,13 @@ public class ArraySheet<T> extends Sheet<T> {
 
 
     public ArraySheet(String tableName, List<T> dataList, List columns) {
+        super(columns,dataList);
 
 
     }
 
 
-    public ArraySheet(String tableName, List columns) {
-        this.tableName = tableName;
-        this.setColumns(columns);
-    }
+
 
     /**
      * [column][row] => [row][column]
@@ -75,27 +73,27 @@ public class ArraySheet<T> extends Sheet<T> {
     }
 
     //创建有title的data
-    public static <T> ArraySheet<T> createData(String tableName, String[] titleNames, T[][] data) {
-        ArrayList<Column<T>> columns = new ArrayList<>();
-
-        for (int i = 0; i < data.length; i++) {
-            T[] dataArray = data[i];
-            Column<T> column = new Column<>(titleNames[i]);
-            column.setData(Arrays.asList(dataArray));
-            columns.add(column);
-        }
-        ArrayList<T> arrayList = new ArrayList<>(Arrays.asList(data[0]));
-        ArraySheet<T> sheet = new ArraySheet<>(tableName, arrayList);
-        sheet.setData(data);
-
-        return sheet;
-    }
+//    public static <T> ArraySheet<T> createData(String tableName, String[] titleNames, T[][] data) {
+//        ArrayList<Column<T>> columns = new ArrayList<>();
+//
+//        for (int i = 0; i < data.length; i++) {
+//            T[] dataArray = data[i];
+//            Column<T> column = new Column<>(titleNames[i]);
+//            column.setData(Arrays.asList(dataArray));
+//            columns.add(column);
+//        }
+//        ArrayList<T> arrayList = new ArrayList<>(Arrays.asList(data[0]));
+//        ArraySheet<T> sheet = new ArraySheet<>(tableName, arrayList);
+//        sheet.setData(data);
+//
+//        return sheet;
+//    }
 
     //创建无title的data
-    public static <T> ArraySheet<T> createData(String tableName, T[][] data) {
-
-        return createData(tableName, null, data);
-    }
+//    public static <T> ArraySheet<T> createData(String tableName, T[][] data) {
+//
+//        return createData(tableName, null, data);
+//    }
 
     //TODO 2.解析转化后的数据，填充childColumns (参考 TableParser)
 

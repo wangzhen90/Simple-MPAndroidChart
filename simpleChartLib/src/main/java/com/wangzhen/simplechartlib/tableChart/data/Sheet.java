@@ -6,7 +6,6 @@ import com.wangzhen.simplechartlib.tableChart.interfaces.ICellRange;
 import com.wangzhen.simplechartlib.tableChart.interfaces.ISheet;
 import com.wangzhen.simplechartlib.tableChart.interfaces.ICell;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +23,14 @@ public class Sheet<T> implements ISheet {
     private List<Column<T>> childColumns;
 
     private ArrayList<ICellRange> mergedCells = new ArrayList();
+
+
+    public Sheet(List columns,List data){
+
+        this.columns = columns;
+        this.dataList = data;
+    }
+
 
     public void setData(T[][] data) {
         this.data = data;
@@ -45,7 +52,12 @@ public class Sheet<T> implements ISheet {
 
     @Override
     public int getColumns() {
-        return 0;
+        return columns.size();
+    }
+
+    @Override
+    public List<Column<T>> getColumnList() {
+        return columns;
     }
 
     @Override

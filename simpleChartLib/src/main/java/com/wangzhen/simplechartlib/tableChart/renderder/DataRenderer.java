@@ -1,10 +1,14 @@
 package com.wangzhen.simplechartlib.tableChart.renderder;
 
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 
 import com.wangzhen.simplechartlib.data.entry.Entry;
 import com.wangzhen.simplechartlib.formatter.IValueFormatter;
 import com.wangzhen.simplechartlib.highlight.Highlight;
+import com.wangzhen.simplechartlib.tableChart.component.TableChart;
+import com.wangzhen.simplechartlib.utils.Utils;
 import com.wangzhen.simplechartlib.utils.ViewPortHandler;
 
 /**
@@ -12,8 +16,30 @@ import com.wangzhen.simplechartlib.utils.ViewPortHandler;
  */
 
 public abstract class DataRenderer extends Renderer {
+
+
+    protected Paint mValuePaint;
+
+    protected Paint mGridPaint;
+
+
+
     public DataRenderer(ViewPortHandler viewPortHandler) {
+
+
         super(viewPortHandler);
+
+        mValuePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mValuePaint.setTextAlign(Paint.Align.CENTER);
+        mValuePaint.setTextSize(Utils.convertDpToPixel(15f));
+        mValuePaint.setColor(Color.parseColor("#000000"));
+
+
+        mGridPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mGridPaint.setStrokeWidth(1);
+        mGridPaint.setColor(Color.parseColor("#000000"));
+        mGridPaint.setStyle(Paint.Style.STROKE);
+
     }
 
 
@@ -21,6 +47,7 @@ public abstract class DataRenderer extends Renderer {
 
     public abstract void drawData(Canvas c);
     public abstract void drawValues(Canvas c);
+    public abstract void drawTitle(Canvas c);
 
 
     public abstract void drawExtras(Canvas c);

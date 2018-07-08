@@ -1,14 +1,20 @@
 package com.wangzhen.simplechartlib.tableChart.interfaces;
 
+import com.wangzhen.simplechartlib.tableChart.data.Column;
+
+import java.util.List;
+
 /**
  * Created by wangzhen on 2018/7/5.
  */
 
-public interface ISheet {
+public interface ISheet<T> {
 
     int getRows();
 
     int getColumns();
+
+    List<Column<T>> getColumnList();
 
     ICell[] getRow(int rowIndex);
 

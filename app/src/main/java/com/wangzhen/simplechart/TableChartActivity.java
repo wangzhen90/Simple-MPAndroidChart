@@ -3,20 +3,23 @@ package com.wangzhen.simplechart;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import com.wangzhen.tabelchart.tableView.DensityUtils;
-import com.wangzhen.tabelchart.tableView.TableView;
+import com.wangzhen.simplechartlib.tableChart.component.TableChart;
+import com.wangzhen.simplechartlib.tableChart.data.Cell;
+import com.wangzhen.simplechartlib.tableChart.data.Column;
+import com.wangzhen.simplechartlib.tableChart.data.Sheet;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class TableChartActivity extends AppCompatActivity {
-    TableView tableView;
+    TableChart tableChart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_table_chart);
 
-        tableView = new TableView(findViewById(R.id.tableView));
+        tableChart = findViewById(R.id.tableView);
 
         initData();
     }
@@ -24,46 +27,25 @@ public class TableChartActivity extends AppCompatActivity {
 
     void initData() {
 
-        ArrayList<String> titleDatas = new ArrayList<>();
-        ArrayList<String> tableDatas = new ArrayList<>();
-
-        int itemWidth = DensityUtils.dip2px(this,90);
-
-
-        for (int i = 0; i < 10; i++) {
-            titleDatas.add("标题" + i);
+        List<Column> columns = new ArrayList<>();
+        for(int i = 0; i<50;i++){
+            columns.add( new Column("标题"+i));
         }
 
+        List<Cell> cells = new ArrayList<>();
 
 
-        for (int j = 0; j < 500; j++) {
-            if(j%10 == 2){
-                tableDatas.add("8888888888888888888");
+        for(int i = 0; i < columns.size();i++){
 
-            }else if(j == 1){
-                tableDatas.add("客户："+j);
-            }
-            else if(j%10 == 1){
-                tableDatas.add("测试很长很长很长的汉字，测试很长很长很长很长的汉字");
-
-            }else{
-                tableDatas.add("客户："+j);
-
-            }
+           for(int j = 0; j < 20;j++){
+               cells.add(new Cell(i,j,"标题"+j));
+           }
         }
 
+        Sheet<Cell> sheet = new Sheet<>(columns,cells);
 
-//        tableView
-//                .setTitleDatas(titleDatas)
-//                .setContentDatas(tableDatas)
-//                .setTitleSize(15)
-//                .setTextSize(13)
-//                .setTitleBackGroundColor(this.getResources().getColor(R.color.table_view_divider_color))
-//                .setTextHeight(DensityUtils.dip2px(this, 30))
-//                .setTextWidth(itemWidth)
-//                .setTitleWidth(itemWidth)
-//                .setTitleHeight(DensityUtils.dip2px(this, 36))
-//                .show();
+        tableChart.setSheet(sheet);
+
     }
 
 }
