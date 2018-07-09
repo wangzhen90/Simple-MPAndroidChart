@@ -44,6 +44,9 @@ public class TableChart extends ViewGroup {
     protected ChartTouchListener mChartTouchListener;
 
     protected boolean mTouchEnable = true;
+    //惯性减速系数
+    private float mDragDecelerationFrictionCoef = 0.9f;
+
 
 
     public TableChart(Context context) {
@@ -253,7 +256,27 @@ public class TableChart extends ViewGroup {
         }else{
             return mChartTouchListener.onTouch(this,event);
         }
+    }
 
+    public float getDragDecelerationFrictionCoef() {
+        return mDragDecelerationFrictionCoef;
+    }
 
+    public void setDragDecelerationFrictionCoef(float newValue) {
+
+        if (newValue < 0.f)
+            newValue = 0.f;
+
+        if (newValue >= 1f)
+            newValue = 0.999f;
+
+        mDragDecelerationFrictionCoef = newValue;
+    }
+
+    @Override
+    public void computeScroll() {
+        if(mChartTouchListener != null){
+            mChartTouchListener.computeScroll();
+        }
     }
 }

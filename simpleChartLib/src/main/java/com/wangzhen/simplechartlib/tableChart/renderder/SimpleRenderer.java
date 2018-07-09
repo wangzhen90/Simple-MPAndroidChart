@@ -32,7 +32,7 @@ public class SimpleRenderer extends DataRenderer {
 
     @Override
     public void initBuffers() {
-        mTitleBuffer = new ColumnBuffer(mChart.getColumnCount() * 4,mChart.getColumnCount());
+        mTitleBuffer = new ColumnBuffer(mChart.getColumnCount() * 4, mChart.getColumnCount());
     }
 
     @Override
@@ -48,22 +48,21 @@ public class SimpleRenderer extends DataRenderer {
     @Override
     public void drawTitle(Canvas c) {
         transformer = mChart.getTransformer();
-        if(transformer == null) return;
+        if (transformer == null) return;
 
         mTitleBuffer.feed(mChart.getColumnList());
         transformer.pointValuesToPixel(mTitleBuffer.buffer);
 
-        for(int i = 0; i < mTitleBuffer.size(); i+=4){
-            if((mTitleBuffer.buffer[i] > mViewPortHandler.contentRight()) || (mTitleBuffer.buffer[i+2] < mViewPortHandler.contentLeft())){
+        for (int i = 0; i < mTitleBuffer.size(); i += 4) {
+            if ((mTitleBuffer.buffer[i] > mViewPortHandler.contentRight()) || (mTitleBuffer.buffer[i + 2] < mViewPortHandler.contentLeft())) {
                 continue;
             }
             c.drawRect(mTitleBuffer.buffer[i], mTitleBuffer.buffer[i + 1], mTitleBuffer.buffer[i + 2],
-                    mTitleBuffer.buffer[i + 3],mGridPaint);
-            Utils.drawSingleText(c,mValuePaint,
-                    Utils.getTextCenterX(mTitleBuffer.buffer[i], mTitleBuffer.buffer[i+2], mValuePaint),
-                    Utils.getTextCenterY((mTitleBuffer.buffer[i+1] + mTitleBuffer.buffer[i+3])/2, mValuePaint),
-                    mTitleBuffer.columnNames[i/4]
-            );
+                    mTitleBuffer.buffer[i + 3], mGridPaint);
+            Utils.drawSingleText(c, mValuePaint,
+                    Utils.getTextCenterX(mTitleBuffer.buffer[i], mTitleBuffer.buffer[i + 2], mValuePaint),
+                    Utils.getTextCenterY((mTitleBuffer.buffer[i + 1] + mTitleBuffer.buffer[i + 3]) / 2, mValuePaint),
+                    mTitleBuffer.columnNames[i / 4]);
         }
 
 
