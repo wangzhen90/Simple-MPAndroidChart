@@ -121,13 +121,14 @@ public class ChartTouchListener implements View.OnTouchListener {
                     if (mSavedDist > 10f) {
                         if (mChart.isPinchZoomEnabled()) {
                             mCurrentTouchMode = PINCH_ZOOM;
-                        } else {
-                            if (mChart.isScaleXEnabled() != mChart.isScaleYEnabled()) {
-                                mCurrentTouchMode = mChart.isScaleXEnabled() ? X_ZOOM : Y_ZOOM;
-                            } else {
-                                mCurrentTouchMode = mSavedXDist > mSavedYDist ? X_ZOOM : Y_ZOOM;
-                            }
                         }
+//                        else {
+//                            if (mChart.isScaleXEnabled() != mChart.isScaleYEnabled()) {
+//                                mCurrentTouchMode = mChart.isScaleXEnabled() ? X_ZOOM : Y_ZOOM;
+//                            } else {
+//                                mCurrentTouchMode = mSavedXDist > mSavedYDist ? X_ZOOM : Y_ZOOM;
+//                            }
+//                        }
                     }
                     midPoint(mTouchPointCenter, event);
                 }
@@ -145,9 +146,13 @@ public class ChartTouchListener implements View.OnTouchListener {
                     float y = mChart.isDragYEnabled() ? event.getY() - mTouchStartPoint.y : 0;
 
                     performDrag(event, x, y);
-                } else if (mCurrentTouchMode == X_ZOOM || mCurrentTouchMode == Y_ZOOM || mCurrentTouchMode == PINCH_ZOOM) {
+                } else if ( mCurrentTouchMode == PINCH_ZOOM) {
 
-                    //TODO 缩放
+                    mChart.disableScroll();
+
+                    if(mChart.isPinchZoomEnabled()){
+                        performZoom(event);
+                    }
 
                 } else if (mCurrentTouchMode == NONE
                         && Math.abs(distance(event.getX(), mTouchStartPoint.x, event.getY(), mTouchStartPoint.y)) > mDragTriggerDist) {
@@ -338,6 +343,46 @@ public class ChartTouchListener implements View.OnTouchListener {
             stopDeceleration();
         }
     }
+
+    public MPPointF getTrans(float x, float y) {
+
+        ViewPortHandler vph = mChart.getViewPortHandler();
+
+        float xTrans = x - vph.offsetLeft();
+        float yTrans = -(mChart.getMeasuredHeight() - y - vph.offsetBottom());
+
+        return MPPointF.getInstance(xTrans, yTrans);
+    }
+
+    private void performZoom(MotionEvent event) {
+        if (event.getPointerCount() >= 2) {
+
+            float totalDist = spacing(event);
+            //获得总共的移动
+            MPPointF t = getTrans(mTouchPointCenter.x, mTouchPointCenter.y);
+
+            ViewPortHandler h = mChart.getViewPortHandler();
+
+            if (mCurrentTouchMode == PINCH_ZOOM) {
+                mLastGesture = ChartGesture.PINCH_ZOOM;
+                float scale = totalDist / mSavedDist;
+                boolean isZoomingOut = (scale < 1);
+
+                boolean canZoomMoreX = isZoomingOut ? h.canZoomOutMoreX() : h.canZoomInMoreX();
+                boolean canZoomMoreY = isZoomingOut ? h.canZoomOutMoreY() : h.canZoomInMoreY();
+
+                float scaleX = (mChart.isScaleXEnabled()) ? scale : 1f;
+                float scaleY = (mChart.isScaleYEnabled()) ? scale : 1f;
+                if (canZoomMoreY || canZoomMoreX) {
+                    mOriginMatrix.set(mSavedMatrix);
+                    //已中心点缩放
+                    mOriginMatrix.postScale(scaleX, scaleY, t.x, t.y);
+                }
+            }
+            MPPointF.recycleInstance(t);
+        }
+    }
+
 
 
 

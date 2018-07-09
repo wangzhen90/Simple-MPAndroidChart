@@ -39,7 +39,7 @@ public class TableChart extends ViewGroup {
     private boolean mDragXEnabled = true;
     private boolean mDragYEnabled = true;
 
-    protected boolean mPinchZoomEnabled = false;
+    protected boolean mPinchZoomEnabled = true;
 
     protected ChartTouchListener mChartTouchListener;
 

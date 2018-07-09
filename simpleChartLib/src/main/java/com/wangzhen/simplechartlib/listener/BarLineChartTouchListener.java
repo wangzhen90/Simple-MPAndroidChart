@@ -373,8 +373,6 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
             }
             MPPointF.recycleInstance(t);
         }
-
-
     }
 
     public MPPointF getTrans(float x, float y) {
