@@ -3,6 +3,7 @@ package com.wangzhen.simplechartlib.utils;
 
 import android.graphics.Matrix;
 import android.graphics.RectF;
+import android.util.Log;
 import android.view.View;
 
 /**
@@ -75,6 +76,10 @@ public class ViewPortHandler {
      * offset that allows the chart to be dragged over its bounds on the x-axis
      */
     private float mTransOffsetY = 0f;
+
+
+    private float mMaxTransX = 0f;
+    private float mMaxTransY = 0f;
 
     /**
      * Constructor - don't forget calling setChartDimens(...)
@@ -421,13 +426,22 @@ public class ViewPortHandler {
 
         mMatrixTouch.set(newMatrix);
 
-        // make sure scale and translation are within their bounds
-        limitTransAndScale(mMatrixTouch, mContentRect);
+        float[] values = new float[9];
+        mMatrixTouch.getValues(values);
 
+        if(values[Matrix.MTRANS_X] != 0){
+            Log.e("======1",mMatrixTouch.toShortString());
+            // make sure scale and translation are within their bounds
+            limitTransAndScale(mMatrixTouch, mContentRect);
+        }
+        Log.e("======2",mMatrixTouch.toShortString());
         if (invalidate)
             chart.invalidate();
 
         newMatrix.set(mMatrixTouch);
+
+        Log.e("ChartTouchListener",newMatrix.toShortString());
+
         return newMatrix;
     }
 
@@ -460,10 +474,23 @@ public class ViewPortHandler {
             height = content.height();
         }
 
-        float maxTransX = -width * (mScaleX - 1f);
+        float maxTransX;
+        if(mMaxTransX > 0){
+            maxTransX = -mMaxTransX * mScaleX + width;
+        }else{
+            maxTransX = -width * (mScaleX - 1f);
+        }
+
         mTransX = Math.min(Math.max(curTransX, maxTransX - mTransOffsetX), mTransOffsetX);
 
-        float maxTransY = height * (mScaleY - 1f);
+        float maxTransY;
+
+        if(mMaxTransY > 0){
+            maxTransY = mMaxTransY * mScaleY - height;
+        }else{
+            maxTransY = height * (mScaleY - 1f);
+        }
+
         mTransY = Math.max(Math.min(curTransY, maxTransY + mTransOffsetY), -mTransOffsetY);
 
         matrixBuffer[Matrix.MTRANS_X] = mTransX;
@@ -755,5 +782,13 @@ public class ViewPortHandler {
      */
     public boolean canZoomInMoreY() {
         return mScaleY < mMaxScaleY;
+    }
+
+    public void setMaxTransX(float mMaxTransX) {
+        this.mMaxTransX = mMaxTransX;
+    }
+
+    public void setMaxTransY(float mMaxTransY) {
+        this.mMaxTransY = mMaxTransY;
     }
 }

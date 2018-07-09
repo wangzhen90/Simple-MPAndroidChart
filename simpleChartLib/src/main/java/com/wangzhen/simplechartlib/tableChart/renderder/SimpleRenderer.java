@@ -7,6 +7,7 @@ import android.graphics.Rect;
 import com.wangzhen.simplechartlib.highlight.Highlight;
 import com.wangzhen.simplechartlib.tableChart.buffer.ColumnBuffer;
 import com.wangzhen.simplechartlib.tableChart.component.TableChart;
+import com.wangzhen.simplechartlib.utils.Transformer;
 import com.wangzhen.simplechartlib.utils.Utils;
 import com.wangzhen.simplechartlib.utils.ViewPortHandler;
 
@@ -21,17 +22,17 @@ public class SimpleRenderer extends DataRenderer {
 
     private ColumnBuffer mTitleBuffer;
     private ColumnBuffer mContentBuffer;
+    private Transformer transformer;
 
     public SimpleRenderer(ViewPortHandler viewPortHandler, TableChart chart) {
         super(viewPortHandler);
         this.mChart = chart;
+
     }
 
     @Override
     public void initBuffers() {
         mTitleBuffer = new ColumnBuffer(mChart.getColumnCount() * 4,mChart.getColumnCount());
-        mTitleBuffer.feed(mChart.getColumnList());
-
     }
 
     @Override
@@ -46,6 +47,11 @@ public class SimpleRenderer extends DataRenderer {
 
     @Override
     public void drawTitle(Canvas c) {
+        transformer = mChart.getTransformer();
+        if(transformer == null) return;
+
+        mTitleBuffer.feed(mChart.getColumnList());
+        transformer.pointValuesToPixel(mTitleBuffer.buffer);
 
         for(int i = 0; i < mTitleBuffer.size(); i+=4){
             if((mTitleBuffer.buffer[i] > mViewPortHandler.contentRight()) || (mTitleBuffer.buffer[i+2] < mViewPortHandler.contentLeft())){

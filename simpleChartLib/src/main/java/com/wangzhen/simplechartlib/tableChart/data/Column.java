@@ -56,6 +56,11 @@ public class Column<T> {
         this.datas = datas;
     }
 
+    public List<T> getData(){
+
+        return datas;
+    }
+
 
     //TODO 列计算宽度：除掉单元格外，计算最长的文字作为其宽度
     public int computeWidth(){

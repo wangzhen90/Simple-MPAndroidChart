@@ -30,4 +30,10 @@ public interface ISheet<T> {
 
     int getRowHeight(int var1);
 
+    int getWidth();
+
+    int getHeight();
+
+    void calculate();
+
 }
