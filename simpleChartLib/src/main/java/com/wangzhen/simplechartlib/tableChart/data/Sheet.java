@@ -24,10 +24,13 @@ public class Sheet<T> implements ISheet {
 
     private int mHeight;
     private int mWidth;
+    private int cellCounts;
 
-    private int rowHeigt = 30;
+    private int rowHeight = 60;
 
     private ArrayList<ICellRange> mergedCells = new ArrayList();
+
+    private int mTitleHeight = 60;
 
 
     public Sheet(List columns, List data) {
@@ -118,19 +121,24 @@ public class Sheet<T> implements ISheet {
     public void calculate() {
         mHeight = 0;
         mWidth = 0;
-        int rowsSum = 0;
-        int titleheight = 0;
+        int maxRowCount = 0;
         for (Column column : columns) {
+            column.setPreColumnsWidth(mWidth);
+            column.setRowHeight(rowHeight);
+            column.setTitleHeight(mTitleHeight);
             mWidth += column.getWidth();
-            titleheight = column.getTitleHeight();
+
             if (column.getData() != null) {
-                if (column.getData().size() > rowsSum) {
-                    rowsSum = column.getData().size();
+                if (column.getData().size() > maxRowCount) {
+                    maxRowCount = column.getData().size();
                 }
             }
         }
 
-        mHeight = rowsSum * rowHeigt + titleheight;
+        mHeight = maxRowCount * rowHeight + mTitleHeight;
+
+        cellCounts = maxRowCount * getColumns();
+
     }
 
 
@@ -152,4 +160,15 @@ public class Sheet<T> implements ISheet {
 
     }
 
+    public int getCellCounts() {
+        return cellCounts;
+    }
+
+    public int getTitleHeight() {
+        return mTitleHeight;
+    }
+
+    public void setTitleHeight(int mTitleHeight) {
+        this.mTitleHeight = mTitleHeight;
+    }
 }

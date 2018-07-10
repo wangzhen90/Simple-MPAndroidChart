@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 
 import com.wangzhen.simplechartlib.tableChart.data.Column;
+import com.wangzhen.simplechartlib.tableChart.data.Sheet;
 import com.wangzhen.simplechartlib.tableChart.interfaces.ISheet;
 import com.wangzhen.simplechartlib.tableChart.listener.ChartTouchListener;
 import com.wangzhen.simplechartlib.tableChart.renderder.DataRenderer;
@@ -47,7 +48,7 @@ public class TableChart extends ViewGroup {
     //惯性减速系数
     private float mDragDecelerationFrictionCoef = 0.9f;
 
-
+    private boolean isTitleFixed = true;
 
     public TableChart(Context context) {
         super(context);
@@ -67,6 +68,8 @@ public class TableChart extends ViewGroup {
 
     private void init(){
         setWillNotDraw(false);
+
+        Utils.init(this.getContext());
         mDataRenderer = new SimpleRenderer(mViewPortHandler,this);
         mTransformer = new Transformer(mViewPortHandler);
 
@@ -85,6 +88,9 @@ public class TableChart extends ViewGroup {
     @Override
     protected void onDraw(Canvas canvas) {
 //        super.onDraw(canvas);
+
+        if (sheet == null)
+            return;
 
         if(mDataRenderer != null){
             mDataRenderer.drawTitle(canvas);
@@ -278,5 +284,17 @@ public class TableChart extends ViewGroup {
         if(mChartTouchListener != null){
             mChartTouchListener.computeScroll();
         }
+    }
+
+    public int getTitleHeight(){
+        return ((Sheet)sheet).getTitleHeight();
+    }
+
+    public boolean isTitleFixed() {
+        return isTitleFixed;
+    }
+
+    public void setTitleFixed(boolean titleFixed) {
+        isTitleFixed = titleFixed;
     }
 }

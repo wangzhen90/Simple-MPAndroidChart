@@ -1,48 +1,43 @@
 package com.wangzhen.simplechartlib.tableChart.buffer;
 
+import com.wangzhen.simplechartlib.tableChart.data.Cell;
 import com.wangzhen.simplechartlib.tableChart.data.Column;
 
 import java.util.List;
 
 /**
- * Created by wangzhen on 2018/7/7.
+ * Created by wangzhen on 2018/7/10.
  */
 
-public class ColumnBuffer extends AbstractBuffer<List<Column>> {
+public class ColumnBuffer extends AbstractBuffer<Column<Cell>> {
 
-    public String[] columnNames;
-
-    public ColumnBuffer(int size,int columnSize) {
+    public ColumnBuffer(int size) {
         super(size);
-        columnNames = new String[columnSize];
     }
 
-    private void addTitle(float left, float top, float right, float bottom){
+
+    private void addCell(int left, int top, int right, int bottom){
         buffer[index++] = left;
         buffer[index++] = top;
         buffer[index++] = right;
         buffer[index++] = bottom;
+
     }
 
     @Override
-    public void feed(List<Column> data) {
-        float size = data.size();
-        int width;
-        int height;
-        for(int i = 0; i < size; i++){
+    public void feed(Column<Cell> column) {
+        int cellSize = column.getData().size();
+        List<Cell> cells = column.getData();
+        Cell cell;
+        for(int i = 0; i < cellSize; i++){
+            cell = cells.get(i);
 
-            Column column = data.get(i);
-            width = column.getWidth();
-            height = column.getTitleHeight();
+            int left = column.getPreColumnsWidth();
+            int top = cell.getRow() * column.getRowHeight();
+            int right = left + column.getWidth();
+            int bottom = top + column.getRowHeight();
 
-            float left = i * width ;
-            float top = 0;
-            float right = left + width;
-            float bottom = top + height;
-
-            addTitle(left,top,right,bottom);
-            columnNames[i] = column.columnName;
-
+            addCell(left,top,right,bottom);
         }
         reset();
     }

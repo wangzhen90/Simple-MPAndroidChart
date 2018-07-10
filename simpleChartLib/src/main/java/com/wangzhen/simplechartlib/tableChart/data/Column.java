@@ -26,7 +26,7 @@ public class Column<T> {
     private List<T> datas;
 
     /**
-     *  子列
+     * 子列
      */
     private List<Column> children;
 
@@ -41,40 +41,63 @@ public class Column<T> {
 
     private boolean isFixed;
 
+    private int preColumnsWidth;
 
+    private int rowHeight;
 
-    public Column(){
+    public Column() {
 
     }
 
-    public Column(String columnName){
+    public Column(String columnName) {
         this.columnName = columnName;
     }
 
 
-    public void setData(List<T> datas){
+    public void setData(List<T> datas) {
         this.datas = datas;
     }
 
-    public List<T> getData(){
+    public List<T> getData() {
 
         return datas;
     }
 
 
     //TODO 列计算宽度：除掉单元格外，计算最长的文字作为其宽度
-    public int computeWidth(){
+    public int computeWidth() {
         return 0;
     }
 
 
-    public int getWidth(){
+    public int getWidth() {
 
-        return 100;
+        return 200;
     }
 
-    public int getTitleHeight(){
-        return 60;
+    public int getTitleHeight() {
+        return titleHeight;
     }
 
+    public void setTitleHeight(int titleHeight) {
+        this.titleHeight = titleHeight;
+    }
+
+
+    public void setPreColumnsWidth(int width) {
+        this.preColumnsWidth = width;
+    }
+
+    public int getPreColumnsWidth() {
+        return preColumnsWidth;
+    }
+
+
+    public int getRowHeight() {
+        return rowHeight;
+    }
+
+    public void setRowHeight(int rowHeight) {
+        this.rowHeight = rowHeight;
+    }
 }

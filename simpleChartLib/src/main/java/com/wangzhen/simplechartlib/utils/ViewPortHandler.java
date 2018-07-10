@@ -486,12 +486,14 @@ public class ViewPortHandler {
         float maxTransY;
 
         if(mMaxTransY > 0){
-            maxTransY = mMaxTransY * mScaleY - height;
+            maxTransY = -mMaxTransY * mScaleY + height;
+            mTransY = Math.min(Math.max(curTransY, maxTransY - mTransOffsetY), mTransOffsetY);
         }else{
             maxTransY = height * (mScaleY - 1f);
+            mTransY = Math.max(Math.min(curTransY, maxTransY + mTransOffsetY), -mTransOffsetY);
         }
 
-        mTransY = Math.max(Math.min(curTransY, maxTransY + mTransOffsetY), -mTransOffsetY);
+
 
         matrixBuffer[Matrix.MTRANS_X] = mTransX;
         matrixBuffer[Matrix.MSCALE_X] = mScaleX;

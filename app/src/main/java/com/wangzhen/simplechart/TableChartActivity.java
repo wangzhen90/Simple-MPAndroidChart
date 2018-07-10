@@ -32,17 +32,17 @@ public class TableChartActivity extends AppCompatActivity {
             columns.add( new Column("标题"+i));
         }
 
-        List<Cell> cells = new ArrayList<>();
-
 
         for(int i = 0; i < columns.size();i++){
-
+            List<Cell> cells = new ArrayList<>();
            for(int j = 0; j < 20;j++){
-               cells.add(new Cell(i,j,"标题"+j));
+               cells.add(new Cell(j,i,"内容"+i+"-"+j));
            }
+
+           columns.get(i).setData(cells);
         }
 
-        Sheet<Cell> sheet = new Sheet<>(columns,cells);
+        Sheet<Cell> sheet = new Sheet<>(columns,null);
 
         tableChart.setSheet(sheet);
 

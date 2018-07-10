@@ -22,6 +22,8 @@ public abstract class DataRenderer extends Renderer {
 
     protected Paint mGridPaint;
 
+    protected Paint mTitleValuePaint;
+
 
 
     public DataRenderer(ViewPortHandler viewPortHandler) {
@@ -31,8 +33,13 @@ public abstract class DataRenderer extends Renderer {
 
         mValuePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mValuePaint.setTextAlign(Paint.Align.CENTER);
-        mValuePaint.setTextSize(Utils.convertDpToPixel(15f));
+        mValuePaint.setTextSize(Utils.convertDpToPixel(9f));
         mValuePaint.setColor(Color.parseColor("#000000"));
+
+        mTitleValuePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mTitleValuePaint.setTextAlign(Paint.Align.CENTER);
+        mTitleValuePaint.setTextSize(Utils.convertDpToPixel(9f));
+        mTitleValuePaint.setColor(Color.parseColor("#000000"));
 
 
         mGridPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
