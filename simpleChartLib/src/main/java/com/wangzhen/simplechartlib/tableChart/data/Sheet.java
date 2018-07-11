@@ -5,6 +5,7 @@ import android.util.Log;
 import com.wangzhen.simplechartlib.tableChart.interfaces.ICellRange;
 import com.wangzhen.simplechartlib.tableChart.interfaces.ISheet;
 import com.wangzhen.simplechartlib.tableChart.interfaces.ICell;
+import com.wangzhen.simplechartlib.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.List;
  * Created by wangzhen on 2018/7/2.
  */
 
-public class Sheet<T> implements ISheet {
+public class Sheet<T extends Cell> implements ISheet {
 
     private static final String TAG = Sheet.class.getSimpleName();
     private T[][] data;
@@ -27,6 +28,10 @@ public class Sheet<T> implements ISheet {
     private int cellCounts;
 
     private int rowHeight = 60;
+
+    private int columnLeftOffset = 30;
+    private int columnRightOffset= 30;
+
 
     private ArrayList<ICellRange> mergedCells = new ArrayList();
 
@@ -123,9 +128,16 @@ public class Sheet<T> implements ISheet {
         mWidth = 0;
         int maxRowCount = 0;
         for (Column column : columns) {
+
+            column.fillPaint(Utils.paint);
+            column.setLeftOffset(columnLeftOffset);
+            column.setRightOffset(columnRightOffset);
+
+            column.computeWidth();
             column.setPreColumnsWidth(mWidth);
             column.setRowHeight(rowHeight);
             column.setTitleHeight(mTitleHeight);
+
             mWidth += column.getWidth();
 
             if (column.getData() != null) {

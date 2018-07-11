@@ -1,5 +1,6 @@
 package com.wangzhen.simplechartlib.tableChart.interfaces;
 
+import com.wangzhen.simplechartlib.tableChart.data.Cell;
 import com.wangzhen.simplechartlib.tableChart.data.Column;
 
 import java.util.List;
@@ -8,7 +9,7 @@ import java.util.List;
  * Created by wangzhen on 2018/7/5.
  */
 
-public interface ISheet<T> {
+public interface ISheet<T extends Cell> {
 
     int getRows();
 

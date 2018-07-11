@@ -139,11 +139,14 @@ public class SimpleRenderer extends DataRenderer {
 
             }
 
+
             c.drawRect(left,top,right,bottom, mGridPaint);
             Utils.drawSingleText(c, mTitleValuePaint,
                     Utils.getTextCenterX(left, right, mValuePaint),
                     Utils.getTextCenterY((top + bottom) / 2, mValuePaint),
                     mTitleBuffer.columnNames[i / 4]);
+
+
         }
 
 

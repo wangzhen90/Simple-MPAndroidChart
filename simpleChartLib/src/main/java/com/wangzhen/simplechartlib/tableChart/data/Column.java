@@ -1,6 +1,9 @@
 package com.wangzhen.simplechartlib.tableChart.data;
 
+import android.graphics.Paint;
+
 import com.wangzhen.simplechartlib.tableChart.interfaces.ICell;
+import com.wangzhen.simplechartlib.utils.Utils;
 
 import java.util.List;
 
@@ -8,7 +11,7 @@ import java.util.List;
  * Created by wangzhen on 2018/6/11.
  */
 
-public class Column<T> {
+public class Column<T extends Cell> {
 
 
     public String columnName;
@@ -16,7 +19,6 @@ public class Column<T> {
     public int columnIndex;
 
     //通过计算获得
-    public int width;
     public int titleHeight;
 
     public int maxWidth;
@@ -37,13 +39,20 @@ public class Column<T> {
 
     private boolean autoComputeSize;
 
-    public String longestString;
+    public String longestString = "";
 
     private boolean isFixed;
 
     private int preColumnsWidth;
 
     private int rowHeight;
+
+    private int columnWidth = 0;
+
+
+    private int leftOffset;
+    private int rightOffset;
+
 
     public Column() {
 
@@ -64,15 +73,39 @@ public class Column<T> {
     }
 
 
-    //TODO 列计算宽度：除掉单元格外，计算最长的文字作为其宽度
     public int computeWidth() {
-        return 0;
+
+        columnWidth = Utils.calcTextWidth(Utils.paint,columnName);
+
+        int cellWidth = 0;
+
+        if(datas != null){
+            String cellContent;
+            for(int i = 0; i < datas.size(); i++){
+                cellContent = datas.get(i).getContents();
+                if(cellContent.length() > longestString.length()){
+                    longestString = cellContent;
+                    cellWidth = Utils.calcTextWidth(Utils.paint,cellContent);
+                }
+            }
+        }
+
+        columnWidth = Math.max(columnWidth,cellWidth) + leftOffset + rightOffset;
+
+        return columnWidth;
+    }
+
+
+    public void fillPaint(Paint paint){
+        paint.setTextSize(Utils.convertDpToPixel(9f));
+
     }
 
 
     public int getWidth() {
 
-        return 200;
+        return columnWidth;
+//        return 200;
     }
 
     public int getTitleHeight() {
@@ -99,5 +132,21 @@ public class Column<T> {
 
     public void setRowHeight(int rowHeight) {
         this.rowHeight = rowHeight;
+    }
+
+    public int getLeftOffset() {
+        return leftOffset;
+    }
+
+    public void setLeftOffset(int leftOffset) {
+        this.leftOffset = leftOffset;
+    }
+
+    public int getRightOffset() {
+        return rightOffset;
+    }
+
+    public void setRightOffset(int rightOffset) {
+        this.rightOffset = rightOffset;
     }
 }

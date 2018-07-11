@@ -35,7 +35,7 @@ public class TitleBuffer extends AbstractBuffer<List<Column>> {
             width = column.getWidth();
             height = column.getTitleHeight();
 
-            float left = i * width ;
+            float left = column.getPreColumnsWidth() ;
             float top = 0;
             float right = left + width;
             float bottom = top + height;

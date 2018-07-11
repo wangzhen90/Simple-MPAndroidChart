@@ -49,6 +49,8 @@ public abstract class Utils {
     @SuppressWarnings("unused")
     public final static float FLOAT_EPSILON = Float.intBitsToFloat(1);
 
+    public static Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+
     /**
      * initialize method, called inside the Chart.init() method.
      *

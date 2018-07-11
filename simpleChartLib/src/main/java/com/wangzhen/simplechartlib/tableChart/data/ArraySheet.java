@@ -11,7 +11,7 @@ import java.util.List;
  * Created by wangzhen on 2018/7/6.
  */
 
-public class ArraySheet<T> extends Sheet<T> {
+public class ArraySheet<T extends Cell> extends Sheet<T> {
 
 
     public ArraySheet(String tableName, List<T> dataList, List columns) {
