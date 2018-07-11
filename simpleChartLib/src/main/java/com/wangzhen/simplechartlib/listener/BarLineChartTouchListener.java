@@ -2,6 +2,7 @@ package com.wangzhen.simplechartlib.listener;
 
 import android.graphics.Matrix;
 import android.support.v4.view.MotionEventCompat;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
@@ -512,6 +513,8 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
         //计算总共的偏移量，而不是每次的偏移量，因为在performDrag中会每次重置mMatrix到mSavedMatrix
         float dragDistanceX = mChart.isDragXEnabled() ? mDecelerationCurrentPoint.x - mTouchStartPoint.x : 0.f;
         float dragDistanceY = mChart.isDragYEnabled() ? mDecelerationCurrentPoint.y - mTouchStartPoint.y : 0.f;
+        Log.e("6========","dragDistanceX:"+dragDistanceX+",dragDistanceY:"+dragDistanceY);
+
         performDrag(event, dragDistanceX, dragDistanceY);
 
         event.recycle();
@@ -521,6 +524,7 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
 
         mDecelerationLastTime = currentTime;
 
+        Log.e("6========","mDecelerationVelocity.x:"+mDecelerationVelocity.x+",mDecelerationVelocity.y:"+mDecelerationVelocity.y);
 
         if (Math.abs(mDecelerationVelocity.x) >= 0.01 || Math.abs(mDecelerationVelocity.y) >= 0.01)
             Utils.postInvalidateOnAnimation(mChart); // This causes computeScroll to fire, recommended for this by Google

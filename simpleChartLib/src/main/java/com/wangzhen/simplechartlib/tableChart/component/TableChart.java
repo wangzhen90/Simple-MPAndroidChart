@@ -3,6 +3,7 @@ package com.wangzhen.simplechartlib.tableChart.component;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -74,7 +75,7 @@ public class TableChart extends ViewGroup {
         mTransformer = new Transformer(mViewPortHandler);
 
 
-        mChartTouchListener = new ChartTouchListener(this,mViewPortHandler.getMatrixTouch(),3f);
+        mChartTouchListener = new ChartTouchListener(this,mViewPortHandler.getMatrixTouch(),5f);
     }
 
 
@@ -96,8 +97,6 @@ public class TableChart extends ViewGroup {
             mDataRenderer.drawTitle(canvas);
             mDataRenderer.drawData(canvas);
         }
-
-
     }
 
     public void setSheet(ISheet sheet){
@@ -296,5 +295,9 @@ public class TableChart extends ViewGroup {
 
     public void setTitleFixed(boolean titleFixed) {
         isTitleFixed = titleFixed;
+    }
+
+    public boolean hasNoDragOffset() {
+        return mViewPortHandler.hasNoDragOffset();
     }
 }

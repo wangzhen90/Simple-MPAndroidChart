@@ -28,7 +28,7 @@ public class TableChartActivity extends AppCompatActivity {
     void initData() {
 
         List<Column> columns = new ArrayList<>();
-        for(int i = 0; i<50;i++){
+        for(int i = 0; i<20;i++){
 
             columns.add( new Column(i == 1 ? "标题比较长比较长比较长"+i : "标题"+i));
         }
@@ -36,7 +36,7 @@ public class TableChartActivity extends AppCompatActivity {
 
         for(int i = 0; i < columns.size();i++){
             List<Cell> cells = new ArrayList<>();
-           for(int j = 0; j < 20;j++){
+           for(int j = 0; j < 200;j++){
                cells.add(new Cell(j,i,"内容"+i+"-"+j));
            }
 

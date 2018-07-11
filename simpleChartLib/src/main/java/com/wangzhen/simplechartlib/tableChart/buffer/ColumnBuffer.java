@@ -16,7 +16,7 @@ public class ColumnBuffer extends AbstractBuffer<Column<Cell>> {
     }
 
 
-    private void addCell(int left, int top, int right, int bottom){
+    private void addCell(int left, int top, int right, int bottom) {
         buffer[index++] = left;
         buffer[index++] = top;
         buffer[index++] = right;
@@ -29,15 +29,17 @@ public class ColumnBuffer extends AbstractBuffer<Column<Cell>> {
         int cellSize = column.getData().size();
         List<Cell> cells = column.getData();
         Cell cell;
-        for(int i = 0; i < cellSize; i++){
+        int left, top, right, bottom;
+
+        for (int i = 0; i < cellSize; i++) {
             cell = cells.get(i);
 
-            int left = column.getPreColumnsWidth();
-            int top = cell.getRow() * column.getRowHeight();
-            int right = left + column.getWidth();
-            int bottom = top + column.getRowHeight();
+            left = column.getPreColumnsWidth();
+            top = cell.getRow() * column.getRowHeight();
+            right = left + column.getWidth();
+            bottom = top + column.getRowHeight();
 
-            addCell(left,top,right,bottom);
+            addCell(left, top, right, bottom);
         }
         reset();
     }

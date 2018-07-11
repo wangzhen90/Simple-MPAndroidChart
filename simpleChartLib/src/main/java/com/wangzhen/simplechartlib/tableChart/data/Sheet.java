@@ -157,7 +157,7 @@ public class Sheet<T extends Cell> implements ISheet {
     public ICellRange mergeCells(int firstRow, int firstColumn, int lastRow, int lastColumn) {
 
         if (lastColumn < firstColumn || lastRow < firstRow) {
-            Log.e(TAG, "Cannot merge cells - top left and bottom right incorrectly specified");
+//            Log.e(TAG, "Cannot merge cells - top left and bottom right incorrectly specified");
         }
 
         //TODO 如果超出了最大行数和列数，就添加这个cell

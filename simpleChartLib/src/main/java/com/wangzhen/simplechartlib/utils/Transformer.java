@@ -134,10 +134,9 @@ public class Transformer {
      * @param pts
      */
     public void pointValuesToPixel(float[] pts) {
-
+        long s = System.currentTimeMillis();
         mMatrixValueToPx.mapPoints(pts);
         mViewPortHandler.getMatrixTouch().mapPoints(pts);
-        long s = System.currentTimeMillis();
         mMatrixOffset.mapPoints(pts);
         Log.e("mapPoints","count: "+ pts.length+",mapPoints time:" +(System.currentTimeMillis() - s));
     }

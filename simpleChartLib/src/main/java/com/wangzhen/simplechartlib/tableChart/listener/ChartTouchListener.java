@@ -139,12 +139,10 @@ public class ChartTouchListener implements View.OnTouchListener {
             case MotionEvent.ACTION_MOVE:
 
                 if (mCurrentTouchMode == DRAG) {
-                    Log.e("ChartTouchListener", "DRAG");
                     mChart.disableScroll();
 
                     float x = mChart.isDragXEnabled() ? event.getX() - mTouchStartPoint.x : 0;
                     float y = mChart.isDragYEnabled() ? event.getY() - mTouchStartPoint.y : 0;
-
                     performDrag(event, x, y);
                 } else if ( mCurrentTouchMode == PINCH_ZOOM) {
 
@@ -220,6 +218,9 @@ public class ChartTouchListener implements View.OnTouchListener {
 
             case MotionEvent.ACTION_POINTER_UP:
 
+                Utils.velocityTrackerPointerUpCleanUpIfNecessary(event, mVelocityTracker);
+
+                mCurrentTouchMode = POST_ZOOM;
                 break;
 
             case MotionEvent.ACTION_CANCEL:
@@ -280,11 +281,18 @@ public class ChartTouchListener implements View.OnTouchListener {
 
         mOriginMatrix.set(mSavedMatrix);
 
-        Log.e("ChartTouchListener", "distanceX:" + distanceX + ",distanceY:" + distanceY);
+//        Log.e("ChartTouchListener", "distanceX:" + distanceX + ",distanceY:" + distanceY);
 
-        mOriginMatrix.postTranslate(distanceX, distanceY);
+        if(Math.abs(distanceX) >= Math.abs(distanceY)){
+            mOriginMatrix.postTranslate(distanceX, 0);
+        }else{
+            mOriginMatrix.postTranslate(0, distanceY);
+        }
 
-        Log.e("ChartTouchListener", "mOriginMatrix:" + mOriginMatrix.toShortString());
+//        mOriginMatrix.postTranslate(distanceX, distanceY);
+
+
+//        Log.e("ChartTouchListener", "mOriginMatrix:" + mOriginMatrix.toShortString());
 
 
     }
@@ -295,6 +303,7 @@ public class ChartTouchListener implements View.OnTouchListener {
         return (float) Math.sqrt(dx * dx + dy * dy);
     }
 
+    private float lastDragDistanceX,lastDragDistanceY;
 
     public void computeScroll() {
         //滑动的终止条件
@@ -322,6 +331,14 @@ public class ChartTouchListener implements View.OnTouchListener {
         //计算总共的偏移量，而不是每次的偏移量，因为在performDrag中会每次重置mMatrix到mSavedMatrix
         float dragDistanceX = mChart.isDragXEnabled() ? mDecelerationCurrentPoint.x - mTouchStartPoint.x : 0.f;
         float dragDistanceY = mChart.isDragYEnabled() ? mDecelerationCurrentPoint.y - mTouchStartPoint.y : 0.f;
+
+        if(Math.abs(lastDragDistanceX - dragDistanceX) < 5 && Math.abs(lastDragDistanceY - dragDistanceY) < 5){
+            stopDeceleration();
+            return;
+        }
+
+
+        Log.e("6========","dragDistanceX:"+dragDistanceX+",dragDistanceY:"+dragDistanceY);
         performDrag(event, dragDistanceX, dragDistanceY);
 
         event.recycle();
@@ -330,10 +347,15 @@ public class ChartTouchListener implements View.OnTouchListener {
         mOriginMatrix = mChart.getViewPortHandler().refresh(mOriginMatrix, mChart, false);
 
         mDecelerationLastTime = currentTime;
+        lastDragDistanceX = dragDistanceX;
+        lastDragDistanceY = dragDistanceY;
 
+        if (Math.abs(mDecelerationVelocity.x) >= 1 || Math.abs(mDecelerationVelocity.y) >= 1){
 
-        if (Math.abs(mDecelerationVelocity.x) >= 0.01 || Math.abs(mDecelerationVelocity.y) >= 0.01)
+            Log.e("6========","mDecelerationVelocity.x:"+mDecelerationVelocity.x+",mDecelerationVelocity.y:"+mDecelerationVelocity.y);
             Utils.postInvalidateOnAnimation(mChart); // This causes computeScroll to fire, recommended for this by Google
+
+        }
         else {
             //滑动之后，y轴可显示的rang的范围可能改变了，这时候需要重新计算
 
