@@ -122,13 +122,13 @@ public class ChartTouchListener implements View.OnTouchListener {
                         if (mChart.isPinchZoomEnabled()) {
                             mCurrentTouchMode = PINCH_ZOOM;
                         }
-//                        else {
-//                            if (mChart.isScaleXEnabled() != mChart.isScaleYEnabled()) {
-//                                mCurrentTouchMode = mChart.isScaleXEnabled() ? X_ZOOM : Y_ZOOM;
-//                            } else {
-//                                mCurrentTouchMode = mSavedXDist > mSavedYDist ? X_ZOOM : Y_ZOOM;
-//                            }
-//                        }
+                        else {
+                            if (mChart.isScaleXEnabled() != mChart.isScaleYEnabled()) {
+                                mCurrentTouchMode = mChart.isScaleXEnabled() ? X_ZOOM : Y_ZOOM;
+                            } else {
+                                mCurrentTouchMode = mSavedXDist > mSavedYDist ? X_ZOOM : Y_ZOOM;
+                            }
+                        }
                     }
                     midPoint(mTouchPointCenter, event);
                 }
@@ -143,8 +143,18 @@ public class ChartTouchListener implements View.OnTouchListener {
 
                     float x = mChart.isDragXEnabled() ? event.getX() - mTouchStartPoint.x : 0;
                     float y = mChart.isDragYEnabled() ? event.getY() - mTouchStartPoint.y : 0;
+
+                    if(mChart.isDragOnlySigleDirection()){
+                        if(Math.abs(x) > Math.abs(y)){
+                            y = 0;
+                        }else{
+                            x = 0;
+                        }
+                    }
+
+
                     performDrag(event, x, y);
-                } else if ( mCurrentTouchMode == PINCH_ZOOM) {
+                } else if ( mCurrentTouchMode == PINCH_ZOOM || mCurrentTouchMode == X_ZOOM || mCurrentTouchMode == Y_ZOOM) {
 
                     mChart.disableScroll();
 
@@ -198,6 +208,7 @@ public class ChartTouchListener implements View.OnTouchListener {
                         mDecelerationCurrentPoint.y = event.getY();
                         mDecelerationVelocity.x = velocityX;
                         mDecelerationVelocity.y = velocityY;
+
 
                         //1.8 下面的代码会引起chart的computerScroll方法的调用，而在chart中的该方法会调用当前类的computerScroll方法
                         Utils.postInvalidateOnAnimation(mChart);
@@ -336,6 +347,15 @@ public class ChartTouchListener implements View.OnTouchListener {
             stopDeceleration();
             return;
         }
+
+        if(mChart.isDragOnlySigleDirection()){
+            if(Math.abs(dragDistanceX) >= Math.abs(dragDistanceY)){
+                dragDistanceY = 0;
+            }else{
+                dragDistanceX = 0;
+            }
+        }
+
 
 
         Log.e("6========","dragDistanceX:"+dragDistanceX+",dragDistanceY:"+dragDistanceY);

@@ -41,6 +41,8 @@ public class TableChart extends ViewGroup {
     private boolean mDragXEnabled = true;
     private boolean mDragYEnabled = true;
 
+    private boolean mDragOnlySigleDirection = true;
+
     protected boolean mPinchZoomEnabled = true;
 
     protected ChartTouchListener mChartTouchListener;
@@ -299,5 +301,13 @@ public class TableChart extends ViewGroup {
 
     public boolean hasNoDragOffset() {
         return mViewPortHandler.hasNoDragOffset();
+    }
+
+    public boolean isDragOnlySigleDirection() {
+        return mDragOnlySigleDirection;
+    }
+
+    public void setDragOnlySigleDirection(boolean mDragOnlySigleDirection) {
+        this.mDragOnlySigleDirection = mDragOnlySigleDirection;
     }
 }

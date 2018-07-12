@@ -36,7 +36,7 @@ public class TableChartActivity extends AppCompatActivity {
 
         for(int i = 0; i < columns.size();i++){
             List<Cell> cells = new ArrayList<>();
-           for(int j = 0; j < 200;j++){
+           for(int j = 0; j < 3000;j++){
                cells.add(new Cell(j,i,"内容"+i+"-"+j));
            }
 

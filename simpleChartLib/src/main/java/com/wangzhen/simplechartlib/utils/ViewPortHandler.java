@@ -429,7 +429,7 @@ public class ViewPortHandler {
         float[] values = new float[9];
         mMatrixTouch.getValues(values);
 
-        if(values[Matrix.MTRANS_X] != 0){
+        if(values[Matrix.MTRANS_X] != 0 || values[Matrix.MSCALE_Y] != 0){
             Log.e("======1",mMatrixTouch.toShortString());
             // make sure scale and translation are within their bounds
             limitTransAndScale(mMatrixTouch, mContentRect);
