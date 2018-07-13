@@ -127,8 +127,11 @@ public class Sheet<T extends Cell> implements ISheet {
         mHeight = 0;
         mWidth = 0;
         int maxRowCount = 0;
-        for (Column column : columns) {
+        for (int i = 0; i < columns.size(); i++) {
 
+            Column<T> column = columns.get(i);
+
+            column.columnIndex = i;
             column.fillPaint(Utils.paint);
             column.setLeftOffset(columnLeftOffset);
             column.setRightOffset(columnRightOffset);
@@ -182,5 +185,35 @@ public class Sheet<T extends Cell> implements ISheet {
 
     public void setTitleHeight(int mTitleHeight) {
         this.mTitleHeight = mTitleHeight;
+    }
+
+
+    public Column<T> getColumnByXValue(double xValue){
+
+        if(columns == null || columns.isEmpty()){
+            return null;
+        }
+
+        int low = 0;
+        int high = columns.size();
+
+        int mid;
+        Column<T> targetColumn = null;
+
+        while(low < high){
+            mid = (low + high)/2;
+
+            targetColumn = columns.get(mid);
+
+            if(targetColumn.getLeft() < xValue && targetColumn.getRight() > xValue){
+                return targetColumn;
+            }else if(targetColumn.getLeft() > xValue){
+                high = mid;
+            }else if(targetColumn.getRight() < xValue){
+                low = mid;
+            }
+        }
+
+        return targetColumn;
     }
 }

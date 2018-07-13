@@ -310,4 +310,12 @@ public class TableChart extends ViewGroup {
     public void setDragOnlySigleDirection(boolean mDragOnlySigleDirection) {
         this.mDragOnlySigleDirection = mDragOnlySigleDirection;
     }
+
+
+    public Column getColumnByXValue(double xValue){
+
+        return sheet.getColumnByXValue( xValue);
+    }
+
+
 }

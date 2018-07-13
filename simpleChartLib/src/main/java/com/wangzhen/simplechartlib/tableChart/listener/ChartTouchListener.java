@@ -3,13 +3,17 @@ package com.wangzhen.simplechartlib.tableChart.listener;
 import android.graphics.Matrix;
 import android.os.Build;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 
 import com.wangzhen.simplechartlib.tableChart.component.TableChart;
+import com.wangzhen.simplechartlib.tableChart.data.Column;
+import com.wangzhen.simplechartlib.utils.MPPointD;
 import com.wangzhen.simplechartlib.utils.MPPointF;
+import com.wangzhen.simplechartlib.utils.Transformer;
 import com.wangzhen.simplechartlib.utils.Utils;
 import com.wangzhen.simplechartlib.utils.ViewPortHandler;
 
@@ -17,7 +21,7 @@ import com.wangzhen.simplechartlib.utils.ViewPortHandler;
  * Created by wangzhen on 2018/7/8.
  */
 
-public class ChartTouchListener implements View.OnTouchListener {
+public class ChartTouchListener extends GestureDetector.SimpleOnGestureListener implements View.OnTouchListener {
 
 
     public enum ChartGesture {
@@ -67,11 +71,15 @@ public class ChartTouchListener implements View.OnTouchListener {
     //缩放的触发位移
     private float mMinScalePointerDistance;
 
+    protected GestureDetector mGestureDetector;
+
+
     public ChartTouchListener(TableChart chart, Matrix touchMatrix, float dragTiggerDistance) {
 
         this.mChart = chart;
         this.mOriginMatrix = touchMatrix;
         this.mDragTriggerDist = dragTiggerDistance;
+        mGestureDetector = new GestureDetector(mChart.getContext(),this);
 
     }
 
@@ -91,6 +99,11 @@ public class ChartTouchListener implements View.OnTouchListener {
                 mVelocityTracker.recycle();
                 mVelocityTracker = null;
             }
+        }
+
+
+        if (mCurrentTouchMode == NONE) {
+            mGestureDetector.onTouchEvent(event);
         }
 
         if (!mChart.isDragEnabled() && (!mChart.isScaleXEnabled() && !mChart.isScaleYEnabled()))
@@ -426,6 +439,23 @@ public class ChartTouchListener implements View.OnTouchListener {
     }
 
 
+    @Override
+    public boolean onSingleTapUp(MotionEvent e) {
 
 
+        Log.e("18========","event.x" + e.getX() + ",event.y:"+e.getY());
+        Transformer transformer = mChart.getTransformer();
+
+
+        MPPointD values = transformer.getValuesByTouchPoint(e.getX(),e.getY());
+
+        Log.e("18========","values x:"+values.x + ",y:"+values.y);
+
+        Column column = mChart.getColumnByXValue(values.x);
+
+        Log.e("18========",column.columnName);
+
+
+        return super.onSingleTapUp(e);
+    }
 }

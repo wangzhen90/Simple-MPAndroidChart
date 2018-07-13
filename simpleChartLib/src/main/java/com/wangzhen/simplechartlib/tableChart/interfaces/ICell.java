@@ -11,6 +11,10 @@ public interface ICell {
 
     int getColumn();
 
+    int getLastRow();
+    int getLastColumn();
+
+
     boolean isHidden();
 
     String getContents();

@@ -10,14 +10,29 @@ public class Cell implements ICell {
 
     private int row;
     private int column;
+    private int lastRow;
+    private int lastColumn;
+
     private String contents;
     //TODO 添加formatter
 
 
-    public Cell(int row, int column,String contents){
+    public Cell(int row, int column, String contents) {
         this.row = row;
         this.column = column;
         this.contents = contents;
+
+        lastColumn = column;
+        lastRow = column;
+    }
+
+    public Cell(int row, int column, int lastRow, int lastColumn, String contents) {
+        this.row = row;
+        this.column = column;
+        this.contents = contents;
+
+        this.lastColumn = lastColumn;
+        this.lastRow = lastRow;
     }
 
 
@@ -29,6 +44,16 @@ public class Cell implements ICell {
     @Override
     public int getColumn() {
         return column;
+    }
+
+    @Override
+    public int getLastRow() {
+        return lastRow;
+    }
+
+    @Override
+    public int getLastColumn() {
+        return lastColumn;
     }
 
     @Override

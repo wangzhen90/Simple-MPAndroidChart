@@ -125,6 +125,14 @@ public class Column<T extends Cell> {
         return preColumnsWidth;
     }
 
+    public int getLeft(){
+        return preColumnsWidth;
+    }
+
+    public int getRight(){
+        return  preColumnsWidth + columnWidth;
+    }
+
 
     public int getRowHeight() {
         return rowHeight;
