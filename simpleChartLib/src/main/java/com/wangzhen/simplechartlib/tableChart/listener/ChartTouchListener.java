@@ -383,7 +383,7 @@ public class ChartTouchListener extends GestureDetector.SimpleOnGestureListener 
         lastDragDistanceX = dragDistanceX;
         lastDragDistanceY = dragDistanceY;
 
-        if (Math.abs(mDecelerationVelocity.x) >= 1 || Math.abs(mDecelerationVelocity.y) >= 1){
+        if (Math.abs(mDecelerationVelocity.x) >= 100 || Math.abs(mDecelerationVelocity.y) >= 100){
 
             Log.e("6========","mDecelerationVelocity.x:"+mDecelerationVelocity.x+",mDecelerationVelocity.y:"+mDecelerationVelocity.y);
             Utils.postInvalidateOnAnimation(mChart); // This causes computeScroll to fire, recommended for this by Google

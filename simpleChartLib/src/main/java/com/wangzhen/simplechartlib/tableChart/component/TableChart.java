@@ -53,6 +53,10 @@ public class TableChart extends ViewGroup {
 
     private boolean isTitleFixed = true;
 
+    private int titleFontSize = 9;
+    private int contentFontSize = 9;
+
+
     public TableChart(Context context) {
         super(context);
         init();
@@ -315,6 +319,22 @@ public class TableChart extends ViewGroup {
     public Column getColumnByXValue(double xValue){
 
         return sheet.getColumnByXValue( xValue);
+    }
+
+    public int getTitleFontSize(){
+        return titleFontSize;
+    }
+
+    public int getContentFontSize(){
+        return contentFontSize;
+    }
+
+    public void setTitleFontSize(int fontSize){
+        this.titleFontSize = fontSize;
+    }
+
+    public void setContentFontSize(int fontSize){
+        this.contentFontSize = fontSize;
     }
 
 

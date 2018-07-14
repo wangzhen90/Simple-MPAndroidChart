@@ -29,6 +29,16 @@ public class EmptyCell implements ICell {
     }
 
     @Override
+    public int getLastRow() {
+        return 0;
+    }
+
+    @Override
+    public int getLastColumn() {
+        return 0;
+    }
+
+    @Override
     public boolean isHidden() {
         return false;
     }

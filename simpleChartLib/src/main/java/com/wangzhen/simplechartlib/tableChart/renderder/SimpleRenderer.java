@@ -141,6 +141,8 @@ public class SimpleRenderer extends DataRenderer {
             c.drawRect(columnBuffer.buffer[i], columnBuffer.buffer[i + 1], columnBuffer.buffer[i + 2],
                     columnBuffer.buffer[i + 3], mGridPaint);
 
+            mValuePaint.setTextSize(Utils.convertDpToPixel(mChart.getContentFontSize() * mViewPortHandler.getScaleX()));
+
             Utils.drawSingleText(c, mValuePaint,
                     Utils.getTextCenterX(columnBuffer.buffer[i], columnBuffer.buffer[i + 2], mValuePaint),
                     Utils.getTextCenterY((columnBuffer.buffer[i + 1] + columnBuffer.buffer[i + 3]) / 2, mValuePaint),
@@ -189,6 +191,7 @@ public class SimpleRenderer extends DataRenderer {
 
 
             c.drawRect(left, top, right, bottom, mGridPaint);
+            mTitleValuePaint.setTextSize(Utils.convertDpToPixel(mChart.getContentFontSize() * mViewPortHandler.getScaleX()));
             Utils.drawSingleText(c, mTitleValuePaint,
                     Utils.getTextCenterX(left, right, mValuePaint),
                     Utils.getTextCenterY((top + bottom) / 2, mValuePaint),

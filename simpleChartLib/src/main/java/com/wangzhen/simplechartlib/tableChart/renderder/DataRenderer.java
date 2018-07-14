@@ -44,7 +44,7 @@ public abstract class DataRenderer extends Renderer {
 
         mGridPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mGridPaint.setStrokeWidth(1);
-        mGridPaint.setColor(Color.parseColor("#000000"));
+        mGridPaint.setColor(Color.parseColor("#d0d0d0"));
         mGridPaint.setStyle(Paint.Style.STROKE);
 
     }
