@@ -78,7 +78,7 @@ public class SimpleRenderer extends DataRenderer {
 
     }
 
-    float left, right;
+//    float left, right;
 
 //    float[] checkBuffer = new float[]{0,0,0,0};
     RectF checkRect = new RectF();
@@ -164,7 +164,7 @@ public class SimpleRenderer extends DataRenderer {
     public void drawTitle(Canvas c) {
         transformer = mChart.getTransformer();
         if (transformer == null) return;
-//优化onDraw执行时间，只在initBuffer中做一次feed
+        //优化onDraw执行时间，只在initBuffer中做一次feed
         mTitleBuffer.feed(mChart.getColumnList());
         transformer.pointValuesToPixel(mTitleBuffer.buffer);
 
