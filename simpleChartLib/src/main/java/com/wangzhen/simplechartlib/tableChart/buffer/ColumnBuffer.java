@@ -35,7 +35,7 @@ public class ColumnBuffer extends AbstractBuffer<Column<Cell>> {
             cell = cells.get(i);
 
             left = column.getPreColumnsWidth();
-            top = cell.getRow() * column.getRowHeight();
+            top = cell.getRow() * column.getRowHeight() + column.titleHeight;
             right = left + column.getWidth();
             bottom = top + column.getRowHeight();
 

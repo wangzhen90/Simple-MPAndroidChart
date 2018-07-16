@@ -30,7 +30,7 @@ public class Sheet<T extends Cell> implements ISheet {
     private int rowHeight = 60;
 
     private int columnLeftOffset = 30;
-    private int columnRightOffset= 30;
+    private int columnRightOffset = 30;
 
 
     private ArrayList<ICellRange> mergedCells = new ArrayList();
@@ -188,9 +188,9 @@ public class Sheet<T extends Cell> implements ISheet {
     }
 
 
-    public Column<T> getColumnByXValue(double xValue){
+    public Column<T> getColumnByXValue(double xValue) {
 
-        if(columns == null || columns.isEmpty()){
+        if (columns == null || columns.isEmpty()) {
             return null;
         }
 
@@ -200,20 +200,56 @@ public class Sheet<T extends Cell> implements ISheet {
         int mid;
         Column<T> targetColumn = null;
 
-        while(low < high){
-            mid = (low + high)/2;
+        while (low < high) {
+            mid = (low + high) / 2;
 
             targetColumn = columns.get(mid);
 
-            if(targetColumn.getLeft() < xValue && targetColumn.getRight() > xValue){
+            if (targetColumn.getLeft() < xValue && targetColumn.getRight() > xValue) {
                 return targetColumn;
-            }else if(targetColumn.getLeft() > xValue){
+            } else if (targetColumn.getLeft() > xValue) {
                 high = mid;
-            }else if(targetColumn.getRight() < xValue){
+            } else if (targetColumn.getRight() < xValue) {
                 low = mid;
             }
         }
 
-        return targetColumn;
+        return null;
+    }
+
+    @Override
+    public Cell getCellByTouchPoint(double xValue, double yValue) {
+
+        Column<T> column = getColumnByXValue(xValue);
+
+        Cell cell;
+
+        if (column != null && !column.getData().isEmpty()) {
+
+            List<T> cells = column.getData();
+
+            int low = 0;
+            int high = cells.size();
+
+            int mid;
+
+            while (low < high) {
+                mid = (low + high) / 2;
+                cell = cells.get(mid);
+
+                if (yValue >= (cell.getRow() * rowHeight + mTitleHeight) && yValue <= ((cell.getLastRow() + 1) * rowHeight + mTitleHeight)) {
+                    return cell;
+                } else if (yValue < cell.getRow() * rowHeight + mTitleHeight) {
+                    high = mid;
+                } else if (yValue >= (cell.getLastRow() + 1) * rowHeight + mTitleHeight) {
+                    low = mid;
+                }else{
+                    break;
+                }
+            }
+        }
+
+
+        return null;
     }
 }

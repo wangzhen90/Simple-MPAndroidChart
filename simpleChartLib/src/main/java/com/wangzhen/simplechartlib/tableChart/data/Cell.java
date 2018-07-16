@@ -23,7 +23,7 @@ public class Cell implements ICell {
         this.contents = contents;
 
         lastColumn = column;
-        lastRow = column;
+        lastRow = row;
     }
 
     public Cell(int row, int column, int lastRow, int lastColumn, String contents) {

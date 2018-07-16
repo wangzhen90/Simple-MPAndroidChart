@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.animation.AnimationUtils;
 
 import com.wangzhen.simplechartlib.tableChart.component.TableChart;
+import com.wangzhen.simplechartlib.tableChart.data.Cell;
 import com.wangzhen.simplechartlib.tableChart.data.Column;
 import com.wangzhen.simplechartlib.utils.MPPointD;
 import com.wangzhen.simplechartlib.utils.MPPointF;
@@ -451,10 +452,19 @@ public class ChartTouchListener extends GestureDetector.SimpleOnGestureListener 
 
         Log.e("18========","values x:"+values.x + ",y:"+values.y);
 
-        Column column = mChart.getColumnByXValue(values.x);
 
-        Log.e("18========",column.columnName);
+        //点击的是标题部分
+        if(values.y <= mChart.getTitleHeight()){
 
+            Column column = mChart.getColumnByXValue(values.x);
+            Log.e("18========",column != null ? column.columnName : "empty column");
+        }else{
+
+            Cell cell = mChart.getCellByTouchPoint(values.x,values.y);
+            Log.e("18========",cell != null ? cell.getContents() : "empty cell");
+        }
+
+        //点击的是cell部分
 
         return super.onSingleTapUp(e);
     }

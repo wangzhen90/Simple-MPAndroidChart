@@ -65,7 +65,7 @@ public class SimpleRenderer extends DataRenderer {
         mValuesRect.top += mChart.getTitleHeight() * mViewPortHandler.getScaleY();
         int clipRestoreCount = c.save();
         c.clipRect(mValuesRect);
-        c.translate(0, mChart.getTitleHeight() * mViewPortHandler.getScaleY());
+//        c.translate(0, mChart.getTitleHeight() * mViewPortHandler.getScaleY());
         long startTime = System.currentTimeMillis();
 
         for (int i = 0; i < mChart.getColumnCount(); i++) {

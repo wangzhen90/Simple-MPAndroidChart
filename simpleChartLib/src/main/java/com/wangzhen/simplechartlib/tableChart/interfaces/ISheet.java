@@ -38,6 +38,7 @@ public interface ISheet<T extends Cell> {
     void calculate();
 
     Column<T> getColumnByXValue(double xValue);
+    T getCellByTouchPoint(double xValue,double yValue);
 
 
 }

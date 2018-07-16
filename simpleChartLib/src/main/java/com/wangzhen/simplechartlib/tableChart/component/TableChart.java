@@ -8,6 +8,7 @@ import android.view.MotionEvent;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
+import com.wangzhen.simplechartlib.tableChart.data.Cell;
 import com.wangzhen.simplechartlib.tableChart.data.Column;
 import com.wangzhen.simplechartlib.tableChart.data.Sheet;
 import com.wangzhen.simplechartlib.tableChart.interfaces.ISheet;
@@ -319,6 +320,12 @@ public class TableChart extends ViewGroup {
     public Column getColumnByXValue(double xValue){
 
         return sheet.getColumnByXValue( xValue);
+    }
+
+
+    public Cell getCellByTouchPoint(double xValue, double yValue){
+
+        return sheet.getCellByTouchPoint(xValue,yValue);
     }
 
     public int getTitleFontSize(){
