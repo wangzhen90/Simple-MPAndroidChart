@@ -12,6 +12,7 @@ import android.view.animation.AnimationUtils;
 import com.wangzhen.simplechartlib.tableChart.component.TableChart;
 import com.wangzhen.simplechartlib.tableChart.data.Cell;
 import com.wangzhen.simplechartlib.tableChart.data.Column;
+import com.wangzhen.simplechartlib.tableChart.highlight.Highlight;
 import com.wangzhen.simplechartlib.utils.MPPointD;
 import com.wangzhen.simplechartlib.utils.MPPointF;
 import com.wangzhen.simplechartlib.utils.Transformer;
@@ -71,6 +72,8 @@ public class ChartTouchListener extends GestureDetector.SimpleOnGestureListener 
     private float mDragTriggerDist;
     //缩放的触发位移
     private float mMinScalePointerDistance;
+
+    private Highlight mLastHighlight = null;
 
     protected GestureDetector mGestureDetector;
 
@@ -452,20 +455,39 @@ public class ChartTouchListener extends GestureDetector.SimpleOnGestureListener 
 
         Log.e("18========","values x:"+values.x + ",y:"+values.y);
 
-
+        Highlight highlight = null;
         //点击的是标题部分
         if(values.y <= mChart.getTitleHeight()){
 
             Column column = mChart.getColumnByXValue(values.x);
+            if(column != null){
+                highlight = new Highlight(mChart,column.columnIndex,null,true);
+            }
             Log.e("18========",column != null ? column.columnName : "empty column");
         }else{
 
             Cell cell = mChart.getCellByTouchPoint(values.x,values.y);
+            if(cell != null){
+                highlight = new Highlight(mChart,cell.getColumn(),cell,false);
+            }
             Log.e("18========",cell != null ? cell.getContents() : "empty cell");
         }
 
         //点击的是cell部分
 
+        performHighlight(highlight,e);
+
         return super.onSingleTapUp(e);
+    }
+
+
+    protected void performHighlight(Highlight h, MotionEvent e){
+
+        if(h == null || h.equalTo(mLastHighlight)){
+
+        }else{
+
+        }
+
     }
 }
