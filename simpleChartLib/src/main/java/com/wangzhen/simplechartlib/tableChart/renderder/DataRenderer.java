@@ -6,8 +6,8 @@ import android.graphics.Paint;
 
 import com.wangzhen.simplechartlib.data.entry.Entry;
 import com.wangzhen.simplechartlib.formatter.IValueFormatter;
-import com.wangzhen.simplechartlib.highlight.Highlight;
-import com.wangzhen.simplechartlib.tableChart.component.TableChart;
+
+import com.wangzhen.simplechartlib.tableChart.highlight.Highlight;
 import com.wangzhen.simplechartlib.utils.Utils;
 import com.wangzhen.simplechartlib.utils.ViewPortHandler;
 
@@ -23,6 +23,8 @@ public abstract class DataRenderer extends Renderer {
     protected Paint mGridPaint;
 
     protected Paint mTitleValuePaint;
+
+    protected Paint mHighlightPaint;
 
 
 
@@ -47,6 +49,13 @@ public abstract class DataRenderer extends Renderer {
         mGridPaint.setColor(Color.parseColor("#d0d0d0"));
         mGridPaint.setStyle(Paint.Style.STROKE);
 
+        mHighlightPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mHighlightPaint.setStrokeWidth(Utils.convertDpToPixel(3f));
+        mHighlightPaint.setStyle(Paint.Style.STROKE);
+        mHighlightPaint.setColor(Color.parseColor("#2ca9e1"));
+
+
+
     }
 
 
@@ -64,7 +73,7 @@ public abstract class DataRenderer extends Renderer {
 
     }
 
-    public abstract void drawHighlighted(Canvas c, Highlight[] indices);
+    public abstract void drawHighlighted(Canvas c, Highlight highlight);
 
 
 }

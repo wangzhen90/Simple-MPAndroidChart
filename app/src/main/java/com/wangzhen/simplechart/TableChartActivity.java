@@ -2,11 +2,13 @@ package com.wangzhen.simplechart;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.wangzhen.simplechartlib.tableChart.component.TableChart;
 import com.wangzhen.simplechartlib.tableChart.data.Cell;
 import com.wangzhen.simplechartlib.tableChart.data.Column;
 import com.wangzhen.simplechartlib.tableChart.data.Sheet;
+import com.wangzhen.simplechartlib.tableChart.interfaces.ITableOnClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +22,18 @@ public class TableChartActivity extends AppCompatActivity {
         setContentView(R.layout.activity_table_chart);
 
         tableChart = findViewById(R.id.tableView);
+        tableChart.setOnClickListener(new ITableOnClickListener() {
+            @Override
+            public void onColumnClick(Column column) {
+                Toast.makeText(TableChartActivity.this,"点击了"+column.columnName,Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onCellClick(Cell cell) {
+                Toast.makeText(TableChartActivity.this,"点击了"+cell.getContents(),Toast.LENGTH_SHORT).show();
+            }
+        });
+
 
         initData();
     }

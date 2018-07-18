@@ -11,7 +11,9 @@ import android.view.ViewParent;
 import com.wangzhen.simplechartlib.tableChart.data.Cell;
 import com.wangzhen.simplechartlib.tableChart.data.Column;
 import com.wangzhen.simplechartlib.tableChart.data.Sheet;
+import com.wangzhen.simplechartlib.tableChart.highlight.Highlight;
 import com.wangzhen.simplechartlib.tableChart.interfaces.ISheet;
+import com.wangzhen.simplechartlib.tableChart.interfaces.ITableOnClickListener;
 import com.wangzhen.simplechartlib.tableChart.listener.ChartTouchListener;
 import com.wangzhen.simplechartlib.tableChart.renderder.DataRenderer;
 import com.wangzhen.simplechartlib.tableChart.renderder.SimpleRenderer;
@@ -57,6 +59,13 @@ public class TableChart extends ViewGroup {
     private int titleFontSize = 9;
     private int contentFontSize = 9;
 
+    private float highlightBorderWidth = Utils.convertDpToPixel(5f);
+
+
+    private Highlight mHighlight;
+
+    private ITableOnClickListener onClickListener;
+
 
     public TableChart(Context context) {
         super(context);
@@ -74,15 +83,15 @@ public class TableChart extends ViewGroup {
     }
 
 
-    private void init(){
+    private void init() {
         setWillNotDraw(false);
 
         Utils.init(this.getContext());
-        mDataRenderer = new SimpleRenderer(mViewPortHandler,this);
+        mDataRenderer = new SimpleRenderer(mViewPortHandler, this);
         mTransformer = new Transformer(mViewPortHandler);
 
 
-        mChartTouchListener = new ChartTouchListener(this,mViewPortHandler.getMatrixTouch(),5f);
+        mChartTouchListener = new ChartTouchListener(this, mViewPortHandler.getMatrixTouch(), 5f);
     }
 
 
@@ -100,23 +109,29 @@ public class TableChart extends ViewGroup {
         if (sheet == null)
             return;
 
-        if(mDataRenderer != null){
+        if (mDataRenderer != null) {
+            mDataRenderer.drawHighlighted(canvas,mHighlight);
+
             mDataRenderer.drawTitle(canvas);
             mDataRenderer.drawData(canvas);
         }
     }
 
-    public void setSheet(ISheet sheet){
+    public void setSheet(ISheet sheet) {
         this.sheet = sheet;
         mViewPortHandler.setMaxTransY(sheet.getHeight());
         mViewPortHandler.setMaxTransX(sheet.getWidth());
 
     }
 
+    public ISheet getSheet(){
+        return sheet;
+    }
 
-    public void notifyDataSetChanged(){
 
-        if(mDataRenderer != null){
+    public void notifyDataSetChanged() {
+
+        if (mDataRenderer != null) {
             mDataRenderer.initBuffers();
         }
 
@@ -125,14 +140,13 @@ public class TableChart extends ViewGroup {
 
     }
 
-    protected void calcMinMax(){
+    protected void calcMinMax() {
 
         prepareOffsetMatrix();
     }
 
 
     public void calculateOffsets() {
-
 
 
     }
@@ -149,14 +163,12 @@ public class TableChart extends ViewGroup {
 //    }
 
 
-
-
-        @Override
+    @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
 
-        if(w > 0 && h > 0 && w < 10000 && h < 10000){
+        if (w > 0 && h > 0 && w < 10000 && h < 10000) {
 
-            mViewPortHandler.setChartDimens(w,h);
+            mViewPortHandler.setChartDimens(w, h);
         }
 
         notifyDataSetChanged();
@@ -177,25 +189,25 @@ public class TableChart extends ViewGroup {
                                 heightMeasureSpec)));
     }
 
-    public Transformer getTransformer(){
+    public Transformer getTransformer() {
         return mTransformer;
     }
 
-    public int getColumnCount(){
+    public int getColumnCount() {
 
         return sheet.getColumns();
     }
 
-    public List<Column> getColumnList(){
+    public List<Column> getColumnList() {
 
         return sheet.getColumnList();
     }
 
-    public boolean isScaleXEnabled(){
-        return  scaleXEnable;
+    public boolean isScaleXEnabled() {
+        return scaleXEnable;
     }
 
-    public boolean isScaleYEnabled(){
+    public boolean isScaleYEnabled() {
         return scaleYEnable;
     }
 
@@ -203,7 +215,7 @@ public class TableChart extends ViewGroup {
 
         ViewParent parent = getParent();
 
-        if(parent != null){
+        if (parent != null) {
             parent.requestDisallowInterceptTouchEvent(true);
         }
 
@@ -212,6 +224,7 @@ public class TableChart extends ViewGroup {
     public void setPinchZoom(boolean enabled) {
         mPinchZoomEnabled = enabled;
     }
+
     public boolean isPinchZoomEnabled() {
         return mPinchZoomEnabled;
     }
@@ -247,7 +260,7 @@ public class TableChart extends ViewGroup {
             parent.requestDisallowInterceptTouchEvent(false);
     }
 
-    public void setTouchEnable(boolean touchEnable){
+    public void setTouchEnable(boolean touchEnable) {
         this.mTouchEnable = touchEnable;
     }
 
@@ -257,16 +270,16 @@ public class TableChart extends ViewGroup {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-         super.onTouchEvent(event);
+        super.onTouchEvent(event);
 
-        if(mChartTouchListener == null && sheet == null){
+        if (mChartTouchListener == null && sheet == null) {
             return false;
         }
 
-        if(!mTouchEnable){
+        if (!mTouchEnable) {
             return false;
-        }else{
-            return mChartTouchListener.onTouch(this,event);
+        } else {
+            return mChartTouchListener.onTouch(this, event);
         }
     }
 
@@ -287,13 +300,13 @@ public class TableChart extends ViewGroup {
 
     @Override
     public void computeScroll() {
-        if(mChartTouchListener != null){
+        if (mChartTouchListener != null) {
             mChartTouchListener.computeScroll();
         }
     }
 
-    public int getTitleHeight(){
-        return ((Sheet)sheet).getTitleHeight();
+    public int getTitleHeight() {
+        return ((Sheet) sheet).getTitleHeight();
     }
 
     public boolean isTitleFixed() {
@@ -317,32 +330,72 @@ public class TableChart extends ViewGroup {
     }
 
 
-    public Column getColumnByXValue(double xValue){
+    public Column getColumnByXValue(double xValue) {
 
-        return sheet.getColumnByXValue( xValue);
+        return sheet.getColumnByXValue(xValue);
     }
 
 
-    public Cell getCellByTouchPoint(double xValue, double yValue){
+    public Cell getCellByTouchPoint(double xValue, double yValue) {
 
-        return sheet.getCellByTouchPoint(xValue,yValue);
+        return sheet.getCellByTouchPoint(xValue, yValue);
     }
 
-    public int getTitleFontSize(){
+    public int getTitleFontSize() {
         return titleFontSize;
     }
 
-    public int getContentFontSize(){
+    public int getContentFontSize() {
         return contentFontSize;
     }
 
-    public void setTitleFontSize(int fontSize){
+    public void setTitleFontSize(int fontSize) {
         this.titleFontSize = fontSize;
     }
 
-    public void setContentFontSize(int fontSize){
+    public void setContentFontSize(int fontSize) {
         this.contentFontSize = fontSize;
     }
 
+    public void highlightValue(Highlight h, boolean callListener) {
 
+        mHighlight = h;
+
+        if(callListener && onClickListener != null){
+            if(h.isTitle())
+                onClickListener.onColumnClick(h.getColumnData());
+            else
+                onClickListener.onCellClick(h.getCell());
+        }
+
+
+        invalidate();
+
+    }
+
+
+    public Highlight getHighlight() {
+        return mHighlight;
+    }
+
+    public int getContentHeight(){
+
+        return sheet.getHeight();
+    }
+
+    public float getHighlightBorderWidth() {
+        return highlightBorderWidth;
+    }
+
+    public void setHighlightBorderWidth(float highlightBorderWidth) {
+        this.highlightBorderWidth = highlightBorderWidth;
+    }
+
+    public ITableOnClickListener getOnClickListener() {
+        return onClickListener;
+    }
+
+    public void setOnClickListener(ITableOnClickListener onClickListener) {
+        this.onClickListener = onClickListener;
+    }
 }

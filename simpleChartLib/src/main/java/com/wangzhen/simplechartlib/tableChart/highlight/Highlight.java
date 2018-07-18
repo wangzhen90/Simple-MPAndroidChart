@@ -23,6 +23,7 @@ public class Highlight {
 //    private int lastColumn = -1;
 
     private Cell mCell;
+    private Column mColumn;
     private boolean isTitle;
 
     public Highlight(TableChart chart){
@@ -34,6 +35,9 @@ public class Highlight {
         this.columnIndex = columnIndex;
         this.mCell = cell;
         this.isTitle = isTitle;
+
+        mColumn = mChart.getColumnList().get(columnIndex);
+
     }
 
 
@@ -45,6 +49,15 @@ public class Highlight {
 
     public int getColumnIndex() {
         return columnIndex;
+    }
+
+
+    public Column getColumnData(){
+        return mColumn;
+    }
+
+    public Cell getCell(){
+        return mCell;
     }
 
     public int getColumn() {
@@ -71,32 +84,23 @@ public class Highlight {
     }
 
 
+
     public RectF getRect() {
 
-        if (columnIndex < 0) return null;
-
-        Column column = mChart.getColumnList().get(columnIndex);
-
-        if (column == null) return null;
-
+        if (mColumn == null) return null;
         RectF highlightPort = new RectF();
-
         if (isTitle) {
-            highlightPort.set(column.getLeft(), 0, column.getRight(), mChart.getViewPortHandler().contentBottom());
-
+            highlightPort.set(mColumn.getLeft(), 0, mColumn.getRight(), mChart.getContentHeight());
         } else if (mCell != null) {
-
-            int left = column.getLeft();
-            int top = getRow() * column.getRowHeight();
+            int left = mColumn.getLeft();
+            int top = (getRow() + 1) * mColumn.getRowHeight() ;
             int right = left;
 
             for (int i = columnIndex; i < getLastColumn() + 1; i++) {
                 right += mChart.getColumnList().get(i).getWidth();
             }
 
-            int bottom = (getLastRow() + 1) * column.getRowHeight();
-
-
+            int bottom = top + (getLastRow() - getRow() + 1) * mColumn.getRowHeight();
             highlightPort.set(left, top, right, bottom);
         }
 

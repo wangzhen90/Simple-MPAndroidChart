@@ -5,12 +5,12 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.util.Log;
 
-import com.wangzhen.simplechartlib.highlight.Highlight;
 import com.wangzhen.simplechartlib.tableChart.buffer.ColumnBuffer;
 import com.wangzhen.simplechartlib.tableChart.buffer.TitleBuffer;
 import com.wangzhen.simplechartlib.tableChart.component.TableChart;
 import com.wangzhen.simplechartlib.tableChart.data.Cell;
 import com.wangzhen.simplechartlib.tableChart.data.Column;
+import com.wangzhen.simplechartlib.tableChart.highlight.Highlight;
 import com.wangzhen.simplechartlib.utils.Transformer;
 import com.wangzhen.simplechartlib.utils.Utils;
 import com.wangzhen.simplechartlib.utils.ViewPortHandler;
@@ -36,7 +36,7 @@ public class SimpleRenderer extends DataRenderer {
     public SimpleRenderer(ViewPortHandler viewPortHandler, TableChart chart) {
         super(viewPortHandler);
         this.mChart = chart;
-
+        mHighlightPaint.setStrokeWidth(mChart.getHighlightBorderWidth());
     }
 
     @Override
@@ -61,7 +61,6 @@ public class SimpleRenderer extends DataRenderer {
 
 
         mValuesRect.set(mViewPortHandler.getContentRect());
-
         mValuesRect.top += mChart.getTitleHeight() * mViewPortHandler.getScaleY();
         int clipRestoreCount = c.save();
         c.clipRect(mValuesRect);
@@ -80,7 +79,7 @@ public class SimpleRenderer extends DataRenderer {
 
 //    float left, right;
 
-//    float[] checkBuffer = new float[]{0,0,0,0};
+    //    float[] checkBuffer = new float[]{0,0,0,0};
     RectF checkRect = new RectF();
 
     private void drawColumn(Canvas c, Column<Cell> column, int index, RectF visibleRect) {
@@ -96,15 +95,15 @@ public class SimpleRenderer extends DataRenderer {
 //            checkBuffer[0] = column.getPreColumnsWidth();
 //            checkBuffer[3] = column.getPreColumnsWidth() + column.getWidth();
 
-            checkRect.set(column.getPreColumnsWidth(),0,column.getPreColumnsWidth() + column.getWidth(),0);
+            checkRect.set(column.getPreColumnsWidth(), 0, column.getPreColumnsWidth() + column.getWidth(), 0);
 
-            if(index < 1){
+            if (index < 1) {
 //                Log.e("3=======:start","checkBuffer left +"+index+"+:"+checkBuffer[0] + ",right:"+checkBuffer[3]);
 //                Log.e("3=======:start","checkRect left +"+index+"+:"+checkRect.left + ",right:"+checkRect.right);
             }
             transformer.rectValueToPixel(checkRect);
 //            transformer.pointValuesToPixel(checkBuffer);
-            if(index < 1){
+            if (index < 1) {
 //                Log.e("3=======:","checkBuffer left +"+index+"+:"+checkBuffer[0] + ",right:"+checkBuffer[3]);
 //                Log.e("3=======:","checkRect left +"+index+"+:"+checkRect.left + ",right:"+checkRect.right);
 //                Log.e("3=======:","visibleRect left+"+index+"+:"+visibleRect.left + ",right:"+visibleRect.right);
@@ -112,7 +111,7 @@ public class SimpleRenderer extends DataRenderer {
 
 
 //            if ((checkBuffer[0] - 10> visibleRect.right) || (checkBuffer[3] + 10 < visibleRect.left)) {
-            if ((checkRect.left - 10> visibleRect.right) || (checkRect.right + 10 < visibleRect.left)) {
+            if ((checkRect.left - 10 > visibleRect.right) || (checkRect.right + 10 < visibleRect.left)) {
                 return;
             }
         }
@@ -209,7 +208,30 @@ public class SimpleRenderer extends DataRenderer {
     }
 
     @Override
-    public void drawHighlighted(Canvas c, Highlight[] indices) {
+    public void drawHighlighted(Canvas c, Highlight highlight) {
 
+        if (highlight != null) {
+            transformer = mChart.getTransformer();
+            if (transformer == null) return;
+            RectF hRect = highlight.getRect();
+            int clipRestoreCount = c.save();
+            if (highlight.isTitle() && mChart.isTitleFixed()) {
+                c.clipRect(mChart.getViewPortHandler().getContentRect());
+            } else {
+                mValuesRect.set(mViewPortHandler.getContentRect());
+                mValuesRect.top += mChart.getTitleHeight() * mViewPortHandler.getScaleY();
+                c.clipRect(mValuesRect);
+            }
+
+            float halfBorderWidth = mChart.getHighlightBorderWidth() / 2;
+
+            transformer.rectValueToPixel(hRect);
+            c.drawRect(hRect.left + halfBorderWidth,
+                    hRect.top + halfBorderWidth,
+                    hRect.right - halfBorderWidth,
+                    hRect.bottom - halfBorderWidth,
+                    mHighlightPaint);
+            c.restoreToCount(clipRestoreCount);
+        }
     }
 }

@@ -73,7 +73,10 @@ public class ChartTouchListener extends GestureDetector.SimpleOnGestureListener 
     //缩放的触发位移
     private float mMinScalePointerDistance;
 
+    //上一次的highlight
     private Highlight mLastHighlight = null;
+    //本次的highlight
+    private Highlight mHighlight = null;
 
     protected GestureDetector mGestureDetector;
 
@@ -457,7 +460,7 @@ public class ChartTouchListener extends GestureDetector.SimpleOnGestureListener 
 
         Highlight highlight = null;
         //点击的是标题部分
-        if(values.y <= mChart.getTitleHeight()){
+        if(e.getY() <= mChart.getTitleHeight() * mChart.getViewPortHandler().getScaleY()){
 
             Column column = mChart.getColumnByXValue(values.x);
             if(column != null){
@@ -469,6 +472,8 @@ public class ChartTouchListener extends GestureDetector.SimpleOnGestureListener 
             Cell cell = mChart.getCellByTouchPoint(values.x,values.y);
             if(cell != null){
                 highlight = new Highlight(mChart,cell.getColumn(),cell,false);
+                Log.e("18========",cell != null ? cell.getContents() : "click cell");
+
             }
             Log.e("18========",cell != null ? cell.getContents() : "empty cell");
         }
@@ -483,11 +488,13 @@ public class ChartTouchListener extends GestureDetector.SimpleOnGestureListener 
 
     protected void performHighlight(Highlight h, MotionEvent e){
 
-        if(h == null || h.equalTo(mLastHighlight)){
+        if(h == null || h.equalTo(mHighlight)){
+            mHighlight = null;
+            mChart.highlightValue(null,true);
 
         }else{
-
+            mHighlight = h;
+            mChart.highlightValue(h,true);
         }
-
     }
 }
