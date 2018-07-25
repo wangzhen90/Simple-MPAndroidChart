@@ -4,11 +4,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Toast;
 
-import com.wangzhen.simplechartlib.tableChart.component.TableChart;
-import com.wangzhen.simplechartlib.tableChart.data.Cell;
-import com.wangzhen.simplechartlib.tableChart.data.Column;
-import com.wangzhen.simplechartlib.tableChart.data.Sheet;
-import com.wangzhen.simplechartlib.tableChart.interfaces.ITableOnClickListener;
+import com.wangzhen.tableChart.component.TableChart;
+import com.wangzhen.tableChart.data.Cell;
+import com.wangzhen.tableChart.data.Column;
+import com.wangzhen.tableChart.data.Sheet;
+import com.wangzhen.tableChart.interfaces.ITableOnClickListener;
 
 import java.util.ArrayList;
 import java.util.List;

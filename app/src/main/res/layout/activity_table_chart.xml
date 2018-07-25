@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context="com.wangzhen.simplechart.TableChartActivity">
 
-   <com.wangzhen.simplechartlib.tableChart.component.TableChart
+   <com.wangzhen.tableChart.component.TableChart
        android:id="@+id/tableView"
        android:layout_width="match_parent"
        android:layout_height="300dp"
