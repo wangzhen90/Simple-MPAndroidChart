@@ -37,6 +37,9 @@ public class Sheet<T extends Cell> implements ISheet {
 
     private int mTitleHeight = 60;
 
+    private int maxRowCount;
+    private int maxColumnCount;
+
 
     public Sheet(List columns, List data) {
 
@@ -154,6 +157,9 @@ public class Sheet<T extends Cell> implements ISheet {
 
         cellCounts = maxRowCount * getColumns();
 
+        this.maxColumnCount = columns.size();
+        this.maxRowCount = maxRowCount;
+
     }
 
 
@@ -252,4 +258,47 @@ public class Sheet<T extends Cell> implements ISheet {
 
         return null;
     }
+
+
+    public void merge(int firstRow, int firstColumn, int lastRow, int lastColumn){
+
+        if(firstRow < 0 || firstColumn < 0) return;
+        if(lastRow >= maxRowCount || lastColumn >= maxColumnCount) return;
+        if(firstRow >= lastRow && firstColumn >= lastColumn) return;
+
+        T cell = findCellByRowAndColumn(firstRow,firstColumn);
+        if(cell != null){
+            cell.setLastRow(lastRow);
+            cell.setLastColumn(lastColumn);
+        }
+
+    }
+
+
+    public T findCellByRowAndColumn(int rowIndex, int columnIndex){
+
+        Column<T> column = columns.get(columnIndex);
+
+        T cell = column.getData().get(rowIndex);
+
+        return cell;
+    }
+
+    private void setEmptyCells(int firstRow, int firstColumn, int lastRow,int lastColumn){
+
+        for(int i = firstRow; i < lastRow; i++){
+
+            for(int j = firstColumn; j < lastColumn; j++){
+
+                if(i != firstRow && j != firstColumn){
+
+
+                }
+
+            }
+
+        }
+
+    }
+
 }

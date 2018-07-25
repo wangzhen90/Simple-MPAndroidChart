@@ -70,4 +70,13 @@ public class Cell implements ICell {
     public CellType getType() {
         return CellType.LABEL;
     }
+
+    public void setLastRow(int lastRow){
+        this.lastRow = lastRow;
+    }
+
+    public void setLastColumn(int lastColumn){
+        this.lastColumn = lastColumn;
+    }
+
 }
