@@ -3,6 +3,7 @@ package com.wangzhen.tableChart.buffer;
 import com.wangzhen.tableChart.data.Cell;
 import com.wangzhen.tableChart.data.CellType;
 import com.wangzhen.tableChart.data.Column;
+import com.wangzhen.tableChart.data.EmptyCell;
 import com.wangzhen.tableChart.interfaces.ICell;
 
 import java.util.List;
@@ -61,15 +62,27 @@ public class ColumnBuffer extends AbstractBuffer<Column<ICell>> {
         List<ICell> cells = column.getData();
         ICell cell;
         int left, top, right, bottom;
+        Column<ICell> realColumn;
 
         for (int i = 0; i < cellSize; i++) {
             cell = cells.get(i);
 
             if (cell.getType() == CellType.EMPTY) {
-                left = 0;
-                top = 0;
-                right = 0;
-                bottom = 0;
+                //这种处理方式会导致同一区域重绘多次，需要优化
+                cell = ((EmptyCell)cell).getRealCell();
+                realColumn = columns.get(cell.getColumn());
+                left = realColumn.getPreColumnsWidth();
+                top = cell.getRow() * realColumn.getRowHeight() + realColumn.titleHeight;
+
+                right = left;
+
+                for(int j = cell.getColumn(); j < cell.getLastColumn() + 1;j++){
+                    right += columns.get(j).getWidth();
+                }
+
+                bottom = top + realColumn.getRowHeight() * (cell.getLastRow() - cell.getRow() + 1);
+
+
             } else {
                 left = column.getPreColumnsWidth();
                 top = cell.getRow() * column.getRowHeight() + column.titleHeight;
@@ -80,10 +93,13 @@ public class ColumnBuffer extends AbstractBuffer<Column<ICell>> {
                     right += columns.get(j).getWidth();
                 }
 
-//                right = left + column.getWidth();
                 bottom = top + column.getRowHeight() * (cell.getLastRow() - cell.getRow() + 1);
 
             }
+
+
+
+
             addCell(left, top, right, bottom);
 
         }
