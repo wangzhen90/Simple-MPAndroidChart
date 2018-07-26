@@ -37,6 +37,8 @@ public interface ISheet<T extends ICell> {
 
     void calculate();
 
+    boolean hasMergedCell();
+
     Column<T> getColumnByXValue(double xValue);
     T getCellByTouchPoint(double xValue, double yValue);
 

@@ -53,6 +53,7 @@ public class EmptyCell implements ICell {
 
     @Override
     public String getContents() {
+        if(realCell != null) return realCell.getContents();
         return null;
     }
 

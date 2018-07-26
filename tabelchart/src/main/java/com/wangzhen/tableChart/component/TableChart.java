@@ -201,7 +201,7 @@ public class TableChart extends ViewGroup {
         return sheet.getColumns();
     }
 
-    public List<Column> getColumnList() {
+    public List<Column<ICell>> getColumnList() {
 
         return sheet.getColumnList();
     }
@@ -414,4 +414,9 @@ public class TableChart extends ViewGroup {
     public void setOnClickListener(ITableOnClickListener onClickListener) {
         this.onClickListener = onClickListener;
     }
+
+    public boolean hasMergedCell(){
+        return sheet.hasMergedCell();
+    }
+
 }

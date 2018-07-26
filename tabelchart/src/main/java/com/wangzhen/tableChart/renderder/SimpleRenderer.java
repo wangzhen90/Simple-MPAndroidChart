@@ -41,7 +41,7 @@ public class SimpleRenderer extends DataRenderer {
     @Override
     public void initBuffers() {
 
-        List<Column> columns = mChart.getColumnList();
+        List<Column<ICell>> columns = mChart.getColumnList();
         mBuffers = new ColumnBuffer[mChart.getColumnCount()];
         mTitleBuffer = new TitleBuffer(mChart.getColumnCount() * 4, mChart.getColumnCount());
 
@@ -56,7 +56,7 @@ public class SimpleRenderer extends DataRenderer {
 
     @Override
     public void drawData(Canvas c) {
-        List<Column> columns = mChart.getColumnList();
+        List<Column<ICell>> columns = mChart.getColumnList();
 
 
         mValuesRect.set(mViewPortHandler.getContentRect());
@@ -67,7 +67,7 @@ public class SimpleRenderer extends DataRenderer {
         long startTime = System.currentTimeMillis();
 
         for (int i = 0; i < mChart.getColumnCount(); i++) {
-            drawColumn(c, columns.get(i), i, mValuesRect);
+            drawColumn(c, columns.get(i), i, mValuesRect,columns);
         }
 
 //        Log.e("1------绘制所有column的耗费时间：", (System.currentTimeMillis() - startTime) + "");
@@ -81,7 +81,7 @@ public class SimpleRenderer extends DataRenderer {
     //    float[] checkBuffer = new float[]{0,0,0,0};
     RectF checkRect = new RectF();
 
-    private void drawColumn(Canvas c, Column<ICell> column, int index, RectF visibleRect) {
+    private void drawColumn(Canvas c, Column<ICell> column, int index, RectF visibleRect,List<Column<ICell>> columns) {
 
         if (transformer == null) {
             transformer = mChart.getTransformer();
@@ -117,7 +117,12 @@ public class SimpleRenderer extends DataRenderer {
 
 
         long startTime = System.currentTimeMillis();
-        columnBuffer.feed(column);
+
+        if(mChart.hasMergedCell()){
+            columnBuffer.feed(column,columns);
+        }else{
+            columnBuffer.feed(column);
+        }
         Log.e("2------", "column" + index + "的feed耗费时间：" + (System.currentTimeMillis() - startTime) + "");
 
         long startTimeTrans = System.currentTimeMillis();
@@ -129,7 +134,7 @@ public class SimpleRenderer extends DataRenderer {
 
         for (int i = 0; i < columnBuffer.size(); i += 4) {
 
-            if(columnBuffer.buffer[i+3] == 0) continue;
+            if(columnBuffer.buffer[i+2] == columnBuffer.buffer[i]) continue;
 
             if ((columnBuffer.buffer[i] > mViewPortHandler.contentRight()) || (columnBuffer.buffer[i + 2] < mViewPortHandler.contentLeft())) {
                 return;

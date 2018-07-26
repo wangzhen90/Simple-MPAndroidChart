@@ -1,6 +1,7 @@
 package com.wangzhen.tableChart.buffer;
 
 import com.wangzhen.tableChart.data.Column;
+import com.wangzhen.tableChart.interfaces.ICell;
 
 import java.util.List;
 
@@ -8,7 +9,7 @@ import java.util.List;
  * Created by wangzhen on 2018/7/7.
  */
 
-public class TitleBuffer extends AbstractBuffer<List<Column>> {
+public class TitleBuffer extends AbstractBuffer<List<Column<ICell>>> {
 
     public String[] columnNames;
 
@@ -25,7 +26,7 @@ public class TitleBuffer extends AbstractBuffer<List<Column>> {
     }
 
     @Override
-    public void feed(List<Column> data) {
+    public void feed(List<Column<ICell>> data) {
         float size = data.size();
         int width;
         int height;
@@ -46,4 +47,5 @@ public class TitleBuffer extends AbstractBuffer<List<Column>> {
         }
         reset();
     }
+
 }

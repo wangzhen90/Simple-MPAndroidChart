@@ -1,5 +1,7 @@
 package com.wangzhen.tableChart.buffer;
 
+import java.util.List;
+
 /**
  * Created by wangzhen on 2018/4/30.
  *
@@ -87,6 +89,9 @@ public abstract class AbstractBuffer<T>  {
      * @param data
      */
     public abstract void feed(T data);
+    public  void feed(T data, List<T> dataList){
+
+    }
 
 
 }

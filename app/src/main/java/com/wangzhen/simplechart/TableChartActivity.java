@@ -60,7 +60,9 @@ public class TableChartActivity extends AppCompatActivity {
 
         Sheet<Cell> sheet = new Sheet<>(columns,null);
 
-        sheet.merge(0,0,2,0);
+        sheet.merge(0,0,2,2);
+        sheet.merge(5,0,5,1);
+        sheet.merge(6,2,7,3);
 
         tableChart.setSheet(sheet);
 

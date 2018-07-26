@@ -44,7 +44,43 @@ public class ColumnBuffer extends AbstractBuffer<Column<ICell>> {
             } else {
                 left = column.getPreColumnsWidth();
                 top = cell.getRow() * column.getRowHeight() + column.titleHeight;
+
                 right = left + column.getWidth();
+                bottom = top + column.getRowHeight() * (cell.getLastRow() - cell.getRow() + 1);
+
+            }
+            addCell(left, top, right, bottom);
+
+        }
+        reset();
+    }
+
+    @Override
+    public void feed(Column<ICell> column, List<Column<ICell>> columns) {
+        int cellSize = column.getData().size();
+        List<ICell> cells = column.getData();
+        ICell cell;
+        int left, top, right, bottom;
+
+        for (int i = 0; i < cellSize; i++) {
+            cell = cells.get(i);
+
+            if (cell.getType() == CellType.EMPTY) {
+                left = 0;
+                top = 0;
+                right = 0;
+                bottom = 0;
+            } else {
+                left = column.getPreColumnsWidth();
+                top = cell.getRow() * column.getRowHeight() + column.titleHeight;
+
+                right = left;
+
+                for(int j = cell.getColumn(); j < cell.getLastColumn() + 1;j++){
+                    right += columns.get(j).getWidth();
+                }
+
+//                right = left + column.getWidth();
                 bottom = top + column.getRowHeight() * (cell.getLastRow() - cell.getRow() + 1);
 
             }

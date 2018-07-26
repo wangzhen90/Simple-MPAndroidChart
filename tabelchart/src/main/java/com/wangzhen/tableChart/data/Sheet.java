@@ -40,6 +40,8 @@ public class Sheet<T extends Cell> implements ISheet {
     private int maxRowCount;
     private int maxColumnCount;
 
+    private boolean hasMergedCell = false;
+
 
     public Sheet(List columns, List data) {
 
@@ -271,9 +273,8 @@ public class Sheet<T extends Cell> implements ISheet {
             cell.setLastRow(lastRow);
             cell.setLastColumn(lastColumn);
             setEmptyCells(firstRow, firstColumn, lastRow, lastColumn, cell);
+            hasMergedCell = true;
         }
-        int i = 1;
-
     }
 
 
@@ -296,13 +297,17 @@ public class Sheet<T extends Cell> implements ISheet {
             if (column == null || column.getData().isEmpty()) continue;
 
             for (int j = firstRow; j < lastRow + 1; j++) {
-                if (i != firstRow || j != firstColumn) {
+                if (i != firstColumn || j != firstRow) {
                     column.setEmptyCell(j, realCell);
                 }
             }
 
         }
 
+    }
+
+    public boolean hasMergedCell(){
+        return hasMergedCell;
     }
 
 }
