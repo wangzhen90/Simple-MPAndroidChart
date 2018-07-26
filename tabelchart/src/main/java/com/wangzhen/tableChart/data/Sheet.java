@@ -27,7 +27,7 @@ public class Sheet<T extends Cell> implements ISheet {
     private int mWidth;
     private int cellCounts;
 
-    private int rowHeight = 60;
+    private int rowHeight = 70;
 
     private int columnLeftOffset = 30;
     private int columnRightOffset = 30;
@@ -35,7 +35,7 @@ public class Sheet<T extends Cell> implements ISheet {
 
     private ArrayList<ICellRange> mergedCells = new ArrayList();
 
-    private int mTitleHeight = 60;
+    private int mTitleHeight = 80;
 
     private int maxRowCount;
     private int maxColumnCount;
@@ -224,11 +224,11 @@ public class Sheet<T extends Cell> implements ISheet {
     }
 
     @Override
-    public Cell getCellByTouchPoint(double xValue, double yValue) {
+    public ICell getCellByTouchPoint(double xValue, double yValue) {
 
         Column<T> column = getColumnByXValue(xValue);
 
-        Cell cell;
+        ICell cell;
 
         if (column != null && !column.getData().isEmpty()) {
 
@@ -249,7 +249,7 @@ public class Sheet<T extends Cell> implements ISheet {
                     high = mid;
                 } else if (yValue >= (cell.getLastRow() + 1) * rowHeight + mTitleHeight) {
                     low = mid;
-                }else{
+                } else {
                     break;
                 }
             }
@@ -260,22 +260,24 @@ public class Sheet<T extends Cell> implements ISheet {
     }
 
 
-    public void merge(int firstRow, int firstColumn, int lastRow, int lastColumn){
+    public void merge(int firstRow, int firstColumn, int lastRow, int lastColumn) {
 
-        if(firstRow < 0 || firstColumn < 0) return;
-        if(lastRow >= maxRowCount || lastColumn >= maxColumnCount) return;
-        if(firstRow >= lastRow && firstColumn >= lastColumn) return;
+        if (firstRow < 0 || firstColumn < 0) return;
+        if (lastRow >= maxRowCount || lastColumn >= maxColumnCount) return;
+        if (firstRow >= lastRow && firstColumn >= lastColumn) return;
 
-        T cell = findCellByRowAndColumn(firstRow,firstColumn);
-        if(cell != null){
+        T cell = findCellByRowAndColumn(firstRow, firstColumn);
+        if (cell != null) {
             cell.setLastRow(lastRow);
             cell.setLastColumn(lastColumn);
+            setEmptyCells(firstRow, firstColumn, lastRow, lastColumn, cell);
         }
+        int i = 1;
 
     }
 
 
-    public T findCellByRowAndColumn(int rowIndex, int columnIndex){
+    public T findCellByRowAndColumn(int rowIndex, int columnIndex) {
 
         Column<T> column = columns.get(columnIndex);
 
@@ -284,17 +286,19 @@ public class Sheet<T extends Cell> implements ISheet {
         return cell;
     }
 
-    private void setEmptyCells(int firstRow, int firstColumn, int lastRow,int lastColumn){
-
-        for(int i = firstRow; i < lastRow; i++){
-
-            for(int j = firstColumn; j < lastColumn; j++){
-
-                if(i != firstRow && j != firstColumn){
+    private void setEmptyCells(int firstRow, int firstColumn, int lastRow, int lastColumn, T realCell) {
 
 
+        for (int i = firstColumn; i < lastColumn+1; i++) {
+
+            Column<T> column = columns.get(i);
+
+            if (column == null || column.getData().isEmpty()) continue;
+
+            for (int j = firstRow; j < lastRow + 1; j++) {
+                if (i != firstRow || j != firstColumn) {
+                    column.setEmptyCell(j, realCell);
                 }
-
             }
 
         }

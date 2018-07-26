@@ -8,6 +8,7 @@ import com.wangzhen.tableChart.component.TableChart;
 import com.wangzhen.tableChart.data.Cell;
 import com.wangzhen.tableChart.data.Column;
 import com.wangzhen.tableChart.data.Sheet;
+import com.wangzhen.tableChart.interfaces.ICell;
 import com.wangzhen.tableChart.interfaces.ITableOnClickListener;
 
 import java.util.ArrayList;
@@ -29,7 +30,7 @@ public class TableChartActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onCellClick(Cell cell) {
+            public void onCellClick(ICell cell) {
                 Toast.makeText(TableChartActivity.this,"点击了"+cell.getContents(),Toast.LENGTH_SHORT).show();
             }
         });
@@ -50,7 +51,7 @@ public class TableChartActivity extends AppCompatActivity {
 
         for(int i = 0; i < columns.size();i++){
             List<Cell> cells = new ArrayList<>();
-           for(int j = 0; j < 3000;j++){
+           for(int j = 0; j < 30;j++){
                cells.add(new Cell(j,i,"内容"+i+"-"+j));
            }
 
@@ -58,6 +59,8 @@ public class TableChartActivity extends AppCompatActivity {
         }
 
         Sheet<Cell> sheet = new Sheet<>(columns,null);
+
+        sheet.merge(0,0,2,0);
 
         tableChart.setSheet(sheet);
 

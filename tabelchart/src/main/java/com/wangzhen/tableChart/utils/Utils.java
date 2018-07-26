@@ -12,6 +12,7 @@ import android.os.Build;
 import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -795,7 +796,7 @@ public abstract class Utils {
 
 
     public static void drawSingleText(Canvas canvas, Paint paint, float x, float y, String value) {
-
+        if(TextUtils.isEmpty(value)) return;
         canvas.drawText(value,x,y , paint);
 
     }

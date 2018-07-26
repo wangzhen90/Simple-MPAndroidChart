@@ -10,12 +10,20 @@ public class EmptyCell implements ICell {
 
     private int row;
     private int column;
+    private ICell realCell;
 
 
     public EmptyCell(int row, int column){
 
         this.row = row;
         this.column = column;
+    }
+
+    public EmptyCell(ICell oldCell,ICell realCell){
+        this.row = oldCell.getRow();
+        this.column = oldCell.getColumn();
+
+        this.realCell =  realCell;
     }
 
     @Override
@@ -30,12 +38,12 @@ public class EmptyCell implements ICell {
 
     @Override
     public int getLastRow() {
-        return 0;
+        return row;
     }
 
     @Override
     public int getLastColumn() {
-        return 0;
+        return column;
     }
 
     @Override
@@ -51,5 +59,9 @@ public class EmptyCell implements ICell {
     @Override
     public CellType getType() {
         return CellType.EMPTY;
+    }
+
+    public ICell getRealCell() {
+        return realCell;
     }
 }

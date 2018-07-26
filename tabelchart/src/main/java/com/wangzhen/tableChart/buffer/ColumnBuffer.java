@@ -1,7 +1,9 @@
 package com.wangzhen.tableChart.buffer;
 
 import com.wangzhen.tableChart.data.Cell;
+import com.wangzhen.tableChart.data.CellType;
 import com.wangzhen.tableChart.data.Column;
+import com.wangzhen.tableChart.interfaces.ICell;
 
 import java.util.List;
 
@@ -9,7 +11,7 @@ import java.util.List;
  * Created by wangzhen on 2018/7/10.
  */
 
-public class ColumnBuffer extends AbstractBuffer<Column<Cell>> {
+public class ColumnBuffer extends AbstractBuffer<Column<ICell>> {
 
     public ColumnBuffer(int size) {
         super(size);
@@ -25,21 +27,29 @@ public class ColumnBuffer extends AbstractBuffer<Column<Cell>> {
     }
 
     @Override
-    public void feed(Column<Cell> column) {
+    public void feed(Column<ICell> column) {
         int cellSize = column.getData().size();
-        List<Cell> cells = column.getData();
-        Cell cell;
+        List<ICell> cells = column.getData();
+        ICell cell;
         int left, top, right, bottom;
 
         for (int i = 0; i < cellSize; i++) {
             cell = cells.get(i);
 
-            left = column.getPreColumnsWidth();
-            top = cell.getRow() * column.getRowHeight() + column.titleHeight;
-            right = left + column.getWidth();
-            bottom = top + column.getRowHeight();
+            if (cell.getType() == CellType.EMPTY) {
+                left = 0;
+                top = 0;
+                right = 0;
+                bottom = 0;
+            } else {
+                left = column.getPreColumnsWidth();
+                top = cell.getRow() * column.getRowHeight() + column.titleHeight;
+                right = left + column.getWidth();
+                bottom = top + column.getRowHeight() * (cell.getLastRow() - cell.getRow() + 1);
 
+            }
             addCell(left, top, right, bottom);
+
         }
         reset();
     }

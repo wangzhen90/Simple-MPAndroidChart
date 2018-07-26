@@ -20,6 +20,7 @@ public interface ICell {
     String getContents();
 
     CellType getType();
+
 //
 //    CellFormat getCellFormat();
 //

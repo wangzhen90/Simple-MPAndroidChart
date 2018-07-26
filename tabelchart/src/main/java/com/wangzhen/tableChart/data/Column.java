@@ -11,7 +11,7 @@ import java.util.List;
  * Created by wangzhen on 2018/6/11.
  */
 
-public class Column<T extends Cell> {
+public class Column<T extends ICell> {
 
 
     public String columnName;
@@ -23,7 +23,7 @@ public class Column<T extends Cell> {
 
     public int maxWidth;
 
-    public int minWidth = 30;
+    public int minWidth = 50;
 
     private List<T> datas;
 
@@ -65,6 +65,16 @@ public class Column<T extends Cell> {
 
     public void setData(List<T> datas) {
         this.datas = datas;
+    }
+
+    public void setEmptyCell(int index,ICell realCell){
+
+        T oldCell = datas.get(index);
+
+        if(oldCell.getType() != CellType.EMPTY){
+            this.datas.set(index,(T)new EmptyCell(oldCell,realCell));
+        }
+
     }
 
     public List<T> getData() {

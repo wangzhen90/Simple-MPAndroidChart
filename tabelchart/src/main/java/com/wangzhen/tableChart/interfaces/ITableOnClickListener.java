@@ -11,6 +11,6 @@ public interface ITableOnClickListener {
 
     void onColumnClick(Column column);
 
-    void onCellClick(Cell cell);
+    void onCellClick(ICell cell);
 
 }

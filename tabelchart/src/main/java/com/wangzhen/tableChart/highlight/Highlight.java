@@ -6,6 +6,7 @@ import android.graphics.RectF;
 import com.wangzhen.tableChart.component.TableChart;
 import com.wangzhen.tableChart.data.Cell;
 import com.wangzhen.tableChart.data.Column;
+import com.wangzhen.tableChart.interfaces.ICell;
 
 /**
  * Created by wangzhen on 2018/7/16.
@@ -22,7 +23,7 @@ public class Highlight {
 //    private int lastRow = -1;
 //    private int lastColumn = -1;
 
-    private Cell mCell;
+    private ICell mCell;
     private Column mColumn;
     private boolean isTitle;
 
@@ -30,7 +31,7 @@ public class Highlight {
         this.mChart = chart;
     }
 
-    public Highlight(TableChart chart,int columnIndex,Cell cell,boolean isTitle){
+    public Highlight(TableChart chart, int columnIndex, ICell cell, boolean isTitle){
         this.mChart = chart;
         this.columnIndex = columnIndex;
         this.mCell = cell;
@@ -54,7 +55,7 @@ public class Highlight {
         return mColumn;
     }
 
-    public Cell getCell(){
+    public ICell getCell(){
         return mCell;
     }
 
@@ -82,8 +83,6 @@ public class Highlight {
 
     }
 
-
-
     public RectF getRect() {
 
         if (mColumn == null) return null;
@@ -92,7 +91,7 @@ public class Highlight {
             highlightPort.set(mColumn.getLeft(), 0, mColumn.getRight(), mChart.getContentHeight());
         } else if (mCell != null) {
             int left = mColumn.getLeft();
-            int top = (getRow() + 1) * mColumn.getRowHeight() ;
+            int top = getRow() * mColumn.getRowHeight() + mChart.getTitleHeight();
             int right = left;
 
             for (int i = columnIndex; i < getLastColumn() + 1; i++) {

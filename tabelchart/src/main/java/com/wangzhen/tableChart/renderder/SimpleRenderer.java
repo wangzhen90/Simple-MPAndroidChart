@@ -1,16 +1,15 @@
 package com.wangzhen.tableChart.renderder;
 
 import android.graphics.Canvas;
-import android.graphics.Rect;
 import android.graphics.RectF;
 import android.util.Log;
 
 import com.wangzhen.tableChart.buffer.ColumnBuffer;
 import com.wangzhen.tableChart.buffer.TitleBuffer;
 import com.wangzhen.tableChart.component.TableChart;
-import com.wangzhen.tableChart.data.Cell;
 import com.wangzhen.tableChart.data.Column;
 import com.wangzhen.tableChart.highlight.Highlight;
+import com.wangzhen.tableChart.interfaces.ICell;
 import com.wangzhen.tableChart.utils.Transformer;
 import com.wangzhen.tableChart.utils.Utils;
 import com.wangzhen.tableChart.utils.ViewPortHandler;
@@ -82,7 +81,7 @@ public class SimpleRenderer extends DataRenderer {
     //    float[] checkBuffer = new float[]{0,0,0,0};
     RectF checkRect = new RectF();
 
-    private void drawColumn(Canvas c, Column<Cell> column, int index, RectF visibleRect) {
+    private void drawColumn(Canvas c, Column<ICell> column, int index, RectF visibleRect) {
 
         if (transformer == null) {
             transformer = mChart.getTransformer();
@@ -129,6 +128,9 @@ public class SimpleRenderer extends DataRenderer {
         long startTimeDraw = System.currentTimeMillis();
 
         for (int i = 0; i < columnBuffer.size(); i += 4) {
+
+            if(columnBuffer.buffer[i+3] == 0) continue;
+
             if ((columnBuffer.buffer[i] > mViewPortHandler.contentRight()) || (columnBuffer.buffer[i + 2] < mViewPortHandler.contentLeft())) {
                 return;
             }

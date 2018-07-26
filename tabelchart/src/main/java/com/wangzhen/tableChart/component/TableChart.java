@@ -9,9 +9,12 @@ import android.view.ViewParent;
 
 
 import com.wangzhen.tableChart.data.Cell;
+import com.wangzhen.tableChart.data.CellType;
 import com.wangzhen.tableChart.data.Column;
+import com.wangzhen.tableChart.data.EmptyCell;
 import com.wangzhen.tableChart.data.Sheet;
 import com.wangzhen.tableChart.highlight.Highlight;
+import com.wangzhen.tableChart.interfaces.ICell;
 import com.wangzhen.tableChart.interfaces.ISheet;
 import com.wangzhen.tableChart.interfaces.ITableOnClickListener;
 import com.wangzhen.tableChart.listener.ChartTouchListener;
@@ -336,7 +339,18 @@ public class TableChart extends ViewGroup {
     }
 
 
-    public Cell getCellByTouchPoint(double xValue, double yValue) {
+    public ICell getCellByTouchPoint(double xValue, double yValue) {
+
+        ICell virtualCell = sheet.getCellByTouchPoint(xValue, yValue);
+
+        if(virtualCell != null){
+            if(virtualCell.getType() == CellType.EMPTY){
+                return ((EmptyCell)virtualCell).getRealCell();
+            }else{
+                return virtualCell;
+            }
+        }
+
 
         return sheet.getCellByTouchPoint(xValue, yValue);
     }
@@ -360,6 +374,8 @@ public class TableChart extends ViewGroup {
     public void highlightValue(Highlight h, boolean callListener) {
 
         mHighlight = h;
+
+        if(h == null) return;
 
         if(callListener && onClickListener != null){
             if(h.isTitle())

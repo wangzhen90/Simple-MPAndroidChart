@@ -9,7 +9,7 @@ import java.util.List;
  * Created by wangzhen on 2018/7/5.
  */
 
-public interface ISheet<T extends Cell> {
+public interface ISheet<T extends ICell> {
 
     int getRows();
 

@@ -13,6 +13,7 @@ import com.wangzhen.tableChart.component.TableChart;
 import com.wangzhen.tableChart.data.Cell;
 import com.wangzhen.tableChart.data.Column;
 import com.wangzhen.tableChart.highlight.Highlight;
+import com.wangzhen.tableChart.interfaces.ICell;
 import com.wangzhen.tableChart.utils.MPPointD;
 import com.wangzhen.tableChart.utils.MPPointF;
 import com.wangzhen.tableChart.utils.Transformer;
@@ -469,7 +470,7 @@ public class ChartTouchListener extends GestureDetector.SimpleOnGestureListener 
             Log.e("18========",column != null ? column.columnName : "empty column");
         }else{
 
-            Cell cell = mChart.getCellByTouchPoint(values.x,values.y);
+            ICell cell = mChart.getCellByTouchPoint(values.x,values.y);
             if(cell != null){
                 highlight = new Highlight(mChart,cell.getColumn(),cell,false);
                 Log.e("18========",cell != null ? cell.getContents() : "click cell");
