@@ -2,6 +2,7 @@ package com.wangzhen.tableChart.interfaces;
 
 import com.wangzhen.tableChart.data.Cell;
 import com.wangzhen.tableChart.data.Column;
+import com.wangzhen.tableChart.formatter.ITextFormatter;
 
 import java.util.List;
 
@@ -38,6 +39,8 @@ public interface ISheet<T extends ICell> {
     void calculate();
 
     boolean hasMergedCell();
+
+    ITextFormatter getTextFormatter();
 
     Column<T> getColumnByXValue(double xValue);
     T getCellByTouchPoint(double xValue, double yValue);

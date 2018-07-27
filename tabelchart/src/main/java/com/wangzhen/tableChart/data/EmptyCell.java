@@ -1,6 +1,12 @@
 package com.wangzhen.tableChart.data;
 
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.text.TextPaint;
+
 import com.wangzhen.tableChart.interfaces.ICell;
+
+import java.time.format.TextStyle;
 
 /**
  * Created by wangzhen on 2018/7/6.
@@ -61,7 +67,7 @@ public class EmptyCell implements ICell {
     public CellType getType() {
         return CellType.EMPTY;
     }
-
+    @Override
     public ICell getRealCell() {
         return realCell;
     }

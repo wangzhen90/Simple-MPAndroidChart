@@ -71,6 +71,11 @@ public class Cell implements ICell {
         return CellType.LABEL;
     }
 
+    @Override
+    public ICell getRealCell() {
+        return this;
+    }
+
     public void setLastRow(int lastRow){
         this.lastRow = lastRow;
     }

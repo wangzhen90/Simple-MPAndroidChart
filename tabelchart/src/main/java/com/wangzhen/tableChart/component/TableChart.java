@@ -419,4 +419,6 @@ public class TableChart extends ViewGroup {
         return sheet.hasMergedCell();
     }
 
+
+
 }

@@ -1,7 +1,9 @@
 package com.wangzhen.tableChart.renderder;
 
 import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.graphics.RectF;
+import android.text.TextPaint;
 import android.util.Log;
 
 import com.wangzhen.tableChart.buffer.ColumnBuffer;
@@ -67,7 +69,7 @@ public class SimpleRenderer extends DataRenderer {
         long startTime = System.currentTimeMillis();
 
         for (int i = 0; i < mChart.getColumnCount(); i++) {
-            drawColumn(c, columns.get(i), i, mValuesRect,columns);
+            drawColumn(c, columns.get(i), i, mValuesRect, columns);
         }
 
 //        Log.e("1------绘制所有column的耗费时间：", (System.currentTimeMillis() - startTime) + "");
@@ -81,7 +83,7 @@ public class SimpleRenderer extends DataRenderer {
     //    float[] checkBuffer = new float[]{0,0,0,0};
     RectF checkRect = new RectF();
 
-    private void drawColumn(Canvas c, Column<ICell> column, int index, RectF visibleRect,List<Column<ICell>> columns) {
+    private void drawColumn(Canvas c, Column<ICell> column, int index, RectF visibleRect, List<Column<ICell>> columns) {
 
         if (transformer == null) {
             transformer = mChart.getTransformer();
@@ -118,9 +120,9 @@ public class SimpleRenderer extends DataRenderer {
 
         long startTime = System.currentTimeMillis();
 
-        if(mChart.hasMergedCell()){
-            columnBuffer.feed(column,columns);
-        }else{
+        if (mChart.hasMergedCell()) {
+            columnBuffer.feed(column, columns);
+        } else {
             columnBuffer.feed(column);
         }
         Log.e("2------", "column" + index + "的feed耗费时间：" + (System.currentTimeMillis() - startTime) + "");
@@ -134,7 +136,7 @@ public class SimpleRenderer extends DataRenderer {
 
         for (int i = 0; i < columnBuffer.size(); i += 4) {
 
-            if(columnBuffer.buffer[i+2] == columnBuffer.buffer[i]) continue;
+            if (columnBuffer.buffer[i + 2] == columnBuffer.buffer[i]) continue;
 
             if ((columnBuffer.buffer[i] > mViewPortHandler.contentRight()) || (columnBuffer.buffer[i + 2] < mViewPortHandler.contentLeft())) {
                 return;
@@ -147,10 +149,16 @@ public class SimpleRenderer extends DataRenderer {
             c.drawRect(columnBuffer.buffer[i], columnBuffer.buffer[i + 1], columnBuffer.buffer[i + 2],
                     columnBuffer.buffer[i + 3], mGridPaint);
 
-            mValuePaint.setTextSize(Utils.convertDpToPixel(mChart.getContentFontSize() * mViewPortHandler.getScaleX()));
+
+            fillValuePaint(column.getData().get(i / 4).getRealCell(), column, columns);
 
             Utils.drawSingleText(c, mValuePaint,
-                    Utils.getTextCenterX(columnBuffer.buffer[i], columnBuffer.buffer[i + 2], mValuePaint),
+                     Utils.getTextCenterX(
+                             columnBuffer.buffer[i] + column.getLeftOffset() * mChart.getViewPortHandler().getScaleX(),
+                             columnBuffer.buffer[i + 2] - column.getRightOffset() * mChart.getViewPortHandler().getScaleX(),
+//                             columnBuffer.buffer[i],
+//                             columnBuffer.buffer[i + 2],
+                             mValuePaint),
                     Utils.getTextCenterY((columnBuffer.buffer[i + 1] + columnBuffer.buffer[i + 3]) / 2, mValuePaint),
                     column.getData().get(i / 4).getContents()
             );
@@ -160,6 +168,15 @@ public class SimpleRenderer extends DataRenderer {
 
     }
 
+    TextPaint.Align mValueTextAlignBuffer;
+
+    private void fillValuePaint(ICell cell, Column<ICell> column, List<Column<ICell>> columns) {
+
+        mValueTextAlignBuffer = mChart.getSheet().getTextFormatter().getTextAlign(cell, column, columns);
+
+        mValuePaint.setTextSize(Utils.convertDpToPixel(mChart.getSheet().getTextFormatter().getTextSize(cell, column, columns) * mViewPortHandler.getScaleX()));
+        mValuePaint.setTextAlign(mValueTextAlignBuffer);
+    }
 
     @Override
     public void drawValues(Canvas c) {

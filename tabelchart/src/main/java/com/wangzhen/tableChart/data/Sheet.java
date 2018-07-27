@@ -2,6 +2,7 @@ package com.wangzhen.tableChart.data;
 
 import android.util.Log;
 
+import com.wangzhen.tableChart.formatter.ITextFormatter;
 import com.wangzhen.tableChart.interfaces.ICellRange;
 import com.wangzhen.tableChart.interfaces.ISheet;
 import com.wangzhen.tableChart.interfaces.ICell;
@@ -42,6 +43,7 @@ public class Sheet<T extends Cell> implements ISheet {
 
     private boolean hasMergedCell = false;
 
+    private ITextFormatter mTextFormatter;
 
     public Sheet(List columns, List data) {
 
@@ -290,7 +292,7 @@ public class Sheet<T extends Cell> implements ISheet {
     private void setEmptyCells(int firstRow, int firstColumn, int lastRow, int lastColumn, T realCell) {
 
 
-        for (int i = firstColumn; i < lastColumn+1; i++) {
+        for (int i = firstColumn; i < lastColumn + 1; i++) {
 
             Column<T> column = columns.get(i);
 
@@ -306,8 +308,15 @@ public class Sheet<T extends Cell> implements ISheet {
 
     }
 
-    public boolean hasMergedCell(){
+    public boolean hasMergedCell() {
         return hasMergedCell;
     }
 
+    public ITextFormatter getTextFormatter() {
+        return mTextFormatter;
+    }
+
+    public void setTextFormatter(ITextFormatter mTextFormatter) {
+        this.mTextFormatter = mTextFormatter;
+    }
 }

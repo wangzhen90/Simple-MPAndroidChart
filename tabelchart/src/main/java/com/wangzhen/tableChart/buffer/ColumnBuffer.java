@@ -82,7 +82,6 @@ public class ColumnBuffer extends AbstractBuffer<Column<ICell>> {
 
                 bottom = top + realColumn.getRowHeight() * (cell.getLastRow() - cell.getRow() + 1);
 
-
             } else {
                 left = column.getPreColumnsWidth();
                 top = cell.getRow() * column.getRowHeight() + column.titleHeight;
@@ -96,10 +95,6 @@ public class ColumnBuffer extends AbstractBuffer<Column<ICell>> {
                 bottom = top + column.getRowHeight() * (cell.getLastRow() - cell.getRow() + 1);
 
             }
-
-
-
-
             addCell(left, top, right, bottom);
 
         }

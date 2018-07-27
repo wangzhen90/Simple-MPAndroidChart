@@ -21,6 +21,8 @@ public interface ICell {
 
     CellType getType();
 
+    ICell getRealCell();
+
 //
 //    CellFormat getCellFormat();
 //
