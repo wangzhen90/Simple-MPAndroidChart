@@ -2,6 +2,7 @@ package com.wangzhen.tableChart.data;
 
 import android.util.Log;
 
+import com.wangzhen.tableChart.formatter.DefaultTextFormatter;
 import com.wangzhen.tableChart.formatter.ITextFormatter;
 import com.wangzhen.tableChart.interfaces.ICellRange;
 import com.wangzhen.tableChart.interfaces.ISheet;
@@ -313,6 +314,11 @@ public class Sheet<T extends Cell> implements ISheet {
     }
 
     public ITextFormatter getTextFormatter() {
+
+        if (mTextFormatter == null) {
+            mTextFormatter = new DefaultTextFormatter();
+        }
+
         return mTextFormatter;
     }
 
