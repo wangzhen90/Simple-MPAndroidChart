@@ -187,6 +187,7 @@ public class SimpleRenderer extends DataRenderer {
 
         mValuePaint.setTextSize(Utils.convertDpToPixel(mChart.getSheet().getTextFormatter().getTextSize(cell, column, columns) * mViewPortHandler.getScaleX()));
         mValuePaint.setTextAlign(mValueTextAlignBuffer);
+        mValuePaint.setColor(Color.parseColor(mChart.getSheet().getTextFormatter().getTextColor(cell, column, columns)));
     }
 
 

@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 
 
-import com.wangzhen.tableChart.data.Cell;
 import com.wangzhen.tableChart.data.CellType;
 import com.wangzhen.tableChart.data.Column;
 import com.wangzhen.tableChart.data.EmptyCell;
@@ -114,10 +113,11 @@ public class TableChart extends ViewGroup {
             return;
 
         if (mDataRenderer != null) {
-            mDataRenderer.drawHighlighted(canvas, mHighlight);
 
             mDataRenderer.drawTitle(canvas);
             mDataRenderer.drawData(canvas);
+            mDataRenderer.drawHighlighted(canvas, mHighlight);
+
         }
     }
 

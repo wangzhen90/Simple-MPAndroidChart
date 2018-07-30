@@ -63,9 +63,9 @@ public class TableChartActivity extends AppCompatActivity {
 
         Sheet<Cell> sheet = new Sheet<>(columns, null);
 
-        sheet.merge(0, 0, 2, 2);
-        sheet.merge(5, 0, 5, 1);
-        sheet.merge(6, 2, 7, 3);
+//        sheet.merge(0, 0, 2, 2);
+//        sheet.merge(5, 0, 5, 1);
+//        sheet.merge(6, 2, 7, 3);
 
         sheet.setTextFormatter(new ITextFormatter() {
             @Override
@@ -81,6 +81,16 @@ public class TableChartActivity extends AppCompatActivity {
                 } else {
                     return TextPaint.Align.CENTER;
                 }
+            }
+
+            @Override
+            public String getTextColor(ICell cell, Column<ICell> column, List<Column<ICell>> columns) {
+
+                if(cell.getContents().equals("内容1-3")){
+                    return "red";
+                }
+
+                return "black";
             }
         });
 
