@@ -25,6 +25,8 @@ public abstract class DataRenderer extends Renderer {
 
     protected Paint mHighlightPaint;
 
+    protected Paint mBgPaint;
+
 
 
     public DataRenderer(ViewPortHandler viewPortHandler) {
@@ -53,8 +55,9 @@ public abstract class DataRenderer extends Renderer {
         mHighlightPaint.setStyle(Paint.Style.STROKE);
         mHighlightPaint.setColor(Color.parseColor("#2ca9e1"));
 
-
-
+        mBgPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+//        mBgPaint.setColor(Color.parseColor("transparent"));
+        mBgPaint.setStyle(Paint.Style.FILL);
     }
 
 

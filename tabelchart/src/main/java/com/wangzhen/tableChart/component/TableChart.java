@@ -13,6 +13,7 @@ import com.wangzhen.tableChart.data.CellType;
 import com.wangzhen.tableChart.data.Column;
 import com.wangzhen.tableChart.data.EmptyCell;
 import com.wangzhen.tableChart.data.Sheet;
+import com.wangzhen.tableChart.formatter.IBgFormatter;
 import com.wangzhen.tableChart.highlight.Highlight;
 import com.wangzhen.tableChart.interfaces.ICell;
 import com.wangzhen.tableChart.interfaces.ISheet;
@@ -113,7 +114,7 @@ public class TableChart extends ViewGroup {
             return;
 
         if (mDataRenderer != null) {
-            mDataRenderer.drawHighlighted(canvas,mHighlight);
+            mDataRenderer.drawHighlighted(canvas, mHighlight);
 
             mDataRenderer.drawTitle(canvas);
             mDataRenderer.drawData(canvas);
@@ -127,7 +128,7 @@ public class TableChart extends ViewGroup {
 
     }
 
-    public ISheet getSheet(){
+    public ISheet getSheet() {
         return sheet;
     }
 
@@ -343,10 +344,10 @@ public class TableChart extends ViewGroup {
 
         ICell virtualCell = sheet.getCellByTouchPoint(xValue, yValue);
 
-        if(virtualCell != null){
-            if(virtualCell.getType() == CellType.EMPTY){
-                return ((EmptyCell)virtualCell).getRealCell();
-            }else{
+        if (virtualCell != null) {
+            if (virtualCell.getType() == CellType.EMPTY) {
+                return ((EmptyCell) virtualCell).getRealCell();
+            } else {
                 return virtualCell;
             }
         }
@@ -375,10 +376,10 @@ public class TableChart extends ViewGroup {
 
         mHighlight = h;
 
-        if(h == null) return;
+        if (h == null) return;
 
-        if(callListener && onClickListener != null){
-            if(h.isTitle())
+        if (callListener && onClickListener != null) {
+            if (h.isTitle())
                 onClickListener.onColumnClick(h.getColumnData());
             else
                 onClickListener.onCellClick(h.getCell());
@@ -394,7 +395,7 @@ public class TableChart extends ViewGroup {
         return mHighlight;
     }
 
-    public int getContentHeight(){
+    public int getContentHeight() {
 
         return sheet.getHeight();
     }
@@ -415,10 +416,17 @@ public class TableChart extends ViewGroup {
         this.onClickListener = onClickListener;
     }
 
-    public boolean hasMergedCell(){
+    public boolean hasMergedCell() {
         return sheet.hasMergedCell();
     }
 
+
+    public IBgFormatter getBgFormatter() {
+        if (sheet != null) {
+            return sheet.getBgFormatter();
+        }
+        return null;
+    }
 
 
 }

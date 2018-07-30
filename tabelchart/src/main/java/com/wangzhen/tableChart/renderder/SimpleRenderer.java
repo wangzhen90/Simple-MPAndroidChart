@@ -1,7 +1,7 @@
 package com.wangzhen.tableChart.renderder;
 
 import android.graphics.Canvas;
-import android.graphics.Paint;
+import android.graphics.Color;
 import android.graphics.RectF;
 import android.text.TextPaint;
 import android.util.Log;
@@ -82,6 +82,7 @@ public class SimpleRenderer extends DataRenderer {
 
     //    float[] checkBuffer = new float[]{0,0,0,0};
     RectF checkRect = new RectF();
+    private String bgColorBuffer;
 
     private void drawColumn(Canvas c, Column<ICell> column, int index, RectF visibleRect, List<Column<ICell>> columns) {
 
@@ -149,6 +150,16 @@ public class SimpleRenderer extends DataRenderer {
             c.drawRect(columnBuffer.buffer[i], columnBuffer.buffer[i + 1], columnBuffer.buffer[i + 2],
                     columnBuffer.buffer[i + 3], mGridPaint);
 
+            if(mChart.getBgFormatter() != null){
+                bgColorBuffer = mChart.getBgFormatter().getBackgroundColor(column.getData().get(i / 4).getRealCell(), column, columns);
+
+                if(bgColorBuffer != null){
+                    mBgPaint.setColor(Color.parseColor(bgColorBuffer));
+                    c.drawRect(columnBuffer.buffer[i], columnBuffer.buffer[i + 1], columnBuffer.buffer[i + 2],
+                            columnBuffer.buffer[i + 3], mBgPaint);
+                }
+            }
+
 
             fillValuePaint(column.getData().get(i / 4).getRealCell(), column, columns);
 
@@ -177,6 +188,7 @@ public class SimpleRenderer extends DataRenderer {
         mValuePaint.setTextSize(Utils.convertDpToPixel(mChart.getSheet().getTextFormatter().getTextSize(cell, column, columns) * mViewPortHandler.getScaleX()));
         mValuePaint.setTextAlign(mValueTextAlignBuffer);
     }
+
 
     @Override
     public void drawValues(Canvas c) {

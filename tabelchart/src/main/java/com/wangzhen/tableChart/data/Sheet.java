@@ -2,7 +2,9 @@ package com.wangzhen.tableChart.data;
 
 import android.util.Log;
 
+import com.wangzhen.tableChart.formatter.DefaultBgFormatter;
 import com.wangzhen.tableChart.formatter.DefaultTextFormatter;
+import com.wangzhen.tableChart.formatter.IBgFormatter;
 import com.wangzhen.tableChart.formatter.ITextFormatter;
 import com.wangzhen.tableChart.interfaces.ICellRange;
 import com.wangzhen.tableChart.interfaces.ISheet;
@@ -17,6 +19,7 @@ import java.util.List;
  */
 
 public class Sheet<T extends Cell> implements ISheet {
+
 
     private static final String TAG = Sheet.class.getSimpleName();
     private T[][] data;
@@ -45,6 +48,10 @@ public class Sheet<T extends Cell> implements ISheet {
     private boolean hasMergedCell = false;
 
     private ITextFormatter mTextFormatter;
+    private IBgFormatter mBgFormatter;
+
+
+
 
     public Sheet(List columns, List data) {
 
@@ -52,6 +59,10 @@ public class Sheet<T extends Cell> implements ISheet {
         this.dataList = data;
 
         calculate();
+
+        mBgFormatter = new DefaultBgFormatter();
+        mTextFormatter = new DefaultTextFormatter();
+
     }
 
 
@@ -314,15 +325,19 @@ public class Sheet<T extends Cell> implements ISheet {
     }
 
     public ITextFormatter getTextFormatter() {
-
-        if (mTextFormatter == null) {
-            mTextFormatter = new DefaultTextFormatter();
-        }
-
         return mTextFormatter;
     }
 
     public void setTextFormatter(ITextFormatter mTextFormatter) {
         this.mTextFormatter = mTextFormatter;
+    }
+
+
+    public IBgFormatter getBgFormatter() {
+        return mBgFormatter;
+    }
+
+    public void setBgFormatter(IBgFormatter mBgFormatter) {
+        this.mBgFormatter = mBgFormatter;
     }
 }
