@@ -1,7 +1,6 @@
 package com.wangzhen.tableChart.listener;
 
 import android.graphics.Matrix;
-import android.os.Build;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -10,7 +9,6 @@ import android.view.View;
 import android.view.animation.AnimationUtils;
 
 import com.wangzhen.tableChart.component.TableChart;
-import com.wangzhen.tableChart.data.Cell;
 import com.wangzhen.tableChart.data.Column;
 import com.wangzhen.tableChart.highlight.Highlight;
 import com.wangzhen.tableChart.interfaces.ICell;

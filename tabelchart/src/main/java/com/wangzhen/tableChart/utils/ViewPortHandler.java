@@ -81,6 +81,8 @@ public class ViewPortHandler {
     private float mMaxTransX = 0f;
     private float mMaxTransY = 0f;
 
+    private boolean hasReachedEnd = false;
+
     /**
      * Constructor - don't forget calling setChartDimens(...)
      */
@@ -487,7 +489,23 @@ public class ViewPortHandler {
 
         if(mMaxTransY > 0){
             maxTransY = -mMaxTransY * mScaleY + height;
+
+
+
             mTransY = Math.min(Math.max(curTransY, maxTransY - mTransOffsetY), mTransOffsetY);
+
+//            Log.e("1=======","curTransY - maxTransY" + (Math.abs(curTransY) - Math.abs(maxTransY)));
+//            if(Math.abs(curTransY) - Math.abs(maxTransY) < 0.01){
+//                Log.e("1=======","end");
+//            }
+
+            if(curTransY < mTransY){
+                hasReachedEnd = true;
+            }else {
+                hasReachedEnd = false;
+            }
+
+
         }else{
             maxTransY = height * (mScaleY - 1f);
             mTransY = Math.max(Math.min(curTransY, maxTransY + mTransOffsetY), -mTransOffsetY);
@@ -792,5 +810,9 @@ public class ViewPortHandler {
 
     public void setMaxTransY(float mMaxTransY) {
         this.mMaxTransY = mMaxTransY;
+    }
+
+    public boolean isReachedEnd() {
+        return hasReachedEnd;
     }
 }
