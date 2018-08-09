@@ -19,7 +19,11 @@
         <activity android:name=".CommonBarChartActivity" />
         <activity android:name=".GroupBarChartActivity" />
         <activity android:name=".TableChartActivity" />
-        <activity android:name=".ScrollViewActivity"></activity>
+        <activity android:name=".ScrollViewActivity" />
+        <activity
+            android:name=".TestConfigActivity"
+            android:configChanges="screenSize" />
+        <activity android:name=".LargeBitmapActivity"></activity>
     </application>
 
 </manifest>

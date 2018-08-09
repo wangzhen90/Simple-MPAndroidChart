@@ -36,6 +36,8 @@ public class MainActivity extends AppCompatActivity {
         items.add(new ChartItem("簇型图",GroupBarChartActivity.class));
         items.add(new ChartItem("表格",TableChartActivity.class));
         items.add(new ChartItem("滑动列表",ScrollViewActivity.class));
+        items.add(new ChartItem("横竖屏",TestConfigActivity.class));
+        items.add(new ChartItem("加载大图",LargeBitmapActivity.class));
 
     }
 

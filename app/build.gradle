@@ -27,4 +27,5 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     implementation project(':simpleChartLib')
     implementation project(':tabelchart')
+    implementation project(':largebitmaplib')
 }
