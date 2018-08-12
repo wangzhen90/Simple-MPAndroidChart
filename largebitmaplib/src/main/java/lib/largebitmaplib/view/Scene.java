@@ -358,6 +358,7 @@ public abstract class Scene {
             boolean retry = true;
             while (retry) {
                 try {
+                    //等待知道这个线程死亡，阻塞在这里
                     cacheThread.join();
                     retry = false;
                 } catch (InterruptedException e) {
@@ -368,6 +369,7 @@ public abstract class Scene {
         }
         void invalidate(){
             synchronized(this){
+                //开始更新，首先先将状态改为INITIALIZED，然后中断cacheThread的阻塞状态
                 setState(CacheState.INITIALIZED);
                 cacheThread.interrupt();
             }
@@ -415,8 +417,10 @@ public abstract class Scene {
                     break;
                 }
             }
-            if (bitmap==null)
+            if (bitmap==null){
                 loadSampleIntoViewport();
+            }
+
             else
                 loadBitmapIntoViewport(bitmap);
         }

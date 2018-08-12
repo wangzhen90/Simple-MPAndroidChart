@@ -4,17 +4,18 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Point;
 import android.graphics.PointF;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.*;
 import android.view.GestureDetector.OnGestureListener;
 import android.widget.Scroller;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
 import lib.largebitmaplib.view.InputStreamScene;
-
 public class ImageSurfaceView extends SurfaceView implements SurfaceHolder.Callback, OnGestureListener  {
     private final static String TAG = ImageSurfaceView.class.getSimpleName();
 
@@ -31,7 +32,7 @@ public class ImageSurfaceView extends SurfaceView implements SurfaceHolder.Callb
     public void getViewport(Point p){
         scene.getViewport().getOrigin(p);
     }
-    
+
     public void setViewport(Point viewport){
         scene.getViewport().setOrigin(viewport.x, viewport.y);
     }
@@ -47,7 +48,18 @@ public class ImageSurfaceView extends SurfaceView implements SurfaceHolder.Callb
     }
 
     public void setInputStream(InputStream inputStream) throws IOException {
-        scene = new InputStreamScene(inputStream);
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            byte[] buffer = new byte[8192];
+            int bytesRead;
+            ByteArrayOutputStream output = new ByteArrayOutputStream();
+            while ((bytesRead = inputStream.read(buffer)) != -1) {
+                output.write(buffer, 0, bytesRead);
+            }
+            byte[] file = output.toByteArray();
+            scene = new InputStreamScene(file);
+        } else {
+            scene = new InputStreamScene(inputStream);
+        }
     }
 
     //endregion
@@ -78,7 +90,7 @@ public class ImageSurfaceView extends SurfaceView implements SurfaceHolder.Callb
         touch = new Touch(context);
         init(context);
     }
-    
+
     public ImageSurfaceView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         touch = new Touch(context);
@@ -90,7 +102,7 @@ public class ImageSurfaceView extends SurfaceView implements SurfaceHolder.Callb
         touch = new Touch(context);
         init(context);
     }
-    
+
     private void init(Context context){
         gestureDectector = new GestureDetector(context,this);
         getHolder().addCallback(this);
@@ -193,11 +205,11 @@ public class ImageSurfaceView extends SurfaceView implements SurfaceHolder.Callb
 
         private boolean running = false;
         public void setRunning(boolean value){ running = value; }
-        
+
         public DrawThread(SurfaceHolder surfaceHolder){
             this.surfaceHolder = surfaceHolder;
         }
-        
+
         @Override
         public void run() {
             Canvas c;
@@ -219,7 +231,7 @@ public class ImageSurfaceView extends SurfaceView implements SurfaceHolder.Callb
                         surfaceHolder.unlockCanvasAndPost(c);
                     }
                 }
-            }        
+            }
         }
     }
     //endregion
@@ -233,21 +245,21 @@ public class ImageSurfaceView extends SurfaceView implements SurfaceHolder.Callb
         final Point viewDown = new Point(0,0);
         /** What was the coordinates of the viewport origin? */
         final Point viewportOriginAtDown = new Point(0,0);
-        
+
         final Scroller scroller;
-        
+
         TouchThread touchThread;
-        
+
         Touch(Context context){
             scroller = new Scroller(context);
         }
-        
+
         void start(){
             touchThread = new TouchThread(this);
             touchThread.setName("touchThread");
             touchThread.start();
         }
-        
+
         void stop(){
             touchThread.running = false;
             touchThread.interrupt();
@@ -263,7 +275,7 @@ public class ImageSurfaceView extends SurfaceView implements SurfaceHolder.Callb
             }
             touchThread = null;
         }
-        
+
         Point fling_viewOrigin = new Point();
         Point fling_viewSize = new Point();
         Point fling_sceneSize = new Point();
@@ -280,8 +292,8 @@ public class ImageSurfaceView extends SurfaceView implements SurfaceHolder.Callb
                     fling_viewOrigin.y,
                     (int)-velocityX,
                     (int)-velocityY,
-                    0, 
-                    fling_sceneSize.x-fling_viewSize.x, 
+                    0,
+                    fling_sceneSize.x-fling_viewSize.x,
                     0,
                     fling_sceneSize.y-fling_viewSize.y);
                 touchThread.interrupt();
@@ -291,7 +303,7 @@ public class ImageSurfaceView extends SurfaceView implements SurfaceHolder.Callb
 //                    fling_viewOrigin.y,
 //                    (int)-velocityX,
 //                    (int)-velocityY,
-//                    0, 
+//                    0,
 //                    fling_sceneSize.x-fling_viewSize.x,
 //                    0,
 //                    fling_sceneSize.y-fling_viewSize.y));
@@ -309,7 +321,7 @@ public class ImageSurfaceView extends SurfaceView implements SurfaceHolder.Callb
             }
             return true;
         }
-        
+
         boolean move(MotionEvent event){
             if (state==TouchState.IN_TOUCH){
                 float zoom = scene.getViewport().getZoom();
@@ -317,32 +329,32 @@ public class ImageSurfaceView extends SurfaceView implements SurfaceHolder.Callb
                 float deltaY = zoom * ((float)(event.getY()-viewDown.y));
                 float newX = ((float)(viewportOriginAtDown.x - deltaX));
                 float newY = ((float)(viewportOriginAtDown.y - deltaY));
-                
+
                 scene.getViewport().setOrigin((int)newX, (int)newY);
                 invalidate();
             }
             return true;
         }
-        
+
         boolean up(MotionEvent event){
             if (state==TouchState.IN_TOUCH){
                 state = TouchState.UNTOUCHED;
             }
             return true;
         }
-        
+
         boolean cancel(MotionEvent event){
             if (state==TouchState.IN_TOUCH){
                 state = TouchState.UNTOUCHED;
             }
             return true;
         }
-        
+
         class TouchThread extends Thread {
             final Touch touch;
             boolean running = false;
             void setRunning(boolean value){ running = value; }
-            
+
             TouchThread(Touch touch){ this.touch = touch; }
             @Override
             public void run() {
