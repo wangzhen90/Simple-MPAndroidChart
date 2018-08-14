@@ -23,7 +23,8 @@
         <activity
             android:name=".TestConfigActivity"
             android:configChanges="screenSize" />
-        <activity android:name=".LargeBitmapActivity"></activity>
+        <activity android:name=".LargeBitmapActivity" />
+        <activity android:name=".DiskCacheActivity"></activity>
     </application>
 
 </manifest>

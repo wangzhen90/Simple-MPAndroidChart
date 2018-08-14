@@ -28,4 +28,5 @@ dependencies {
     implementation project(':simpleChartLib')
     implementation project(':tabelchart')
     implementation project(':largebitmaplib')
+    implementation project(':simpleimageloader')
 }

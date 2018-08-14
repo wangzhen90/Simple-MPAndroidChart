@@ -16,6 +16,8 @@ import com.wangzhen.tableChart.interfaces.ITableOnClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.FutureTask;
 
 public class TableChartActivity extends AppCompatActivity {
     TableChart tableChart;
@@ -40,6 +42,7 @@ public class TableChartActivity extends AppCompatActivity {
 
 
         initData();
+
     }
 
 
@@ -98,5 +101,28 @@ public class TableChartActivity extends AppCompatActivity {
         tableChart.setSheet(sheet);
 
     }
+
+
+    void test(){
+
+        Task task = new Task();
+        FutureTask<Integer> futureTask = new FutureTask<Integer>(task);
+
+        Thread thread = new Thread(futureTask);
+
+
+
+    }
+
+
+    class Task implements Callable<Integer>{
+
+
+        @Override
+        public Integer call() throws Exception {
+            return null;
+        }
+    }
+
 
 }

@@ -1,1 +1,1 @@
-include ':app', ':simpleChartLib', ':tabelchart', ':largebitmaplib'
+include ':app', ':simpleChartLib', ':tabelchart', ':largebitmaplib', ':simpleimageloader'

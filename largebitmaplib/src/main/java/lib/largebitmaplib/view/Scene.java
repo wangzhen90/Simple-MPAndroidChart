@@ -372,6 +372,7 @@ public abstract class Scene {
                 //开始更新，首先先将状态改为INITIALIZED，然后中断cacheThread的阻塞状态
                 setState(CacheState.INITIALIZED);
                 cacheThread.interrupt();
+
             }
         }
         
