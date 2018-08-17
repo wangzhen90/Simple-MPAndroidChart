@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
         items.add(new ChartItem("滑动列表",ScrollViewActivity.class));
         items.add(new ChartItem("横竖屏",TestConfigActivity.class));
         items.add(new ChartItem("加载大图",LargeBitmapActivity.class));
+        items.add(new ChartItem("测试DiskLruCache",DiskCacheActivity.class));
 
     }
 
